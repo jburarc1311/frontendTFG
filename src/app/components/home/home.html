@@ -1,0 +1,172 @@
+<main class="min-h-screen bg-slate-50 text-slate-900">
+  <section class="relative overflow-hidden bg-gradient-to-br from-emerald-950 via-teal-900 to-slate-950 text-white">
+    <div class="absolute inset-0 bg-[radial-gradient(circle_at_top_left,_rgba(16,185,129,0.25),_transparent_32%),radial-gradient(circle_at_bottom_right,_rgba(34,197,94,0.18),_transparent_28%)]"></div>
+    <div class="relative mx-auto grid max-w-7xl gap-12 px-6 py-16 lg:grid-cols-[1.05fr_0.95fr] lg:px-10 lg:py-24">
+      <div class="flex flex-col justify-center">
+        <div class="inline-flex w-fit items-center gap-3 rounded-full border border-white/15 bg-white/10 px-4 py-2 text-xs font-bold uppercase tracking-[0.32em] text-emerald-50/80 backdrop-blur">
+          <span class="h-2 w-2 rounded-full bg-lime-400"></span>
+          Tu santuario digital
+        </div>
+
+        <h1 class="mt-6 max-w-3xl text-5xl font-black uppercase leading-[0.9] tracking-tight sm:text-6xl lg:text-7xl">
+          Encuentra un hogar,
+          <span class="text-emerald-300">cambia una vida</span>
+        </h1>
+
+        <p class="mt-6 max-w-2xl text-lg leading-8 text-emerald-50/80 sm:text-xl">
+          Descubre mascotas listas para adoptar, explora sus historias y conecta con familias que ya han dado el paso.
+          ADOPT-ME está pensado para que adoptar sea claro, cálido y confiable.
+        </p>
+
+        <div class="mt-10 flex flex-wrap gap-4">
+          <a href="#animales-destacados" class="inline-flex items-center justify-center rounded-2xl bg-white px-6 py-4 text-sm font-black uppercase tracking-[0.22em] text-teal-900 transition hover:-translate-y-0.5 hover:bg-emerald-50">
+            Explorar mascotas
+          </a>
+          <a href="/nosotros" class="inline-flex items-center justify-center rounded-2xl border border-white/20 bg-white/10 px-6 py-4 text-sm font-black uppercase tracking-[0.22em] text-white backdrop-blur transition hover:-translate-y-0.5 hover:bg-white/15">
+            Conocer más
+          </a>
+        </div>
+
+        <div class="mt-12 grid gap-4 sm:grid-cols-3">
+          <div class="rounded-3xl border border-white/10 bg-white/10 p-5 backdrop-blur-md">
+            <p class="text-3xl font-black">{{ animales().length }}</p>
+            <p class="mt-1 text-xs uppercase tracking-[0.28em] text-emerald-100/70">Mascotas activas</p>
+          </div>
+          <div class="rounded-3xl border border-white/10 bg-white/10 p-5 backdrop-blur-md">
+            <p class="text-3xl font-black">24/7</p>
+            <p class="mt-1 text-xs uppercase tracking-[0.28em] text-emerald-100/70">Apoyo humano</p>
+          </div>
+          <div class="rounded-3xl border border-white/10 bg-white/10 p-5 backdrop-blur-md">
+            <p class="text-3xl font-black">+100</p>
+            <p class="mt-1 text-xs uppercase tracking-[0.28em] text-emerald-100/70">Historias de éxito</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="relative flex items-center justify-center">
+        <div class="absolute right-6 top-6 h-32 w-32 rounded-full bg-emerald-400/20 blur-3xl"></div>
+        <div class="absolute bottom-10 left-8 h-40 w-40 rounded-full bg-lime-400/15 blur-3xl"></div>
+        <div class="relative w-full max-w-xl overflow-hidden rounded-[2.5rem] border border-white/10 bg-white/10 shadow-[0_30px_80px_rgba(0,0,0,0.28)] backdrop-blur-xl">
+          <div class="absolute inset-0 bg-gradient-to-br from-white/10 via-transparent to-white/5"></div>
+          <div class="relative p-6 sm:p-8">
+            <div class="flex items-center justify-between gap-4">
+              <div>
+                <p class="text-xs font-bold uppercase tracking-[0.3em] text-emerald-100/70">Mascota destacada</p>
+                <h2 class="mt-2 text-3xl font-black">Una oportunidad real</h2>
+              </div>
+              <div class="rounded-2xl border border-white/10 bg-white/10 px-4 py-3 text-right backdrop-blur-sm">
+                <p class="text-xs uppercase tracking-[0.25em] text-emerald-100/70">Listo para adopción</p>
+                <p class="mt-1 text-lg font-black text-emerald-200">Disponible hoy</p>
+              </div>
+            </div>
+
+            <img src="/perroalegre.png" alt="Perro feliz en adopción" class="mt-8 h-[340px] w-full rounded-[2rem] object-cover object-center shadow-2xl shadow-black/25 sm:h-[420px]" />
+
+            <div class="mt-6 grid gap-4 sm:grid-cols-[1fr_auto]">
+              <div class="rounded-3xl border border-white/10 bg-slate-950/40 p-5 backdrop-blur-md">
+                <p class="text-xs uppercase tracking-[0.28em] text-emerald-100/60">Historias que importan</p>
+                <p class="mt-2 text-sm leading-7 text-emerald-50/80">
+                  Cada perfil cuenta una historia y cada adopción deja espacio para una nueva vida. Puedes filtrar, explorar y contactar sin perderte.
+                </p>
+              </div>
+              <div class="flex items-center justify-center rounded-3xl border border-white/10 bg-emerald-300/15 px-6 py-5 text-center backdrop-blur-md">
+                <div>
+                  <p class="text-3xl font-black text-white">97%</p>
+                  <p class="text-xs uppercase tracking-[0.28em] text-emerald-100/70">Satisfacción</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="mx-auto max-w-7xl px-6 py-10 lg:px-10">
+    <div class="rounded-[2rem] bg-gradient-to-r from-teal-700 to-emerald-700 px-6 py-10 text-white shadow-[0_20px_70px_rgba(6,95,70,0.25)] sm:px-10">
+      <div class="grid gap-8 lg:grid-cols-[1.1fr_0.9fr] lg:items-center">
+        <div>
+          <p class="text-xs font-black uppercase tracking-[0.32em] text-emerald-100/80">Haz la diferencia</p>
+          <h2 class="mt-4 max-w-2xl text-3xl font-black leading-tight sm:text-4xl">
+            Cada adopción es una nueva historia que empieza hoy.
+          </h2>
+          <p class="mt-4 max-w-2xl text-sm leading-7 text-emerald-50/80">
+            Si ya has encontrado a tu compañero ideal, publica, comparte o ayuda a otros a descubrir su próxima mascota.
+          </p>
+        </div>
+        <div class="flex flex-wrap gap-4 lg:justify-end">
+          <a href="/darenadopcion" class="inline-flex items-center justify-center rounded-2xl bg-white px-6 py-4 text-sm font-black uppercase tracking-[0.22em] text-teal-900 transition hover:-translate-y-0.5">
+            Dar en adopción
+          </a>
+          <a href="/contactanos" class="inline-flex items-center justify-center rounded-2xl border border-white/20 bg-white/10 px-6 py-4 text-sm font-black uppercase tracking-[0.22em] text-white backdrop-blur transition hover:bg-white/15">
+            Contactar
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Full-width filter placed under 'Haz la diferencia' -->
+  <section class="w-full bg-slate-50 px-6 py-10">
+    <div class="mx-auto w-full max-w-7xl">
+      <div class="rounded-[1.5rem] border border-slate-200 bg-white p-6 shadow-[0_16px_50px_rgba(15,23,42,0.06)] w-full">
+        <p class="text-xs font-black uppercase tracking-[0.32em] text-teal-700">Encuentra rápido</p>
+        <h2 class="mt-3 text-3xl font-black text-slate-900">Refina tu búsqueda sin ruido</h2>
+        <p class="mt-4 text-sm leading-7 text-slate-500">
+          Selecciona el tipo de mascota, el tamaño y la ubicación para ver solo lo que realmente te interesa.
+        </p>
+
+        <div class="mt-8 grid gap-4 sm:grid-cols-3">
+          <div>
+            <label class="mb-2 block text-xs font-black uppercase tracking-[0.25em] text-slate-500">Tipo</label>
+            <select [(ngModel)]="filtroTipo" class="w-full rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm outline-none focus:border-teal-500 focus:ring-4 focus:ring-teal-500/10">
+              <option value="">Todos los animales</option>
+              <option value="Perro">Perro</option>
+              <option value="Gato">Gato</option>
+              <option value="Pájaro">Pájaro</option>
+              <option value="Pez">Pez</option>
+              <option value="Roedor">Roedor</option>
+              <option value="Otro">Otro</option>
+            </select>
+          </div>
+          <div>
+            <label class="mb-2 block text-xs font-black uppercase tracking-[0.25em] text-slate-500">Tamaño</label>
+            <select [(ngModel)]="filtroTamano" class="w-full rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm outline-none focus:border-teal-500 focus:ring-4 focus:ring-teal-500/10">
+              <option value="">Cualquier tamaño</option>
+              <option value="pequeño">Pequeño</option>
+              <option value="mediano">Mediano</option>
+              <option value="grande">Grande</option>
+            </select>
+          </div>
+          <div>
+            <label class="mb-2 block text-xs font-black uppercase tracking-[0.25em] text-slate-500">Ubicación</label>
+            <select [(ngModel)]="filtroUbicacion" class="w-full rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm outline-none focus:border-teal-500 focus:ring-4 focus:ring-teal-500/10">
+              <option value="">Todas las ubicaciones</option>
+              @for (ubicacion of ubicaciones; track ubicacion) {
+                <option [value]="ubicacion">{{ ubicacion }}</option>
+              }
+            </select>
+          </div>
+        </div>
+
+        <div class="mt-6 flex gap-3">
+          <button (click)="aplicarFiltro()" class="flex flex-1 items-center justify-center gap-2 rounded-2xl bg-teal-700 px-5 py-4 text-sm font-black uppercase tracking-[0.24em] text-white transition hover:bg-teal-800">
+            <i class="fa-solid fa-filter"></i>
+            Aplicar filtro
+          </button>
+          <button (click)="limpiarFiltros()" class="flex flex-1 items-center justify-center gap-2 rounded-2xl border border-teal-700 bg-white px-5 py-4 text-sm font-black uppercase tracking-[0.24em] text-teal-700 transition hover:bg-teal-50">
+            <i class="fa-solid fa-times"></i>
+            Limpiar
+          </button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="mx-auto max-w-7xl px-6 pb-12 lg:px-10">
+    <app-animalesss [animales]="animalesFiltrados()"></app-animalesss>
+  </section>
+
+  <app-footer></app-footer>
+</main>
+

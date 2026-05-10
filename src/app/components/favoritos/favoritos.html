@@ -1,0 +1,47 @@
+<section class="favorites-page">
+  <div class="favorites-hero">
+    <p class="favorites-kicker">Guardados</p>
+    <h1>Mis favoritos</h1>
+    <p>Estos son los animales que has marcado para revisarlos después.</p>
+  </div>
+
+  @if (animales().length > 0) {
+    <div class="favorites-grid">
+      @for (item of animales(); track item._id) {
+        <article class="favorite-card animal">
+          <div class="favorite-image">
+            <img [src]="item.fotos[0] || '/perroalegre.png'" [alt]="item.nombre" />
+            <span
+              class="favorite-badge"
+              [class.available]="item.estado === 'disponible'"
+              [class.adopted]="item.estado === 'adoptado'"
+              [class.pending]="item.estado !== 'disponible' && item.estado !== 'adoptado'"
+            >
+              {{ item.estado === 'disponible' ? 'Disponible' : item.estado === 'adoptado' ? 'Adoptado' : 'No disponible' }}
+            </span>
+          </div>
+
+          <div class="favorite-content">
+            <div class="favorite-header">
+              <div>
+                <h2>{{ item.nombre }}</h2>
+                <p>{{ item.raza }} · {{ item.edad }} años</p>
+              </div>
+            </div>
+
+            <a [routerLink]="['/detallesanimales/', item._id]" class="favorite-link">
+              Ver detalles
+            </a>
+            <button (click)="eliminarFavorito(item._id)" class="favorite-remove">Eliminar</button>
+          </div>
+        </article>
+      }
+    </div>
+  } @else {
+    <div class="favorites-empty">
+      <h2>Aún no tienes favoritos</h2>
+      <p>Cuando marques animales como favoritos, aparecerán aquí para volver a verlos fácilmente.</p>
+      <a routerLink="/animales" class="favorites-empty-link">Explorar animales</a>
+    </div>
+  }
+</section>

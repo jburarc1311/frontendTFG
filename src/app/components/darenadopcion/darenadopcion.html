@@ -1,0 +1,169 @@
+<section class="adopcion-layout">
+  <div class="adopcion-hero">
+    <p class="kicker">Nueva oportunidad</p>
+    <h1>Ayudales a encontrar un hogar calido</h1>
+    <p class="subtitle">
+      Completa la informacion de forma clara y publica una ficha atractiva para su adopcion.
+    </p>
+  </div>
+
+  <div class="adopcion-card">
+    <div class="form-grid">
+      <section class="bloque">
+        <h2>Informacion basica</h2>
+
+        <label for="nombre">Nombre del animal</label>
+        <input id="nombre" type="text" [(ngModel)]="nombre" placeholder="Ej: Toby o Luna" />
+        <span class="error" *ngIf="erroresBasica['nombre']">{{ erroresBasica['nombre'] }}</span>
+
+        <div class="two-columns">
+          <div>
+            <label for="tipo">Tipo</label>
+            <select
+              id="tipo"
+              name="tipo"
+              [(ngModel)]="tipo"
+              required
+              class="w-full rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm outline-none focus:border-teal-500 focus:ring-4 focus:ring-teal-500/10"
+            >
+              <option value="" disabled selected>Selecciona un tipo</option>
+              <option value="Perro">Perro</option>
+              <option value="Gato">Gato</option>
+              <option value="Pájaro">Pájaro</option>
+              <option value="Pez">Pez</option>
+              <option value="Roedor">Roedor</option>
+              <option value="Otro">Otro</option>
+            </select>
+            <span class="error" *ngIf="erroresBasica['tipo']">{{ erroresBasica['tipo'] }}</span>
+          </div>
+
+          <div>
+            <label for="edad">Edad (años)</label>
+            <input id="edad" type="number" [(ngModel)]="edad" placeholder="Ej: 2" />
+            <span class="error" *ngIf="erroresBasica['edad']">{{ erroresBasica['edad'] }}</span>
+          </div>
+        </div>
+
+        <label for="raza">Raza / mezcla</label>
+        <input id="raza" type="text" [(ngModel)]="raza" placeholder="Ej: Mestizo de labrador" />
+        <span class="error" *ngIf="erroresBasica['raza']">{{ erroresBasica['raza'] }}</span>
+      </section>
+
+      <section class="bloque">
+        <h2>Caracteristicas</h2>
+
+        <label>Sexo</label>
+        <div class="pill-row">
+          <button
+            type="button"
+            (click)="seleccionarSexo('macho')"
+            [ngClass]="{ 'pill-active-blue': sexo === 'macho' }"
+            class="pill"
+          >
+            Macho
+          </button>
+          <button
+            type="button"
+            (click)="seleccionarSexo('hembra')"
+            [ngClass]="{ 'pill-active-orange': sexo === 'hembra' }"
+            class="pill"
+          >
+            Hembra
+          </button>
+        </div>
+        <span class="error" *ngIf="erroresBasica['sexo']">{{ erroresBasica['sexo'] }}</span>
+
+        <label>Tamano</label>
+        <div class="pill-row three">
+          <button
+            type="button"
+            (click)="seleccionarTamano('pequeño')"
+            [ngClass]="{ 'pill-active-green': tamano === 'pequeño' }"
+            class="pill"
+          >
+            Pequeno
+          </button>
+          <button
+            type="button"
+            (click)="seleccionarTamano('mediano')"
+            [ngClass]="{ 'pill-active-green': tamano === 'mediano' }"
+            class="pill"
+          >
+            Mediano
+          </button>
+          <button
+            type="button"
+            (click)="seleccionarTamano('grande')"
+            [ngClass]="{ 'pill-active-green': tamano === 'grande' }"
+            class="pill"
+          >
+            Grande
+          </button>
+        </div>
+        <span class="error" *ngIf="erroresBasica['tamano']">{{ erroresBasica['tamano'] }}</span>
+
+        <label>Salud</label>
+        <div class="pill-row">
+          <button
+            type="button"
+            (click)="toggleVacunado()"
+            [ngClass]="{ 'pill-active-green': vacunado }"
+            class="pill"
+          >
+            Vacunado
+          </button>
+          <button
+            type="button"
+            (click)="toggleEsterilizado()"
+            [ngClass]="{ 'pill-active-green': esterilizado }"
+            class="pill"
+          >
+            Esterilizado
+          </button>
+        </div>
+      </section>
+    </div>
+
+    <section class="bloque bloque-bottom">
+      <h2>Fotos y descripcion</h2>
+
+      <div class="bottom-grid">
+        <div>
+          <label for="fotos">Sube 4 fotos</label>
+          <input type="file" id="fotos" accept="image/*" multiple (change)="onFotosSeleccionadas($event)" />
+          <p [ngClass]="{ 'status-error': !fotosValidas, 'status-ok': fotosValidas }" class="upload-status">
+            {{ mensajeErrorFotos || 'Selecciona exactamente 4 fotos para publicar' }}
+          </p>
+        </div>
+
+        <div>
+          <label for="descripcion">Descripcion de su personalidad</label>
+          <textarea
+            id="descripcion"
+            [(ngModel)]="descripcion"
+            placeholder="Cuentanos como se comporta, que le gusta hacer y su historia..."
+          ></textarea>
+          <span class="error" *ngIf="erroresBasica['descripcion']">{{ erroresBasica['descripcion'] }}</span>
+
+          <label for="historia">Historia del animal</label>
+          <textarea
+            id="historia"
+            [(ngModel)]="historia"
+            placeholder="Explica su contexto, como llego a ti y por que busca adopcion..."
+          ></textarea>
+          <span class="error" *ngIf="erroresBasica['historia']">{{ erroresBasica['historia'] }}</span>
+        </div>
+      </div>
+    </section>
+
+    <div class="submit-row">
+      <p>
+        Al publicar, confirmas que la informacion es real y te comprometes con una adopcion responsable.
+      </p>
+      <button type="button" (click)="publicarAnimal()" [disabled]="!fotosValidas || cargando" class="btn-publicar">
+        <span *ngIf="!cargando">Publicar adopcion</span>
+        <span *ngIf="cargando">Cargando...</span>
+      </button>
+    </div>
+  </div>
+</section>

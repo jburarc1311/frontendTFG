@@ -1,0 +1,171 @@
+<div class="bg-gray-100 min-h-screen">
+  <div class="mx-auto flex max-w-7xl flex-col gap-8 p-4 md:p-8 lg:flex-row lg:items-start">
+    <div class="w-full">
+      <div class="relative overflow-hidden rounded-tl-2xl rounded-br-2xl bg-gray-200 shadow-md">
+        <img
+          class="img-portada block w-full rounded-tl-2xl rounded-br-2xl"
+          src="{{ animales()?.fotos?.[0] }}"
+          alt=""
+        />
+        <button
+          class="absolute right-3 top-3 rounded-full like bg-white/90 p-2 shadow-md transition hover:bg-white"
+          (click)="darMegusta()"
+        >
+          <i
+            class="fa-heart text-2xl"
+            [class.fa-regular]="!esFavorito()"
+            [class.fa-solid]="esFavorito()"
+            [class.text-red-500]="esFavorito()"
+            [class.text-gray-500]="!esFavorito()"
+          ></i>
+        </button>
+      </div>
+      <div class="mt-4 flex gap-3 overflow-x-auto pb-1">
+        <img
+          class="h-28 w-28 flex-shrink-0 rounded-xl object-cover shadow-md cursor-pointer thumbnail"
+          src="{{ animales()?.fotos?.[1] }}"
+          alt=""
+          (click)="setMainImage(1)"
+        />
+        <img
+          class="h-28 w-28 flex-shrink-0 rounded-xl object-cover shadow-md cursor-pointer thumbnail"
+          src="{{ animales()?.fotos?.[2] }}"
+          alt=""
+          (click)="setMainImage(2)"
+        />
+        <img
+          class="h-28 w-28 flex-shrink-0 rounded-xl object-cover shadow-md cursor-pointer thumbnail"
+          src="{{ animales()?.fotos?.[3] }}"
+          alt=""
+          (click)="setMainImage(3)"
+        />
+      </div>
+    </div>
+    <div class="flex w-full flex-col gap-3 lg:mt-0">
+      @if (animales()?.estado == 'disponible') {
+        <p class="w-fit rounded-2xl bg-green-400 px-3 py-1 text-sm md:text-base">
+          {{ animales()?.estado }}
+        </p>
+      } @else if (animales()?.estado == 'en proceso') {
+        <p class="w-fit rounded-2xl bg-blue-400 px-3 py-1 text-sm md:text-base text-white">
+          {{ animales()?.estado }}
+        </p>
+      }
+      <h1 class="text-2xl font-bold leading-tight md:text-4xl">{{ animales()?.nombre }}</h1>
+      <div class="flex flex-wrap gap-2">
+        <p class="rounded-2xl bg-white px-3 py-1 text-xs md:text-sm shadow-sm">
+          <i class="fa-regular fa-calendar" style="color: #f97316"></i> {{ animales()?.edad }} años
+        </p>
+        <p class="rounded-2xl bg-white px-3 py-1 text-xs md:text-sm shadow-sm">
+          <i class="fa-solid fa-paw" style="color: #f97316"></i> {{ animales()?.raza }}
+        </p>
+        <p class="capitalize rounded-2xl bg-white px-3 py-1 text-xs md:text-sm shadow-sm">
+          <i class="fa-solid fa-ruler-vertical" style="color: #f97316"></i> {{ animales()?.tamano }}
+        </p>
+      </div>
+
+      <p class="descripcion">{{ animales()?.descripcion }}</p>
+
+      <div class="flex flex-col gap-3 sm:flex-row">
+        <button
+          (click)="abrirModal()"
+          class="w-full rounded-2xl bg-[#005236] p-3 text-sm text-white transition hover:bg-[#004029] sm:w-48 md:text-base"
+        >
+          <i class="fa-solid fa-heart" style="color: rgb(255, 255, 255)"></i> Solicitar adopción
+        </button>
+        <button
+          (click)="irAConversacion()"
+          class="w-full rounded-2xl bg-[#FFDBCA] p-3 text-sm font-bold text-[#9D4300] transition hover:brightness-95 disabled:cursor-not-allowed disabled:opacity-60 sm:w-48 md:text-base"
+          [disabled]="abriendoConversacion()"
+        >
+          <i class="fa-solid fa-comments" style="color: #9d4300"></i>
+          {{ abriendoConversacion() ? 'Abriendo...' : 'Contactar' }}
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <h1 class="text-2xl md:text-4xl mt-4 ml-4 md:ml-8 mb-8">
+    Conoce más de {{ animales()?.nombre }}
+  </h1>
+
+  <div class="flex flex-col lg:flex-row gap-4 p-4 md:p-7">
+    <div class="bg-gray-200 rounded-2xl p-4 flex-1">
+      <p class="text-lg md:text-xl">Detalles</p>
+      <p class="historia text-sm md:text-base">{{ animales()?.historia }}</p>
+    </div>
+
+    <div class="bg-white rounded-2xl p-4 flex-1 lg:flex-[0.3]">
+      <p class="text-lg md:text-xl">Salud</p>
+      <div class="flex flex-col gap-4">
+        @if (animales()?.esterilizado == true) {
+          <p class="bg-green-400 text-white p-2 rounded-2xl w-full sm:w-40 text-sm md:text-base">
+            Esterilizado
+          </p>
+        } @else {
+          <p class="bg-red-400 text-white p-2 rounded-2xl w-full sm:w-40 text-sm md:text-base">
+            No esterilizado
+          </p>
+        }
+        @if (animales()?.vacunado == true) {
+          <p class="bg-green-400 text-white p-2 rounded-2xl w-full sm:w-40 text-sm md:text-base">
+            Vacunado
+          </p>
+        } @else {
+          <p class="bg-red-400 text-white p-2 rounded-2xl w-full sm:w-40 text-sm md:text-base">
+            No vacunado
+          </p>
+        }
+      </div>
+    </div>
+  </div>
+
+  <app-footer></app-footer>
+
+  <!-- Modal de Contacto -->
+  @if (modalAbierto()) {
+    <div
+      class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50"
+      (click)="cerrarModal()"
+    >
+      <div class="bg-white rounded-2xl p-6 w-11/12 max-w-md" (click)="$event.stopPropagation()">
+        <div class="flex justify-between items-center mb-4">
+          <h2 class="text-2xl font-bold">Contactar</h2>
+          <button (click)="cerrarModal()" class="text-2xl text-gray-500 hover:text-gray-700">
+            ✕
+          </button>
+        </div>
+
+        <div class="mb-4">
+          <p class="text-gray-700 mb-3">
+            Vas a solicitar adoptar a <strong>{{ animales()?.nombre }}</strong
+            >
+          </p>
+          <textarea
+            [ngModel]="mensaje()"
+            (ngModelChange)="mensaje.set($event)"
+            placeholder="Escribe tu mensaje aquí..."
+            rows="5"
+            class="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#005236]"
+          ></textarea>
+        </div>
+
+        <div class="flex gap-3">
+          <button
+            (click)="cerrarModal()"
+            class="flex-1 bg-gray-300 hover:bg-gray-400 text-gray-800 p-3 rounded-lg font-semibold"
+          >
+            Cancelar
+          </button>
+          <button
+            class="flex-1 bg-[#005236] hover:bg-[#004029] text-white p-3 rounded-lg font-semibold"
+            (click)="enviarsolicitud()"
+          >
+            Enviar
+          </button>
+        </div>
+      </div>
+    </div>
+  }
+
+</div>

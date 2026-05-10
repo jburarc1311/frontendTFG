@@ -1,0 +1,102 @@
+.descripcion {
+  width: 100%;
+  line-height: 1.7;
+  color: #374151; /* gris más oscuro para mejor legibilidad */
+  font-weight: 500;
+  max-width: 70ch; /* limitar la longitud de línea para mejor lectura */
+  overflow-wrap: break-word;
+  word-break: break-word;
+  hyphens: auto;
+  margin-top: 0.25rem;
+}
+
+@media (max-width: 640px) {
+  .descripcion {
+    font-size: 0.95rem;
+  }
+}
+
+@media (min-width: 641px) and (max-width: 1024px) {
+  .descripcion {
+    font-size: 1rem;
+    max-width: 100%;
+  }
+}
+
+@media (min-width: 1025px) {
+  .descripcion {
+    font-size: 1.05rem;
+    max-width: 90%;
+  }
+}
+
+.like {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.like:hover {
+  transform: scale(1.15);
+}
+
+.thumbnail {
+  border: 2px solid transparent;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.thumbnail:hover {
+  border-color: #f97316;
+  transform: translateY(-4px);
+}
+
+.historia {
+  width: 100%;
+  font-weight: 500;
+}
+
+.img-portada {
+  width: 100%;
+  height: auto;
+  aspect-ratio: 4 / 3;
+  /* Mostrar la imagen completa sin recortarla (evita efecto 'zoom') */
+  object-fit: contain;
+  object-position: center;
+  background-color: #f3f4f6;
+  max-height: 700px;
+  min-height: 320px;
+  display: block;
+}
+
+/* Ajustes responsivos para layout más equilibrado */
+@media (min-width: 1024px) {
+  .descripcion {
+    font-size: 1.05rem;
+  }
+  .thumbnail {
+    height: 88px;
+    width: 88px;
+  }
+}
+
+@media (max-width: 640px) {
+  .img-portada { max-height: 420px; }
+  .thumbnail { height: 72px; width: 72px; }
+  .descripcion { font-size: 0.98rem; }
+}
+
+/* Animaciones suaves */
+@keyframes slideInUp {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Scroll smooth */
+html {
+  scroll-behavior: smooth;
+}
+

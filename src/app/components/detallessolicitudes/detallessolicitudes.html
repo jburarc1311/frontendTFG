@@ -1,0 +1,141 @@
+<div class="bg-gray-50 min-h-screen">
+  <!-- Header -->
+  <div class="bg-white shadow-sm">
+    <div class="max-w-7xl mx-auto px-4 md:px-6 py-8">
+      <h1 class="text-3xl font-bold text-gray-800 mb-2">Detalles de la Solicitud</h1>
+      <p class="text-gray-500">Información completa de la solicitud de adopción</p>
+    </div>
+  </div>
+
+  <!-- Main Content -->
+  <main class="max-w-7xl mx-auto px-4 md:px-6 py-8">
+    <!-- Error State -->
+    @if (error) {
+      <div class="bg-red-50 border border-red-200 rounded-lg p-6 mb-6">
+        <p class="text-red-700 font-medium">{{ error }}</p>
+      </div>
+    }
+
+    <!-- Solicitud Details -->
+    @if (solicitud) {
+      <div class="bg-white rounded-lg shadow-md p-8 border-l-4"
+        [ngClass]="{
+          'border-yellow-500': solicitud.estado?.toLowerCase() === 'pendiente',
+          'border-green-500': solicitud.estado?.toLowerCase() === 'aceptada',
+          'border-red-500': solicitud.estado?.toLowerCase() === 'rechazada'
+        }">
+        
+        <!-- Header Section -->
+        <div class="flex items-center justify-between mb-8 pb-6 border-b">
+          <div>
+            <h2 class="text-2xl font-bold text-gray-800">Solicitud de Adopción</h2>
+          </div>
+          <span 
+            [ngClass]="{
+              'bg-yellow-100 text-yellow-800': solicitud.estado?.toLowerCase() === 'pendiente',
+              'bg-green-100 text-green-800': solicitud.estado?.toLowerCase() === 'aceptada',
+              'bg-red-100 text-red-800': solicitud.estado?.toLowerCase() === 'rechazada'
+            }"
+            class="px-6 py-2 rounded-full text-sm font-semibold">
+            {{ solicitud.estado | titlecase }}
+          </span>
+        </div>
+
+        <!-- Information Grid -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8">
+          <!-- Propietario Info -->
+          <div class="bg-gray-50 rounded-lg p-6">
+            <h3 class="text-lg font-semibold text-gray-800 mb-4 flex items-center">
+              <span class="w-2 h-2 bg-blue-600 rounded-full mr-2"></span>
+              Propietario del Animal
+            </h3>
+            <div class="space-y-3">
+              @if (propietario) {
+                <div>
+                  <p class="text-xs text-gray-500 uppercase font-semibold">Nombre</p>
+                  <p class="text-gray-800 font-medium text-sm">{{ propietario.name }}</p>
+                </div>
+                <div>
+                  <p class="text-xs text-gray-500 uppercase font-semibold">Email</p>
+                  <p class="text-gray-800 text-sm">{{ propietario.email }}</p>
+                </div>
+              }
+            </div>
+          </div>
+
+          <!-- Adoptante Info -->
+          <div class="bg-gray-50 rounded-lg p-6">
+            <h3 class="text-lg font-semibold text-gray-800 mb-4 flex items-center">
+              <span class="w-2 h-2 bg-green-600 rounded-full mr-2"></span>
+              Adoptante
+            </h3>
+            <div class="space-y-3">
+              @if (adoptante) {
+                <div>
+                  <p class="text-xs text-gray-500 uppercase font-semibold">Nombre</p>
+                  <p class="text-gray-800 font-medium text-sm">{{ adoptante.name }}</p>
+                </div>
+                <div>
+                  <p class="text-xs text-gray-500 uppercase font-semibold">Email</p>
+                  <p class="text-gray-800 text-sm">{{ adoptante.email }}</p>
+                </div>
+              }
+            </div>
+          </div>
+        </div>
+
+        <!-- Mensaje Section -->
+        @if (solicitud.mensaje) {
+          <div class="bg-blue-50 border border-blue-200 rounded-lg p-6 mb-8">
+            <h3 class="text-lg font-semibold text-gray-800 mb-3">Mensaje de la Solicitud</h3>
+            <p class="text-gray-700 leading-relaxed">{{ solicitud.mensaje }}</p>
+          </div>
+        }
+
+        <!-- Timeline Section -->
+        <div class="bg-gray-50 rounded-lg p-6">
+          <h3 class="text-lg font-semibold text-gray-800 mb-4">Línea de Tiempo</h3>
+          <div class="space-y-4">
+            @if (solicitud.creado_en) {
+              <div class="flex items-start">
+                <div class="flex items-center justify-center w-10 h-10 rounded-full bg-blue-100 mr-4 flex-shrink-0">
+                  <span class="text-blue-600 text-sm font-semibold">1</span>
+                </div>
+                <div>
+                  <p class="text-sm font-medium text-gray-700">Solicitud Creada</p>
+                  <p class="text-sm text-gray-500">{{ solicitud.creado_en | date:'medium' }}</p>
+                </div>
+              </div>
+            }
+
+            @if (solicitud.respondido_en) {
+              <div class="flex items-start">
+                <div class="flex items-center justify-center w-10 h-10 rounded-full bg-green-100 mr-4 flex-shrink-0">
+                  <span class="text-green-600 text-sm font-semibold">2</span>
+                </div>
+                <div>
+                  <p class="text-sm font-medium text-gray-700">Solicitud Respondida</p>
+                  <p class="text-sm text-gray-500">{{ solicitud.respondido_en | date:'medium' }}</p>
+                </div>
+              </div>
+            }
+          </div>
+        </div>
+
+        <!-- Actions -->
+        <div class="flex gap-3 pt-8 border-t mt-8">
+          <button routerLink="/missolicitudes" class="px-6 py-2 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition font-medium">
+            ← Volver a Mis Solicitudes
+          </button>
+        </div>
+      </div>
+    }
+
+    <!-- Empty State -->
+    @if (!solicitud && !error) {
+      <div class="bg-white rounded-lg shadow p-12 text-center">
+        <p class="text-gray-500 text-lg">No se encontró la solicitud</p>
+      </div>
+    }
+  </main>
+</div>

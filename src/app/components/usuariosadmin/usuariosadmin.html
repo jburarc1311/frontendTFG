@@ -1,0 +1,166 @@
+<div class="flex h-screen bg-gray-50">
+  <!-- Sidebar: slides on mobile, static on desktop -->
+  <div
+    [class]="
+      'fixed md:static left-0 top-0 w-64 h-screen bg-white shadow-lg z-40 md:z-0
+       transform transition-transform duration-300' +
+      (sidebarOpen ? ' translate-x-0' : ' -translate-x-full md:translate-x-0')
+    "
+  >
+    <button
+      (click)="closeSidebar()"
+      class="md:hidden absolute top-4 right-4 p-2 hover:bg-gray-100 rounded text-gray-600"
+    >
+      ✕
+    </button>
+
+    <div class="p-6 border-b">
+      <h2 class="text-2xl font-bold text-green-600">ADOPT-ME</h2>
+      <p class="text-sm text-gray-500">Admin Panel</p>
+    </div>
+
+    <nav class="mt-6 space-y-1 px-4">
+      <a
+        href="/paneladmin"
+        routerLinkActive="bg-green-50 text-green-700 font-medium"
+        class="flex items-center space-x-3 px-4 py-3 rounded-lg text-gray-700 hover:bg-gray-100 transition"
+      >
+        <span>Información</span>
+      </a>
+      <a
+        href="/usuariosadmin"
+        routerLinkActive="bg-green-50 text-green-700 font-medium"
+        class="flex items-center space-x-3 px-4 py-3 rounded-lg text-gray-700 hover:bg-gray-100 transition"
+      >
+        <span>Usuarios</span>
+      </a>
+      <a
+        href="/solicitudesadmin"
+        routerLinkActive="bg-green-50 text-green-700 font-medium"
+        class="flex items-center space-x-3 px-4 py-3 rounded-lg text-gray-700 hover:bg-gray-100 transition"
+      >
+        <span>Solicitudes</span>
+      </a>
+    </nav>
+  </div>
+
+  <!-- Main Content -->
+  <div class="flex-1 flex flex-col overflow-hidden">
+    <!-- Header -->
+    <header class="bg-white shadow-sm px-4 md:px-6 py-4 flex items-center justify-between">
+      <div class="flex items-center space-x-4">
+        <button (click)="toggleSidebar()" class="md:hidden p-2 hover:bg-gray-100 rounded">
+          ☰
+        </button>
+        <div>
+          <h1 class="text-2xl font-bold text-gray-800">Usuarios</h1>
+          <p class="text-sm text-gray-500">Gestión de usuarios registrados</p>
+        </div>
+      </div>
+      <span class="hidden sm:block text-sm text-gray-400">{{ today }}</span>
+    </header>
+
+    <!-- Scrollable Content -->
+    <main class="flex-1 overflow-auto">
+      <div class="p-4 md:p-6 max-w-7xl mx-auto">
+        <!-- Stats Cards -->
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-6 mb-8">
+          <div
+            *ngFor="let stat of stats"
+            class="bg-white rounded-lg shadow p-6 hover:shadow-lg transition"
+          >
+            <div class="flex items-center justify-between mb-4">
+              <div
+                [class]="
+                  stat.color + ' w-12 h-12 rounded-lg flex items-center justify-center text-2xl'
+                "
+              >
+                {{ stat.icon }}
+              </div>
+            </div>
+            <h3 class="text-gray-600 text-sm font-medium mb-1">{{ stat.label }}</h3>
+            <p class="text-2xl font-bold text-gray-900">{{ stat.value }}</p>
+          </div>
+        </div>
+
+        <!-- Table Card -->
+        <div class="bg-white rounded-lg shadow">
+          <div class="p-6 border-b">
+            <h2 class="text-lg font-bold text-gray-800">Usuarios registrados</h2>
+          </div>
+
+          <!-- Loading state -->
+          <div *ngIf="cargando" class="p-8 text-center text-gray-400 text-sm">
+            Cargando usuarios…
+          </div>
+
+          <!-- Empty state -->
+          <div
+            *ngIf="!cargando && usuarios.length === 0"
+            class="p-8 text-center text-gray-400 text-sm"
+          >
+            No hay usuarios registrados.
+          </div>
+
+          <!-- Table -->
+          <div *ngIf="!cargando && usuarios.length > 0" class="overflow-x-auto">
+            <table class="w-full text-sm">
+              <thead class="border-b bg-gray-50">
+                <tr>
+                  <th class="px-4 py-3 text-left font-medium text-gray-700">Nombre</th>
+                  <th class="px-4 py-3 text-left font-medium text-gray-700">Email</th>
+                  <th class="px-4 py-3 text-left font-medium text-gray-700">Rol</th>
+                  <th class="px-4 py-3 text-left font-medium text-gray-700">Activo</th>
+                  <th class="px-4 py-3 text-left font-medium text-gray-700">Acciones</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let usuario of usuarios" class="border-b hover:bg-gray-50">
+                  <td class="px-4 py-3 font-medium text-gray-800">{{ usuario.name }}</td>
+                  <td class="px-4 py-3 text-gray-600">{{ usuario.email }}</td>
+                  <td class="px-4 py-3 text-gray-600">{{ usuario.role }}</td>
+                  <td class="px-4 py-3">
+                    <span
+                      [ngClass]="
+                        usuario.active ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-700'
+                      "
+                      class="px-3 py-1 rounded-full text-xs font-medium"
+                    >
+                      {{ usuario.active ? 'Sí' : 'No' }}
+                    </span>
+                  </td>
+                  <td class="px-4 py-3 space-x-2 flex">
+                    <button routerLink="/detallesusurio/{{ usuario._id }}"
+                      class="px-3 py-1 rounded text-xs font-medium bg-blue-100 text-blue-700 hover:bg-blue-200 transition"
+                    >
+                      Ver
+                    </button>
+                    <button
+                    (click)="eliminarUsuario(usuario._id)"
+                      class="px-3 py-1 rounded text-xs font-medium bg-red-100 text-red-700 hover:bg-red-200 transition"
+                    >
+                      Eliminar
+                    </button>
+                    <button (click)="desactivarUsuario(usuario._id)" class="px-3 py-1 rounded text-xs font-medium bg-yellow-100 text-yellow-700 hover:bg-yellow-200 transition">
+                      Desactivar
+                    </button>
+                    <button (click)="activarUsuario(usuario._id)" class="px-3 py-1 rounded text-xs font-medium bg-green-100 text-green-700 hover:bg-green-200 transition">
+                      Activar
+                    </button>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <!-- Mobile overlay -->
+  <div
+    *ngIf="sidebarOpen"
+    (click)="closeSidebar()"
+    class="fixed inset-0 bg-black bg-opacity-50 md:hidden z-30"
+  ></div>
+</div>

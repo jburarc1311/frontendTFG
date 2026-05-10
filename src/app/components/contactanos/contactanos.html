@@ -1,0 +1,52 @@
+<section class="bg-gray-200 p-10">
+<div class="max-w-2xl mx-auto py-16 px-6 bg-white rounded-2xl shadow-lg">
+  <h2 class="text-3xl font-bold text-gray-900 mb-10">
+    Enviamos un mensaje
+  </h2>
+
+  <form [formGroup]="form" (ngSubmit)="enviarMensaje()" class="flex flex-col gap-6">
+    <!-- Nombre Completo -->
+    <div class="flex flex-col gap-2">
+      <label class="text-xs font-semibold text-gray-600 uppercase">Nombre Completo</label>
+      <input 
+        type="text"
+        formControlName="nombre" 
+        placeholder="Ej. Ana García" 
+        class="px-4 py-3 border border-gray-300 rounded bg-gray-100 focus:outline-none focus:ring-2 focus:ring-green-600"
+      />
+    </div>
+
+    <!-- Asunto / Motivo -->
+    <div class="flex flex-col gap-2">
+      <label class="text-xs font-semibold text-gray-600 uppercase">Asunto / Motivo</label>
+      <select 
+        formControlName="motivo"
+        class="px-4 py-3 border border-gray-300 rounded bg-gray-100 focus:outline-none focus:ring-2 focus:ring-green-600"
+      >
+        <option value="">Elige un motivo</option>
+        <option value="soporte">Soporte Técnico</option>
+        <option value="consulta">Consulta general</option>
+        <option value="adopcion">Información sobre adopción</option>
+        <option value="recomendacion">Recomendación</option>
+        <option value="otro">Otro</option>
+      </select>
+    </div>
+
+    <!-- Mensaje Detallado -->
+    <div class="flex flex-col gap-2">
+      <label class="text-xs font-semibold text-gray-600 uppercase">Mensaje Detallado</label>
+      <textarea
+        formControlName="mensaje"
+        rows="5"
+        placeholder="¿En que podemos ayudarte hoy?"
+        class="px-4 py-3 border border-gray-300 rounded bg-gray-100 focus:outline-none focus:ring-2 focus:ring-green-600 resize-none"
+      ></textarea>
+    </div>
+
+    <button type="submit" class="btn-enviar text-white py-3 rounded-lg font-semibold">
+      Enviar Mensaje
+    </button>
+  </form>
+</div>
+
+</section>

@@ -1,0 +1,91 @@
+.donacion-container {
+  max-width: 480px;
+  margin: 40px auto;
+  padding: 32px;
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+}
+
+h2 {
+  font-size: 22px;
+  font-weight: 500;
+  margin: 0 0 8px;
+}
+
+p {
+  font-size: 14px;
+  color: #888;
+  margin: 0 0 20px;
+}
+
+/* Botones de montos */
+.montos {
+  display: flex;
+  gap: 8px;
+  margin: 16px 0;
+}
+
+.montos button {
+  flex: 1;
+  padding: 10px;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  background: white;
+  cursor: pointer;
+  font-size: 15px;
+  transition: all 0.2s;
+}
+
+.montos button:hover {
+  border-color: #635bff;
+  color: #635bff;
+}
+
+.montos button.activo {
+  background: #635bff;
+  color: white;
+  border-color: #635bff;
+}
+
+/* Monto total */
+.monto-total {
+  font-size: 15px;
+  color: #444;
+  margin: 16px 0;
+}
+
+.monto-total strong {
+  color: #000;
+  font-weight: 500;
+}
+
+/* Botón donar */
+.btn-donar {
+  width: 100%;
+  padding: 14px;
+  background: #635bff;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 15px;
+  cursor: pointer;
+  margin-top: 20px;
+  font-weight: 500;
+  transition: background 0.2s;
+}
+
+.btn-donar:hover {
+  background: #5249e5;
+}
+
+.btn-donar:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* Error */
+.error {
+  color: #e53e3e;
+  font-size: 14px;
+  margin-top: 10px;
+}

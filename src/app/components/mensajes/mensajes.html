@@ -1,0 +1,116 @@
+<section class="messages-page">
+  <div class="messages-shell">
+    <aside class="inbox-panel">
+      <div class="panel-header">
+        <div>
+          <p class="eyebrow">Mensajes</p>
+          <h2>Conversaciones</h2>
+        </div>
+        <span class="counter">{{ conversations.length }} chats</span>
+      </div>
+
+      <div class="thread-list">
+        <article
+          class="thread"
+          *ngFor="let conversation of filteredConversations; trackBy: trackByConversationId"
+          [class.active]="selectedConversation?._id === conversation._id"
+          (click)="selectConversation(conversation)"
+        >
+          <div class="avatar-wrap">
+            <img
+              *ngIf="getConversationPhoto(conversation)"
+              [src]="getConversationPhoto(conversation)"
+              [alt]="getConversationTitle(conversation)"
+              class="avatar-image"
+            />
+            <div *ngIf="!getConversationPhoto(conversation)" class="avatar">
+              {{ getInitials(conversation) }}
+            </div>
+          </div>
+
+          <div class="thread-info">
+            <div class="thread-top">
+              <strong>{{ getConversationTitle(conversation) }}</strong>
+              <span>{{ getConversationTime(conversation) }}</span>
+            </div>
+            <p>{{ getLastMessageText(conversation) }}</p>
+          </div>
+        </article>
+
+        <div class="empty-state" *ngIf="filteredConversations.length === 0">
+          <h3>No hay conversaciones</h3>
+          <p>Cuando alguien te escriba, aparecerá aquí.</p>
+        </div>
+      </div>
+    </aside>
+
+    <main class="chat-panel">
+      <ng-container *ngIf="selectedConversation; else emptyChat">
+        <header class="chat-header">
+          <div class="chat-user">
+            <div class="chat-avatar-wrap">
+              <img
+                *ngIf="getConversationPhoto(selectedConversation)"
+                [src]="getConversationPhoto(selectedConversation)"
+                [alt]="getConversationTitle(selectedConversation)"
+                class="chat-avatar-image"
+              />
+              <div *ngIf="!getConversationPhoto(selectedConversation)" class="chat-avatar">
+                {{ getInitials(selectedConversation) }}
+              </div>
+            </div>
+            <div>
+              <h3>{{ getConversationTitle(selectedConversation) }}</h3>
+              <p>Último mensaje {{ getConversationTime(selectedConversation) }}</p>
+            </div>
+          </div>
+          <button type="button" class="ghost-btn" (click)="verPerfil()">Ver perfil</button>
+        </header>
+
+        <div class="chat-stream">
+          <div class="date-separator">Conversación actual</div>
+
+          <article
+            class="message"
+            *ngFor="let message of messages; trackBy: trackByMessageId"
+            [class.bubble-in]="!isOwnMessage(message)"
+            [class.bubble-out]="isOwnMessage(message)"
+          >
+            <div class="message-header">
+              <strong *ngIf="!isOwnMessage(message)">{{ getMessageAuthor(message) }}</strong>
+              <span>{{ formatTime(message.createdAt) }}</span>
+            </div>
+            <p>{{ message.body }}</p>
+          </article>
+
+          <div class="empty-state chat-empty" *ngIf="messages.length === 0">
+            <h3>Empieza la conversación</h3>
+            <p>Escribe el primer mensaje para romper el hielo.</p>
+          </div>
+        </div>
+
+        <form class="composer" (ngSubmit)="sendMessage()">
+          <textarea
+            rows="1"
+            placeholder="Escribe tu mensaje..."
+            name="newMessage"
+            [(ngModel)]="newMessage"
+          ></textarea>
+          <button type="submit" [disabled]="!newMessage.trim()">
+            Enviar
+          </button>
+        </form>
+      </ng-container>
+
+      <ng-template #emptyChat>
+        <div class="empty-chat-panel">
+          <div class="empty-chat-icon">✦</div>
+          <h3>Selecciona una conversación</h3>
+          <p>Elige un chat de la izquierda para ver y responder mensajes.</p>
+        </div>
+      </ng-template>
+    </main>
+  </div>
+
+  <p class="error-banner" *ngIf="error">{{ error }}</p>
+</section>
