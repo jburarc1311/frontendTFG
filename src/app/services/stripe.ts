@@ -9,7 +9,7 @@ import { loadStripe, Stripe } from '@stripe/stripe-js';
 export class StripeService {
 
    private stripe: Stripe | null = null;
-   private apiUrl = 'http://localhost:4000';
+   private apiUrl = 'https://backendtfg.railway.internal/api';
    private publishableKey= 'pk_test_51TGz3CJCuWqSW0Xx11QRR8CChy3tTrTShJo6SYWlOTmSHIUWzEfDFJBnZxenzwtziUww12nZCcCiuTr3QATILrEn00soviazoj';
 
    constructor(private http: HttpClient) {}

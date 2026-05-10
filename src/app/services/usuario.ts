@@ -6,7 +6,7 @@ import { Router } from '@angular/router';
   providedIn: 'root',
 })
 export class UsuarioService {
-  private apiUrl = 'http://localhost:4000/api';
+  private apiUrl = 'https://backendtfg.railway.internal/api';
 
   constructor(
     private http: HttpClient,

@@ -8,7 +8,7 @@ import { Solicitud } from '../interfaces/solicitud';
   providedIn: 'root',
 })
 export class Solicitudes {
-  private apiUrl = 'http://localhost:4000/api';
+  private apiUrl = 'https://backendtfg.railway.internal/api';
 
   constructor(
     private http: HttpClient,

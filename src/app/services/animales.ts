@@ -7,7 +7,7 @@ import { Animal } from '../interfaces/animal';
   providedIn: 'root',
 })
 export class Animales {
-  private apiUrl = 'http://localhost:4000/api';
+  private apiUrl = 'https://backendtfg.railway.internal/api';
 
   constructor(
     private http: HttpClient,
