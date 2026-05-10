@@ -8,7 +8,7 @@ import { ChatMessage } from '../interfaces/message';
   providedIn: 'root',
 })
 export class ConversacionesService {
-  private apiUrl = 'https://backendtfg.railway.internal/api';
+  private apiUrl = 'https://backendtfg-production-936a.up.railway.app/api';
 
   constructor(private http: HttpClient) {}
 

@@ -7,7 +7,7 @@ import { Observable } from 'rxjs';
 })
 export class Contacto {
 
-    private apiUrl = 'https://backendtfg.railway.internal/api/contacto'; // tu endpoint del backend
+    private apiUrl = 'https://backendtfg-production-936a.up.railway.app/api/contacto'; // tu endpoint del backend
 
   constructor(private http: HttpClient) {}
 

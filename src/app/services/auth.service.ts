@@ -8,7 +8,7 @@ import { BehaviorSubject, Observable, tap } from 'rxjs';
 })
 export class AuthService {
   // URL base del backend. Todas las peticiones apuntarán aquí
-  private apiUrl = 'https://backendtfg.railway.internal/api';
+  private apiUrl = 'https://backendtfg-production-936a.up.railway.app/api';
   private refreshTokenInterval: any;
 
   // BehaviorSubject: es como una variable reactiva que notifica a quien la escuche cuando cambia
