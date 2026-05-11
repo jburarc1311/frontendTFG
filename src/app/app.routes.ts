@@ -102,6 +102,11 @@ export const routes: Routes = [
         canActivate: [authGuard],
     },
     {
+        path: 'chatbot',
+        loadComponent: () => 
+            import('./components/chatbot/chatbot').then((m) => m.Chatbot)
+    },
+    {
         path: '**',
         loadComponent: () => import('./components/error404/error404').then((m) => m.Error404),
     },
