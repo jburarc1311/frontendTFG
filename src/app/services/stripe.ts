@@ -24,7 +24,7 @@ export class StripeService {
   crearPaymentIntent(amount: number) { //Recibe un número — el monto que el usuario quiere donar
       return firstValueFrom( //Devuelve una Promise al componente que llame este método, para que pueda usar await y esperar la respuesta.
       this.http.post<{ clientSecret: string }>(
-        `${this.apiUrl}/api/pagos/crear-intent`,
+        `${this.apiUrl}/pagos/crear-intent`,
         { amount }
       )
     );

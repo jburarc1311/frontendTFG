@@ -129,7 +129,7 @@ export class Login {
       .subscribe({
         next: () => {
           this.registerSuccess =
-            'Cuenta creada. Revisa tu correo para activarla antes de iniciar sesión.';
+            'Cuenta creada. Revisa tu correo para activarla antes de iniciar sesión, si no lo ves mira en spam.';
           this.email = email;
           this.password = '';
           this.registerPassword = '';
