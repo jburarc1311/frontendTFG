@@ -1,35 +1,44 @@
-<div class="chat-container">
+<!-- Botón flotante circular -->
+<button class="chat-button-float" (click)="toggleModal()" title="Abrir chat">
+  💬
+</button>
 
-  <div class="mensajes">
-
-    <div
-      *ngFor="let msg of mensajes"
-      [class.usuario]="msg.usuario"
-      [class.bot]="!msg.usuario"
-      class="mensaje"
-    >
-      {{ msg.texto }}
+<!-- Modal del chat -->
+<div *ngIf="modalAbierto" class="modal-overlay" (click)="cerrarModal()">
+  <div class="modal-content" (click)="$event.stopPropagation()">
+    <div class="modal-header">
+      <h3>Asistente de Animales</h3>
+      <button class="close-button" (click)="cerrarModal()">✕</button>
     </div>
 
-    <div *ngIf="cargando" class="bot mensaje">
-      Escribiendo...
+    <div class="chat-container">
+      <div class="mensajes">
+        <div
+          *ngFor="let msg of mensajes"
+          [class.usuario]="msg.usuario"
+          [class.bot]="!msg.usuario"
+          class="mensaje"
+        >
+          {{ msg.texto }}
+        </div>
+
+        <div *ngIf="cargando" class="bot mensaje">
+          Escribiendo...
+        </div>
+      </div>
+
+      <div class="input-container">
+        <input
+          type="text"
+          [(ngModel)]="mensaje"
+          (keyup.enter)="enviarMensaje()"
+          placeholder="Pregunta sobre animales..."
+        />
+
+        <button (click)="enviarMensaje()">
+          Enviar
+        </button>
+      </div>
     </div>
-
   </div>
-
-  <div class="input-container">
-
-    <input
-      type="text"
-      [(ngModel)]="mensaje"
-      (keyup.enter)="enviarMensaje()"
-      placeholder="Pregunta sobre animales..."
-    />
-
-    <button (click)="enviarMensaje()">
-      Enviar
-    </button>
-
-  </div>
-
 </div>

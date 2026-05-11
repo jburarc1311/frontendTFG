@@ -18,8 +18,17 @@ export class Chatbot {
   }[] = [];
 
   cargando = false;
+  modalAbierto = false;
 
   constructor(private http: HttpClient) {}
+
+  toggleModal() {
+    this.modalAbierto = !this.modalAbierto;
+  }
+
+  cerrarModal() {
+    this.modalAbierto = false;
+  }
 
   enviarMensaje() {
 
