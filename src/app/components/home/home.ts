@@ -6,10 +6,11 @@ import { Animalesss } from '../animales/animales';
 import { Animales } from '../../services/animales';
 import { Animal } from '../../interfaces/animal';
 import { Footer } from "../footer/footer";
+import { Chatbot } from '../chatbot/chatbot';
 
 @Component({
   selector: 'app-home',
-  imports: [CommonModule, Animalesss, Footer, FormsModule],
+  imports: [CommonModule, Animalesss, Footer, FormsModule,Chatbot],
   templateUrl: './home.html',
   styleUrl: './home.css',
 })
