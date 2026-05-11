@@ -70,8 +70,8 @@ export class Login {
 
     this.authService.login(email, this.password).subscribe({
       next: (res) => {
-        localStorage.setItem('token', res.data.accessToken);
-        localStorage.setItem('user', JSON.stringify(res.data.user));
+        localStorage.setItem('token', res?.data?.accessToken);
+        localStorage.setItem('user', JSON.stringify(res?.data?.user));
 
         this.router.navigate(['/home']);
       },
