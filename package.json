@@ -25,6 +25,7 @@
     "@stripe/stripe-js": "^9.0.1",
     "flowbite": "^4.0.1",
     "rxjs": "~7.8.0",
+    "serve": "^14.2.6",
     "sweetalert2": "^11.26.24",
     "tslib": "^2.3.0"
   },
