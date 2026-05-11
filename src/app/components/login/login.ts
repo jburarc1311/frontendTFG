@@ -69,7 +69,10 @@ export class Login {
     this.errorMessage = '';
 
     this.authService.login(email, this.password).subscribe({
-      next: () => {
+      next: (res) => {
+        localStorage.setItem('token', res.data.accessToken);
+        localStorage.setItem('user', JSON.stringify(res.data.user));
+
         this.router.navigate(['/home']);
       },
       error: (err) => {
