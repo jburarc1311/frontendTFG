@@ -207,7 +207,7 @@ export class Darenadopcion {
         });
         console.log('Animal creado:', response);
         this.limpiarFormulario();
-        this.router.navigate(['/animales']);
+        this.router.navigate(['/home']);
       },
       error: (error: any) => {
         this.cargando = false;
