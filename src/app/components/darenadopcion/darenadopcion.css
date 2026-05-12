@@ -95,7 +95,9 @@ textarea {
   padding: 12px 13px;
   color: #141d25;
   font-size: 15px;
-  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease;
 }
 
 input:focus,
@@ -136,7 +138,9 @@ textarea {
   color: #344252;
   font-weight: 600;
   cursor: pointer;
-  transition: transform 0.2s ease, border-color 0.2s ease;
+  transition:
+    transform 0.2s ease,
+    border-color 0.2s ease;
 }
 
 .pill:hover {
@@ -172,6 +176,33 @@ textarea {
   gap: 14px;
 }
 
+.upload-panel {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.upload-panel-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.upload-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 5px 10px;
+  border-radius: 999px;
+  background: var(--green-soft);
+  color: #0b7651;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
 input[type='file'] {
   border: 1px dashed #c0cbd8;
   background: #f7f9fb;
@@ -192,10 +223,59 @@ input[type='file']::file-selector-button:hover {
   background: #edf2f7;
 }
 
+.upload-note {
+  margin: 0;
+  color: var(--muted);
+  font-size: 13px;
+  line-height: 1.45;
+}
+
 .upload-status {
   margin: 10px 0 0;
   font-size: 14px;
   font-weight: 600;
+}
+
+.upload-summary {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 12px 14px;
+  border: 1px solid #e3e8ef;
+  border-radius: 16px;
+  background: linear-gradient(180deg, #fcfefe 0%, #f5faf7 100%);
+}
+
+.upload-summary-title {
+  color: var(--muted);
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.upload-summary-value {
+  color: var(--text);
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.photo-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.photo-chip {
+  display: inline-flex;
+  align-items: center;
+  padding: 7px 10px;
+  border-radius: 999px;
+  background: #eef6f2;
+  color: #245742;
+  border: 1px solid #d7e9df;
+  font-size: 12px;
+  font-weight: 700;
 }
 
 .status-error {
@@ -243,7 +323,9 @@ input[type='file']::file-selector-button:hover {
   font-size: 15px;
   cursor: pointer;
   box-shadow: 0 12px 22px rgba(11, 106, 72, 0.26);
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
 }
 
 .btn-publicar:hover:not(:disabled) {

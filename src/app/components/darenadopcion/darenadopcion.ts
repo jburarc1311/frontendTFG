@@ -13,6 +13,9 @@ import Swal from 'sweetalert2';
   styleUrl: './darenadopcion.css',
 })
 export class Darenadopcion {
+  private readonly minimoFotos = 1;
+  private readonly maximoFotos = 5;
+
   // Información Básica
   public nombre: string = '';
   public tipo: string = '';
@@ -33,6 +36,7 @@ export class Darenadopcion {
   fotosSeleccionadas: File[] = [];
   mensajeErrorFotos: string = '';
   fotosValidas: boolean = false;
+  fotosResumen: string = 'Selecciona entre 1 y 5 fotos para publicar';
 
   // Mensajes de validación
   erroresBasica: { [key: string]: string } = {};
@@ -77,13 +81,19 @@ export class Darenadopcion {
 
   onFotosSeleccionadas(event: any): void {
     const archivos = event.target.files;
-    this.fotosSeleccionadas = Array.from(archivos);
+    this.fotosSeleccionadas = Array.from(archivos || []);
 
-    if (this.fotosSeleccionadas.length !== 4) {
-      this.mensajeErrorFotos = `Debes seleccionar exactamente 4 fotos. Seleccionadas: ${this.fotosSeleccionadas.length}`;
+    if (this.fotosSeleccionadas.length < this.minimoFotos) {
+      this.mensajeErrorFotos = `Debes seleccionar al menos ${this.minimoFotos} fotos. Seleccionadas: ${this.fotosSeleccionadas.length}`;
+      this.fotosResumen = `Falta ${this.minimoFotos - this.fotosSeleccionadas.length} foto para publicar`;
+      this.fotosValidas = false;
+    } else if (this.fotosSeleccionadas.length > this.maximoFotos) {
+      this.mensajeErrorFotos = `Solo puedes seleccionar como máximo ${this.maximoFotos} fotos. Seleccionadas: ${this.fotosSeleccionadas.length}`;
+      this.fotosResumen = `Elige un máximo de ${this.maximoFotos} fotos`;
       this.fotosValidas = false;
     } else {
-      this.mensajeErrorFotos = '✓ 4 fotos seleccionadas correctamente';
+      this.mensajeErrorFotos = `✓ ${this.fotosSeleccionadas.length} fotos seleccionadas correctamente`;
+      this.fotosResumen = `${this.fotosSeleccionadas.length} de ${this.maximoFotos} fotos seleccionadas`;
       this.fotosValidas = true;
     }
   }
@@ -121,7 +131,7 @@ export class Darenadopcion {
       Swal.fire({
         icon: 'error',
         title: 'Fotos inválidas',
-        text: 'Por favor, selecciona exactamente 4 fotos',
+        text: `Por favor, selecciona entre ${this.minimoFotos} y ${this.maximoFotos} fotos`,
       });
       return;
     }
@@ -227,6 +237,7 @@ export class Darenadopcion {
     this.fotosSeleccionadas = [];
     this.mensajeErrorFotos = '';
     this.fotosValidas = false;
+    this.fotosResumen = 'Selecciona entre 1 y 5 fotos para publicar';
     this.erroresBasica = {};
   }
 }
