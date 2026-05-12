@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { ChangeDetectorRef, Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
@@ -20,14 +20,19 @@ export class Chatbot {
   cargando = false;
   modalAbierto = false;
 
-  constructor(private http: HttpClient) {}
+  constructor(
+    private http: HttpClient,
+    private cdr: ChangeDetectorRef,
+  ) {}
 
   toggleModal() {
     this.modalAbierto = !this.modalAbierto;
+    this.cdr.detectChanges();
   }
 
   cerrarModal() {
     this.modalAbierto = false;
+    this.cdr.detectChanges();
   }
 
   enviarMensaje() {
@@ -43,6 +48,7 @@ export class Chatbot {
 
     this.mensaje = '';
     this.cargando = true;
+    this.cdr.detectChanges();
 
     this.http.post<any>(
       'https://backendtfg-production-936a.up.railway.app/chat',
@@ -58,6 +64,7 @@ export class Chatbot {
         });
 
         this.cargando = false;
+        this.cdr.detectChanges();
       },
 
       error: () => {
@@ -68,6 +75,7 @@ export class Chatbot {
         });
 
         this.cargando = false;
+        this.cdr.detectChanges();
       }
     });
   }
