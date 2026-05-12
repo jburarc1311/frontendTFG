@@ -217,7 +217,6 @@ export class Darenadopcion {
           title: 'Error',
           text: mensaje,
         });
-        alert(mensaje);
         console.error('Error completo:', error);
       },
     });

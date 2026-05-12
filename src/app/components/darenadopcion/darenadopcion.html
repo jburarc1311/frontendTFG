@@ -138,15 +138,6 @@
           <p [ngClass]="{ 'status-error': !fotosValidas, 'status-ok': fotosValidas }" class="upload-status">
             {{ mensajeErrorFotos || 'Selecciona entre 1 y 5 fotos para publicar' }}
           </p>
-          <div class="upload-summary">
-            <span class="upload-summary-title">Estado de subida</span>
-            <span class="upload-summary-value">{{ fotosResumen }}</span>
-          </div>
-          <div *ngIf="fotosSeleccionadas.length > 0" class="photo-chips">
-            <span *ngFor="let foto of fotosSeleccionadas; index as i" class="photo-chip">
-              Foto {{ i + 1 }}
-            </span>
-          </div>
         </div>
 
         <div>
