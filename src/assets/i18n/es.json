@@ -1,0 +1,17 @@
+{
+  "navigation": {
+    "home": "Inicio",
+    "about": "Sobre nosotros",
+    "contact": "¡Contáctanos!",
+    "donation": "Donativo",
+    "donateAnimal": "Dar en adopción",
+    "profile": "Perfil",
+    "myAnimals": "Mis Animales",
+    "myFavorites": "Mis Favoritos",
+    "myRequests": "Mis Solicitudes",
+    "myMessages": "Mis Mensajes",
+    "adminPanel": "Panel de administrador",
+    "logout": "Cerrar Sesión",
+    "login": "Iniciar Sesión"
+  }
+}
