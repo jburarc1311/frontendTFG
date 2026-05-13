@@ -17,7 +17,7 @@ export const appConfig: ApplicationConfig = {
     provideBrowserGlobalErrorListeners(),
     provideRouter(routes),
     provideHttpClient(withInterceptors([authInterceptor])),
-
+    
     importProvidersFrom(
       TranslateModule.forRoot({
         defaultLanguage: 'es',
@@ -26,7 +26,7 @@ export const appConfig: ApplicationConfig = {
           useFactory: httpLoaderFactory,
           deps: [HttpClient],
         },
-      }),
+      })
     ),
   ],
 };
