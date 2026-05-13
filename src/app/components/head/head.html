@@ -7,15 +7,23 @@
 
     <div class="flex md:order-2 space-x-3 md:space-x-0 rtl:space-x-reverse items-center">
       <!-- Botones de idioma ES/EN -->
-      <div class="mr-3 flex items-center gap-2 rounded-full border border-gray-300 bg-white px-2 py-1 shadow-sm">
-        <button type="button" (click)="switchLanguage('es')"
+      <div
+        class="mr-3 flex items-center gap-2 rounded-full border border-gray-300 bg-white px-2 py-1 shadow-sm"
+      >
+        <button
+          type="button"
+          (click)="switchLanguage('es')"
           [ngClass]="currentLang === 'es' ? 'bg-[#10B968] text-white' : 'text-gray-600'"
-          class="rounded-full px-3 py-1 text-xs font-bold transition">
+          class="rounded-full px-3 py-1 text-xs font-bold transition"
+        >
           ES
         </button>
-        <button type="button" (click)="switchLanguage('en')"
+        <button
+          type="button"
+          (click)="switchLanguage('en')"
           [ngClass]="currentLang === 'en' ? 'bg-[#10B968] text-white' : 'text-gray-600'"
-          class="rounded-full px-3 py-1 text-xs font-bold transition">
+          class="rounded-full px-3 py-1 text-xs font-bold transition"
+        >
           EN
         </button>
       </div>
@@ -24,111 +32,169 @@
       <ng-container *ngIf="isLoggedInn | async; else loginBtn">
         <div class="relative" data-user-dropdown>
           <!-- Avatar clickeable para abrir dropdown -->
-          <img [src]="userPhoto" alt="Perfil"
+          <img
+            [src]="userPhoto"
+            alt="Perfil"
             class="w-9 h-9 rounded-full object-cover cursor-pointer border-2 border-[#2d4a5e] transition-all hover:opacity-80"
-            (click)="toggleUserDropdown()" />
+            (click)="toggleUserDropdown()"
+          />
 
           <!-- Dropdown menú -->
           @if (isUserDropdownOpen()) {
-          <div class="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg border border-gray-200 py-2 z-50"
-            data-user-dropdown>
-            <!-- Opción: Ver Perfil -->
-            <a [routerLink]="['/perfil']" (click)="closeUserDropdown()"
-              class="block px-4 py-2 text-gray-700 hover:bg-gray-100 transition-colors">
-              Perfil
-            </a>
+            <div
+              class="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg border border-gray-200 py-2 z-50"
+              data-user-dropdown
+            >
+              <!-- Opción: Ver Perfil -->
+              <a
+                [routerLink]="['/perfil']"
+                (click)="closeUserDropdown()"
+                class="block px-4 py-2 text-gray-700 hover:bg-gray-100 transition-colors"
+              >
+                {{ 'navigation.profile' | translate }}
+              </a>
 
-            <!-- Opción: Mis Donaciones -->
-            <a [routerLink]="['/misanimales']" (click)="closeUserDropdown()"
-              class="block px-4 py-2 text-gray-700 hover:bg-gray-100 transition-colors">
-              Mis Animales
-            </a>
+              <!-- Opción: Mis Donaciones -->
+              <a
+                [routerLink]="['/misanimales']"
+                (click)="closeUserDropdown()"
+                class="block px-4 py-2 text-gray-700 hover:bg-gray-100 transition-colors"
+              >
+                {{ 'navigation.myAnimals' | translate }}
+              </a>
 
-            <a href="/favoritos" (click)="closeUserDropdown()"
-              class="block px-4 py-2 text-gray-700 hover:bg-gray-100 transition-colors">
-              Mis Favoritos
-            </a>
+              <a
+                href="/favoritos"
+                (click)="closeUserDropdown()"
+                class="block px-4 py-2 text-gray-700 hover:bg-gray-100 transition-colors"
+              >
+                {{ 'navigation.myFavorites' | translate }}
+              </a>
 
-            <a href="/missolicitudes" (click)="closeUserDropdown()"
-              class="block px-4 py-2 text-gray-700 hover:bg-gray-100 transition-colors">
-              Mis Solicitudes
-            </a>
+              <a
+                href="/missolicitudes"
+                (click)="closeUserDropdown()"
+                class="block px-4 py-2 text-gray-700 hover:bg-gray-100 transition-colors"
+              >
+                {{ 'navigation.myRequests' | translate }}
+              </a>
 
-            <a href="/mensajes" (click)="closeUserDropdown()"
-              class="block px-4 py-2 text-gray-700 hover:bg-gray-100 transition-colors">
-              Mis Mensajes
-            </a>
+              <a
+                href="/mensajes"
+                (click)="closeUserDropdown()"
+                class="block px-4 py-2 text-gray-700 hover:bg-gray-100 transition-colors"
+              >
+                {{ 'navigation.myMessages' | translate }}
+              </a>
 
-            <!-- Separador -->
-            <hr class="my-1" />
+              <!-- Separador -->
+              <hr class="my-1" />
 
-            <a href="/darenadopcion" (click)="closeUserDropdown()"
-              class="block px-4 py-2 text-green-400 hover:bg-gray-100 transition-colors">
-              Dar en adopción
-            </a>
+              <a
+                href="/darenadopcion"
+                (click)="closeUserDropdown()"
+                class="block px-4 py-2 text-green-400 hover:bg-gray-100 transition-colors"
+              >
+                {{ 'navigation.donateAnimal' | translate }}
+              </a>
 
-            <!-- Panel de administrador (solo para Admins) -->
-            @if (isAdmin) {
-            <a href="/paneladmin" (click)="closeUserDropdown()"
-              class="block px-4 py-2 text-blue-600 hover:bg-gray-100 transition-colors font-medium">
-              Panel de administrador
-            </a>
-            }
+              <!-- Panel de administrador (solo para Admins) -->
+              @if (isAdmin) {
+                <a
+                  href="/paneladmin"
+                  (click)="closeUserDropdown()"
+                  class="block px-4 py-2 text-blue-600 hover:bg-gray-100 transition-colors font-medium"
+                >
+                  {{ 'navigation.adminPanel' | translate }}
+                </a>
+              }
 
-            <!-- Opción: Cerrar Sesión -->
-            <button (click)="logout(); closeUserDropdown()"
-              class="w-full text-left px-4 py-2 text-red-600 hover:bg-red-50 transition-colors font-medium">
-              Cerrar Sesión
-            </button>
-          </div>
+              <!-- Opción: Cerrar Sesión -->
+              <button
+                (click)="logout(); closeUserDropdown()"
+                class="w-full text-left px-4 py-2 text-red-600 hover:bg-red-50 transition-colors font-medium"
+              >
+                {{ 'navigation.logout' | translate }}
+              </button>
+            </div>
           }
         </div>
       </ng-container>
 
       <!-- Botón login cuando no hay sesión -->
       <ng-template #loginBtn>
-        <a href="/login"
-          class="text-white bg-[#10B968] hover:text-[#10B968] hover:bg-[#f3f4f6] font-medium rounded-lg text-sm px-4 py-2 focus:outline-none transition-all">
-          Login
+        <a
+          href="/login"
+          class="text-white bg-[#10B968] hover:text-[#10B968] hover:bg-[#f3f4f6] font-medium rounded-lg text-sm px-4 py-2 focus:outline-none transition-all"
+        >
+          {{ 'navigation.login' | translate }}
         </a>
       </ng-template>
 
-
-
       <!-- Botón hamburguesa para móvil -->
-      <button (click)="toggleMenu()" type="button"
+      <button
+        (click)="toggleMenu()"
+        type="button"
         class="inline-flex items-center p-2 w-10 h-10 justify-center text-sm text-body rounded-base md:hidden hover:bg-neutral-secondary-soft hover:text-heading focus:outline-none focus:ring-2 focus:ring-neutral-tertiary"
-        aria-controls="navbar-sticky" [attr.aria-expanded]="isMenuOpen()">
+        aria-controls="navbar-sticky"
+        [attr.aria-expanded]="isMenuOpen()"
+      >
         <span class="sr-only">Open main menu</span>
-        <svg class="w-6 h-6" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none"
-          viewBox="0 0 24 24">
-          <path stroke="currentColor" stroke-linecap="round" stroke-width="2" d="M5 7h14M5 12h14M5 17h14" />
+        <svg
+          class="w-6 h-6"
+          aria-hidden="true"
+          xmlns="http://www.w3.org/2000/svg"
+          width="24"
+          height="24"
+          fill="none"
+          viewBox="0 0 24 24"
+        >
+          <path
+            stroke="currentColor"
+            stroke-linecap="round"
+            stroke-width="2"
+            d="M5 7h14M5 12h14M5 17h14"
+          />
         </svg>
       </button>
     </div>
 
-    <div [class.hidden]="!isMenuOpen()"
+    <div
+      [class.hidden]="!isMenuOpen()"
       class="items-center justify-between w-full md:flex md:w-auto md:order-1 transition-all duration-300"
-      id="navbar-sticky">
+      id="navbar-sticky"
+    >
       <ul
-        class="flex flex-col p-4 md:p-0 mt-4 font-medium border border-default rounded-base bg-neutral-secondary-soft md:space-x-8 rtl:space-x-reverse md:flex-row md:mt-0 md:border-0 md:bg-neutral-primary">
+        class="flex flex-col p-4 md:p-0 mt-4 font-medium border border-default rounded-base bg-neutral-secondary-soft md:space-x-8 rtl:space-x-reverse md:flex-row md:mt-0 md:border-0 md:bg-neutral-primary"
+      >
         <li>
-          <a href="#"
+          <a
+            href="#"
             class="block py-2 px-3 text-black bg-brand rounded-sm md:text-fg-brand md:p-0 hover:text-[#10B968] transition-all"
-            aria-current="page">Home</a>
+            aria-current="page"
+            >{{ 'navigation.home' | translate }}</a
+          >
         </li>
         <li>
-          <a href="nosotros"
-            class="block py-2 px-3 text-heading rounded hover:bg-neutral-tertiary md:border-0 md:hover:text-fg-brand md:p-0 hover:text-[#10B968] transition-all">Sobre
-            nosotros</a>
+          <a
+            href="nosotros"
+            class="block py-2 px-3 text-heading rounded hover:bg-neutral-tertiary md:border-0 md:hover:text-fg-brand md:p-0 hover:text-[#10B968] transition-all"
+            >{{ 'navigation.about' | translate }}</a
+          >
         </li>
         <li>
-          <a href="contactanos"
-            class="block py-2 px-3 text-heading rounded hover:bg-neutral-tertiary md:border-0 md:hover:text-fg-brand md:p-0 hover:text-[#10B968] transition-all">Contactanos!</a>
+          <a
+            href="contactanos"
+            class="block py-2 px-3 text-heading rounded hover:bg-neutral-tertiary md:border-0 md:hover:text-fg-brand md:p-0 hover:text-[#10B968] transition-all"
+            >{{ 'navigation.contact' | translate }}</a
+          >
         </li>
         <li>
-          <a href="donativo"
-            class="block py-2 px-3 text-heading rounded hover:bg-neutral-tertiary md:border-0 md:hover:text-fg-brand md:p-0 hover:text-[#10B968] transition-all">Donativo</a>
+          <a
+            href="donativo"
+            class="block py-2 px-3 text-heading rounded hover:bg-neutral-tertiary md:border-0 md:hover:text-fg-brand md:p-0 hover:text-[#10B968] transition-all"
+            >{{ 'navigation.donation' | translate }}</a
+          >
         </li>
       </ul>
     </div>

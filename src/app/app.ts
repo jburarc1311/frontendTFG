@@ -2,7 +2,7 @@ import { Component, signal, OnInit, ViewEncapsulation, inject } from '@angular/c
 import { RouterOutlet } from '@angular/router';
 import { initFlowbite } from 'flowbite';
 import { Head } from "./components/head/head";
-import { LanguageService } from './services/language.service';
+import { TranslateService } from '@ngx-translate/core';
 
 
 @Component({
@@ -14,10 +14,11 @@ import { LanguageService } from './services/language.service';
 })
 export class App implements OnInit {
   protected readonly title = signal('tfg');
-  private readonly languageService = inject(LanguageService);
+  private readonly translate = inject(TranslateService);
 
   ngOnInit(): void {
-    this.languageService.init();
+    const savedLang = localStorage.getItem('lang') || 'es';
+    this.translate.use(savedLang);
     initFlowbite();
   }
 }

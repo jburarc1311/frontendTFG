@@ -2,8 +2,7 @@ import { Component, signal, HostListener, inject } from '@angular/core';
 import { AuthService } from '../../services/auth.service';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
-import { TranslateModule } from '@ngx-translate/core';
-import { LanguageService } from '../../services/language.service';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-head',
@@ -17,17 +16,18 @@ export class Head {
   currentLang = 'es';
 
   private authService = inject(AuthService);
-  private readonly languageService = inject(LanguageService);
+  private readonly translate = inject(TranslateService);
   isLoggedInn: any;
 
   ngOnInit() {
     this.isLoggedInn = this.authService.loggedInn;
-    this.currentLang = this.languageService.currentLang();
+    this.currentLang = localStorage.getItem('lang') || 'es';
   }
 
   switchLanguage(lang: string) {
-    this.languageService.setLanguage(lang);
-    this.currentLang = this.languageService.currentLang();
+    this.currentLang = lang;
+    localStorage.setItem('lang', lang);
+    this.translate.use(lang);
   }
 
   toggleMenu() {
