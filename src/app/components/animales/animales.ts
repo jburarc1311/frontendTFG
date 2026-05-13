@@ -3,10 +3,11 @@ import { Animal } from '../../interfaces/animal';
 import { SexoPipe } from '../../pipes/sexo-pipe';
 import { NgStyle } from '@angular/common';
 import { ActivatedRoute, RouterLink } from '@angular/router';
+import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-animalesss',
-  imports: [NgStyle, RouterLink],
+  imports: [NgStyle, RouterLink, TranslateModule],
   templateUrl: './animales.html',
   styleUrl: './animales.css',
 })

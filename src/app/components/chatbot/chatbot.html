@@ -1,5 +1,5 @@
 <!-- Botón flotante circular -->
-<button class="chat-button-float" (click)="toggleModal()" title="Abrir chat">
+<button class="chat-button-float" (click)="toggleModal()" [attr.title]="'chatbot.open' | translate">
   💬
 </button>
 
@@ -7,8 +7,14 @@
 <div *ngIf="modalAbierto" class="modal-overlay" (click)="cerrarModal()">
   <div class="modal-content" (click)="$event.stopPropagation()">
     <div class="modal-header">
-      <h3>Asistente de Animales</h3>
-      <button class="close-button" (click)="cerrarModal()">✕</button>
+      <h3>{{ 'chatbot.title' | translate }}</h3>
+      <button
+        class="close-button"
+        (click)="cerrarModal()"
+        [attr.aria-label]="'chatbot.close' | translate"
+      >
+        ✕
+      </button>
     </div>
 
     <div class="chat-container">
@@ -23,7 +29,7 @@
         </div>
 
         <div *ngIf="cargando" class="bot mensaje">
-          Escribiendo...
+          {{ 'chatbot.typing' | translate }}
         </div>
       </div>
 
@@ -32,11 +38,11 @@
           type="text"
           [(ngModel)]="mensaje"
           (keyup.enter)="enviarMensaje()"
-          placeholder="Pregunta sobre animales..."
+          [placeholder]="'chatbot.placeholder' | translate"
         />
 
         <button (click)="enviarMensaje()">
-          Enviar
+          {{ 'chatbot.send' | translate }}
         </button>
       </div>
     </div>

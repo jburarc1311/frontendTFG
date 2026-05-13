@@ -1,24 +1,29 @@
 <section class="adopcion-layout">
   <div class="adopcion-hero">
-    <p class="kicker">Nueva oportunidad</p>
-    <h1>Ayudales a encontrar un hogar calido</h1>
+    <p class="kicker">{{ 'donate.kicker' | translate }}</p>
+    <h1>{{ 'donate.heroTitle' | translate }}</h1>
     <p class="subtitle">
-      Completa la informacion de forma clara y publica una ficha atractiva para su adopcion.
+      {{ 'donate.heroSubtitle' | translate }}
     </p>
   </div>
 
   <div class="adopcion-card">
     <div class="form-grid">
       <section class="bloque">
-        <h2>Informacion basica</h2>
+        <h2>{{ 'donate.basicTitle' | translate }}</h2>
 
-        <label for="nombre">Nombre del animal</label>
-        <input id="nombre" type="text" [(ngModel)]="nombre" placeholder="Ej: Toby o Luna" />
+        <label for="nombre">{{ 'donate.nameLabel' | translate }}</label>
+        <input
+          id="nombre"
+          type="text"
+          [(ngModel)]="nombre"
+          [placeholder]="'donate.namePlaceholder' | translate"
+        />
         <span class="error" *ngIf="erroresBasica['nombre']">{{ erroresBasica['nombre'] }}</span>
 
         <div class="two-columns">
           <div>
-            <label for="tipo">Tipo</label>
+            <label for="tipo">{{ 'donate.typeLabel' | translate }}</label>
             <select
               id="tipo"
               name="tipo"
@@ -26,33 +31,43 @@
               required
               class="w-full rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm outline-none focus:border-teal-500 focus:ring-4 focus:ring-teal-500/10"
             >
-              <option value="" disabled selected>Selecciona un tipo</option>
-              <option value="Perro">Perro</option>
-              <option value="Gato">Gato</option>
-              <option value="Pájaro">Pájaro</option>
-              <option value="Pez">Pez</option>
-              <option value="Roedor">Roedor</option>
-              <option value="Otro">Otro</option>
+              <option value="" disabled selected>{{ 'donate.selectType' | translate }}</option>
+              <option value="Perro">{{ 'donate.typeDog' | translate }}</option>
+              <option value="Gato">{{ 'donate.typeCat' | translate }}</option>
+              <option value="Pájaro">{{ 'donate.typeBird' | translate }}</option>
+              <option value="Pez">{{ 'donate.typeFish' | translate }}</option>
+              <option value="Roedor">{{ 'donate.typeRodent' | translate }}</option>
+              <option value="Otro">{{ 'donate.typeOther' | translate }}</option>
             </select>
             <span class="error" *ngIf="erroresBasica['tipo']">{{ erroresBasica['tipo'] }}</span>
           </div>
 
           <div>
-            <label for="edad">Edad (años)</label>
-            <input id="edad" type="number" [(ngModel)]="edad" placeholder="Ej: 2" />
+            <label for="edad">{{ 'donate.ageLabel' | translate }}</label>
+            <input
+              id="edad"
+              type="number"
+              [(ngModel)]="edad"
+              [placeholder]="'donate.agePlaceholder' | translate"
+            />
             <span class="error" *ngIf="erroresBasica['edad']">{{ erroresBasica['edad'] }}</span>
           </div>
         </div>
 
-        <label for="raza">Raza / mezcla</label>
-        <input id="raza" type="text" [(ngModel)]="raza" placeholder="Ej: Mestizo de labrador" />
+        <label for="raza">{{ 'donate.breedLabel' | translate }}</label>
+        <input
+          id="raza"
+          type="text"
+          [(ngModel)]="raza"
+          [placeholder]="'donate.breedPlaceholder' | translate"
+        />
         <span class="error" *ngIf="erroresBasica['raza']">{{ erroresBasica['raza'] }}</span>
       </section>
 
       <section class="bloque">
-        <h2>Caracteristicas</h2>
+        <h2>{{ 'donate.featuresTitle' | translate }}</h2>
 
-        <label>Sexo</label>
+        <label>{{ 'donate.sexLabel' | translate }}</label>
         <div class="pill-row">
           <button
             type="button"
@@ -60,7 +75,7 @@
             [ngClass]="{ 'pill-active-blue': sexo === 'macho' }"
             class="pill"
           >
-            Macho
+            {{ 'donate.male' | translate }}
           </button>
           <button
             type="button"
@@ -68,12 +83,12 @@
             [ngClass]="{ 'pill-active-orange': sexo === 'hembra' }"
             class="pill"
           >
-            Hembra
+            {{ 'donate.female' | translate }}
           </button>
         </div>
         <span class="error" *ngIf="erroresBasica['sexo']">{{ erroresBasica['sexo'] }}</span>
 
-        <label>Tamano</label>
+        <label>{{ 'donate.sizeLabel' | translate }}</label>
         <div class="pill-row three">
           <button
             type="button"
@@ -81,7 +96,7 @@
             [ngClass]="{ 'pill-active-green': tamano === 'pequeño' }"
             class="pill"
           >
-            Pequeno
+            {{ 'donate.sizeSmall' | translate }}
           </button>
           <button
             type="button"
@@ -89,7 +104,7 @@
             [ngClass]="{ 'pill-active-green': tamano === 'mediano' }"
             class="pill"
           >
-            Mediano
+            {{ 'donate.sizeMedium' | translate }}
           </button>
           <button
             type="button"
@@ -97,12 +112,12 @@
             [ngClass]="{ 'pill-active-green': tamano === 'grande' }"
             class="pill"
           >
-            Grande
+            {{ 'donate.sizeLarge' | translate }}
           </button>
         </div>
         <span class="error" *ngIf="erroresBasica['tamano']">{{ erroresBasica['tamano'] }}</span>
 
-        <label>Salud</label>
+        <label>{{ 'donate.healthLabel' | translate }}</label>
         <div class="pill-row">
           <button
             type="button"
@@ -110,7 +125,7 @@
             [ngClass]="{ 'pill-active-green': vacunado }"
             class="pill"
           >
-            Vacunado
+            {{ 'donate.vaccinated' | translate }}
           </button>
           <button
             type="button"
@@ -118,55 +133,76 @@
             [ngClass]="{ 'pill-active-green': esterilizado }"
             class="pill"
           >
-            Esterilizado
+            {{ 'donate.sterilized' | translate }}
           </button>
         </div>
       </section>
     </div>
 
     <section class="bloque bloque-bottom">
-      <h2>Fotos y descripcion</h2>
+      <h2>{{ 'donate.photosTitle' | translate }}</h2>
 
       <div class="bottom-grid">
         <div class="upload-panel">
           <div class="upload-panel-head">
-            <label for="fotos">Sube entre 1 y 5 fotos</label>
-            <span class="upload-badge">Obligatorio</span>
+            <label for="fotos">{{ 'donate.photosLabel' | translate }}</label>
+            <span class="upload-badge">{{ 'donate.required' | translate }}</span>
           </div>
-          <input type="file" id="fotos" accept="image/*" multiple (change)="onFotosSeleccionadas($event)" />
-          <p class="upload-note">Elige fotos claras del animal desde distintos ángulos para que destaque mejor.</p>
-          <p [ngClass]="{ 'status-error': !fotosValidas, 'status-ok': fotosValidas }" class="upload-status">
-            {{ mensajeErrorFotos || 'Selecciona entre 1 y 5 fotos para publicar' }}
+          <input
+            type="file"
+            id="fotos"
+            accept="image/*"
+            multiple
+            (change)="onFotosSeleccionadas($event)"
+          />
+          <p class="upload-note">{{ 'donate.photosNote' | translate }}</p>
+          <p
+            [ngClass]="{ 'status-error': !fotosValidas, 'status-ok': fotosValidas }"
+            class="upload-status"
+          >
+            {{
+              mensajeErrorFotos ||
+                ('donate.photos.defaultSummary' | translate: { min: minimoFotos, max: maximoFotos })
+            }}
           </p>
         </div>
 
         <div>
-          <label for="descripcion">Descripcion de su personalidad</label>
+          <label for="descripcion">{{ 'donate.descriptionLabel' | translate }}</label>
           <textarea
             id="descripcion"
             [(ngModel)]="descripcion"
-            placeholder="Cuentanos como se comporta, que le gusta hacer y su historia..."
+            [placeholder]="'donate.descriptionPlaceholder' | translate"
           ></textarea>
-          <span class="error" *ngIf="erroresBasica['descripcion']">{{ erroresBasica['descripcion'] }}</span>
+          <span class="error" *ngIf="erroresBasica['descripcion']">{{
+            erroresBasica['descripcion']
+          }}</span>
 
-          <label for="historia">Historia del animal</label>
+          <label for="historia">{{ 'donate.historyLabel' | translate }}</label>
           <textarea
             id="historia"
             [(ngModel)]="historia"
-            placeholder="Explica su contexto, como llego a ti y por que busca adopcion..."
+            [placeholder]="'donate.historyPlaceholder' | translate"
           ></textarea>
-          <span class="error" *ngIf="erroresBasica['historia']">{{ erroresBasica['historia'] }}</span>
+          <span class="error" *ngIf="erroresBasica['historia']">{{
+            erroresBasica['historia']
+          }}</span>
         </div>
       </div>
     </section>
 
     <div class="submit-row">
       <p>
-        Al publicar, confirmas que la informacion es real y te comprometes con una adopcion responsable.
+        {{ 'donate.submitNote' | translate }}
       </p>
-      <button type="button" (click)="publicarAnimal()" [disabled]="!fotosValidas || cargando" class="btn-publicar">
-        <span *ngIf="!cargando">Publicar adopcion</span>
-        <span *ngIf="cargando">Cargando...</span>
+      <button
+        type="button"
+        (click)="publicarAnimal()"
+        [disabled]="!fotosValidas || cargando"
+        class="btn-publicar"
+      >
+        <span *ngIf="!cargando">{{ 'donate.publishButton' | translate }}</span>
+        <span *ngIf="cargando">{{ 'donate.loading' | translate }}</span>
       </button>
     </div>
   </div>

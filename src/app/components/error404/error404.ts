@@ -1,8 +1,9 @@
 import { Component } from '@angular/core';
+import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-error404',
-  imports: [],
+  imports: [TranslateModule],
   templateUrl: './error404.html',
   styleUrl: './error404.css',
 })

@@ -4,17 +4,18 @@ import { FormsModule } from '@angular/forms';
 import { Animales } from '../../services/animales';
 import { Router } from '@angular/router';
 import { UsuarioService } from '../../services/usuario';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-darenadopcion',
-  imports: [CommonModule, FormsModule, NgClass],
+  imports: [CommonModule, FormsModule, NgClass, TranslateModule],
   templateUrl: './darenadopcion.html',
   styleUrl: './darenadopcion.css',
 })
 export class Darenadopcion {
-  private readonly minimoFotos = 1;
-  private readonly maximoFotos = 5;
+  readonly minimoFotos = 1;
+  readonly maximoFotos = 5;
 
   // Información Básica
   public nombre: string = '';
@@ -47,33 +48,36 @@ export class Darenadopcion {
   private animalesService = inject(Animales);
   private router = inject(Router);
   private usuarioService = inject(UsuarioService);
+  private translate = inject(TranslateService);
 
   validarInfoBasica(): boolean {
     this.erroresBasica = {};
 
     if (!this.nombre.trim()) {
-      this.erroresBasica['nombre'] = 'El nombre es requerido';
+      this.erroresBasica['nombre'] = this.translate.instant('donate.errors.nameRequired');
     }
     if (!this.tipo.trim()) {
-      this.erroresBasica['tipo'] = 'El tipo es requerido';
+      this.erroresBasica['tipo'] = this.translate.instant('donate.errors.typeRequired');
     }
     if (!this.raza.trim()) {
-      this.erroresBasica['raza'] = 'La raza es requerida';
+      this.erroresBasica['raza'] = this.translate.instant('donate.errors.breedRequired');
     }
     if (!this.edad || this.edad <= 0) {
-      this.erroresBasica['edad'] = 'La edad debe ser un número positivo';
+      this.erroresBasica['edad'] = this.translate.instant('donate.errors.ageRequired');
     }
     if (!this.descripcion.trim()) {
-      this.erroresBasica['descripcion'] = 'La descripción es requerida';
+      this.erroresBasica['descripcion'] = this.translate.instant(
+        'donate.errors.descriptionRequired',
+      );
     }
     if (!this.historia.trim()) {
-      this.erroresBasica['historia'] = 'La historia es requerida';
+      this.erroresBasica['historia'] = this.translate.instant('donate.errors.historyRequired');
     }
     if (!this.sexo) {
-      this.erroresBasica['sexo'] = 'Debes seleccionar un sexo';
+      this.erroresBasica['sexo'] = this.translate.instant('donate.errors.sexRequired');
     }
     if (!this.tamano) {
-      this.erroresBasica['tamano'] = 'Debes seleccionar un tamaño';
+      this.erroresBasica['tamano'] = this.translate.instant('donate.errors.sizeRequired');
     }
 
     return Object.keys(this.erroresBasica).length === 0;
@@ -84,16 +88,31 @@ export class Darenadopcion {
     this.fotosSeleccionadas = Array.from(archivos || []);
 
     if (this.fotosSeleccionadas.length < this.minimoFotos) {
-      this.mensajeErrorFotos = `Debes seleccionar al menos ${this.minimoFotos} fotos. Seleccionadas: ${this.fotosSeleccionadas.length}`;
-      this.fotosResumen = `Falta ${this.minimoFotos - this.fotosSeleccionadas.length} foto para publicar`;
+      this.mensajeErrorFotos = this.translate.instant('donate.photos.minError', {
+        min: this.minimoFotos,
+        selected: this.fotosSeleccionadas.length,
+      });
+      this.fotosResumen = this.translate.instant('donate.photos.missingOne', {
+        count: this.minimoFotos - this.fotosSeleccionadas.length,
+      });
       this.fotosValidas = false;
     } else if (this.fotosSeleccionadas.length > this.maximoFotos) {
-      this.mensajeErrorFotos = `Solo puedes seleccionar como máximo ${this.maximoFotos} fotos. Seleccionadas: ${this.fotosSeleccionadas.length}`;
-      this.fotosResumen = `Elige un máximo de ${this.maximoFotos} fotos`;
+      this.mensajeErrorFotos = this.translate.instant('donate.photos.maxError', {
+        max: this.maximoFotos,
+        selected: this.fotosSeleccionadas.length,
+      });
+      this.fotosResumen = this.translate.instant('donate.photos.maxSummary', {
+        max: this.maximoFotos,
+      });
       this.fotosValidas = false;
     } else {
-      this.mensajeErrorFotos = `✓ ${this.fotosSeleccionadas.length} fotos seleccionadas correctamente`;
-      this.fotosResumen = `${this.fotosSeleccionadas.length} de ${this.maximoFotos} fotos seleccionadas`;
+      this.mensajeErrorFotos = this.translate.instant('donate.photos.ok', {
+        selected: this.fotosSeleccionadas.length,
+      });
+      this.fotosResumen = this.translate.instant('donate.photos.summary', {
+        selected: this.fotosSeleccionadas.length,
+        max: this.maximoFotos,
+      });
       this.fotosValidas = true;
     }
   }
@@ -121,8 +140,8 @@ export class Darenadopcion {
     if (!this.validarInfoBasica()) {
       Swal.fire({
         icon: 'error',
-        title: 'Información incompleta',
-        text: 'Por favor, corrige los errores en el formulario antes de publicar.',
+        title: this.translate.instant('donate.alerts.incompleteTitle'),
+        text: this.translate.instant('donate.alerts.incompleteText'),
       });
       return;
     }
@@ -130,8 +149,11 @@ export class Darenadopcion {
     if (!this.fotosValidas) {
       Swal.fire({
         icon: 'error',
-        title: 'Fotos inválidas',
-        text: `Por favor, selecciona entre ${this.minimoFotos} y ${this.maximoFotos} fotos`,
+        title: this.translate.instant('donate.alerts.invalidPhotosTitle'),
+        text: this.translate.instant('donate.alerts.invalidPhotosText', {
+          min: this.minimoFotos,
+          max: this.maximoFotos,
+        }),
       });
       return;
     }
@@ -146,8 +168,8 @@ export class Darenadopcion {
     if (!userString) {
       Swal.fire({
         icon: 'error',
-        title: 'No estás logueado',
-        text: 'Debes iniciar sesión para publicar un animal',
+        title: this.translate.instant('donate.alerts.notLoggedTitle'),
+        text: this.translate.instant('donate.alerts.notLoggedText'),
       });
       this.cargando = false;
       this.router.navigate(['/login']);
@@ -161,8 +183,8 @@ export class Darenadopcion {
     } catch (e) {
       Swal.fire({
         icon: 'error',
-        title: 'Error',
-        text: 'Error al procesar los datos del usuario',
+        title: this.translate.instant('donate.alerts.errorTitle'),
+        text: this.translate.instant('donate.alerts.userParseError'),
       });
       this.cargando = false;
       console.error('Error parseando user:', e);
@@ -175,8 +197,8 @@ export class Darenadopcion {
     if (!propietario_id) {
       Swal.fire({
         icon: 'error',
-        title: 'No estás logueado',
-        text: 'Debes iniciar sesión para publicar un animal',
+        title: this.translate.instant('donate.alerts.notLoggedTitle'),
+        text: this.translate.instant('donate.alerts.notLoggedText'),
       });
       this.cargando = false;
       this.router.navigate(['/login']);
@@ -202,8 +224,8 @@ export class Darenadopcion {
         this.cargando = false;
         Swal.fire({
           icon: 'success',
-          title: '¡Animal publicado exitosamente!',
-          text: 'El animal ha sido publicado correctamente.',
+          title: this.translate.instant('donate.alerts.successTitle'),
+          text: this.translate.instant('donate.alerts.successText'),
         });
         console.log('Animal creado:', response);
         this.limpiarFormulario();
@@ -211,10 +233,11 @@ export class Darenadopcion {
       },
       error: (error: any) => {
         this.cargando = false;
-        let mensaje = 'Error al publicar el animal: ' + error.error?.message;
+        let mensaje =
+          this.translate.instant('donate.alerts.publishErrorPrefix') + error.error?.message;
         Swal.fire({
           icon: 'error',
-          title: 'Error',
+          title: this.translate.instant('donate.alerts.errorTitle'),
           text: mensaje,
         });
         console.error('Error completo:', error);
@@ -236,7 +259,10 @@ export class Darenadopcion {
     this.fotosSeleccionadas = [];
     this.mensajeErrorFotos = '';
     this.fotosValidas = false;
-    this.fotosResumen = 'Selecciona entre 1 y 5 fotos para publicar';
+    this.fotosResumen = this.translate.instant('donate.photos.defaultSummary', {
+      min: this.minimoFotos,
+      max: this.maximoFotos,
+    });
     this.erroresBasica = {};
   }
 }

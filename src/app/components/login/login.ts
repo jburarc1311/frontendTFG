@@ -3,11 +3,12 @@ import { Component, ChangeDetectorRef, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-login',
-  imports: [FormsModule, CommonModule],
+  imports: [FormsModule, CommonModule, TranslateModule],
   templateUrl: './login.html',
   styleUrls: ['./login.css'],
 })
@@ -35,6 +36,7 @@ export class Login {
   private authService = inject(AuthService);
   private router = inject(Router);
   private cdr = inject(ChangeDetectorRef);
+  private translate = inject(TranslateService);
 
   setActiveTab(tab: 'login' | 'register') {
     this.activeTab = tab;
@@ -57,12 +59,12 @@ export class Login {
     const email = this.email.trim();
 
     if (!email || !this.password) {
-      this.errorMessage = 'Por favor, rellena todos los campos.';
+      this.errorMessage = this.translate.instant('login.errors.allFields');
       return;
     }
 
     if (!email.includes('@')) {
-      this.errorMessage = 'Por favor, ingresa un email válido.';
+      this.errorMessage = this.translate.instant('login.errors.validEmail');
       return;
     }
 
@@ -76,7 +78,7 @@ export class Login {
         this.router.navigate(['/home']);
       },
       error: (err) => {
-        this.errorMessage = err.error?.message || 'Error al iniciar sesión.';
+        this.errorMessage = err.error?.message || this.translate.instant('login.errors.loginFailed');
       },
     });
   }
@@ -97,22 +99,22 @@ export class Login {
       !this.registerPassword ||
       !this.registerConfirmPassword
     ) {
-      this.registerError = 'Por favor, rellena todos los campos.';
+      this.registerError = this.translate.instant('login.errors.allFields');
       return;
     }
 
     if (!email.includes('@')) {
-      this.registerError = 'Por favor, ingresa un email válido.';
+      this.registerError = this.translate.instant('login.errors.validEmail');
       return;
     }
 
     if (this.registerPassword.length < 8) {
-      this.registerError = 'La contraseña debe tener al menos 8 caracteres.';
+      this.registerError = this.translate.instant('login.errors.passwordLength');
       return;
     }
 
     if (this.registerPassword !== this.registerConfirmPassword) {
-      this.registerError = 'Las contraseñas no coinciden.';
+      this.registerError = this.translate.instant('login.errors.passwordMismatch');
       return;
     }
 
@@ -128,8 +130,7 @@ export class Login {
       })
       .subscribe({
         next: () => {
-          this.registerSuccess =
-            'Cuenta creada. Revisa tu correo para activarla antes de iniciar sesión, si no lo ves mira en spam.';
+          this.registerSuccess = this.translate.instant('login.success.registerCreated');
           this.email = email;
           this.password = '';
           this.registerPassword = '';
@@ -137,7 +138,7 @@ export class Login {
           this.cdr.detectChanges();
         },
         error: (err) => {
-          this.registerError = err.error?.message || 'Error al registrarse.';
+          this.registerError = err.error?.message || this.translate.instant('login.errors.registerFailed');
         },
       });
   }
@@ -146,8 +147,8 @@ export class Login {
     if (!navigator.geolocation) {
       Swal.fire({
         icon: 'error',
-        title: 'Error',
-        text: 'La geolocalización no es compatible con tu navegador.',
+        title: this.translate.instant('login.geo.errorTitle'),
+        text: this.translate.instant('login.geo.notSupported'),
       });
       return;
     }
@@ -182,8 +183,8 @@ export class Login {
 
           Swal.fire({
             icon: 'success',
-            title: 'Ubicación obtenida',
-            text: `Se ha obtenido tu ubicación: ${this.registerUbicacion}`,
+            title: this.translate.instant('login.geo.successTitle'),
+            text: this.translate.instant('login.geo.successText', { location: this.registerUbicacion }),
           });
           this.cdr.detectChanges();
         } catch (error) {
@@ -192,8 +193,8 @@ export class Login {
           this.registerUbicacion = `Lat: ${latitude.toFixed(4)}, Lon: ${longitude.toFixed(4)}`;
           Swal.fire({
             icon: 'error',
-            title: 'Error',
-            text: 'No se pudo obtener el nombre exacto de la ubicación. Se guardaron las coordenadas.',
+            title: this.translate.instant('login.geo.errorTitle'),
+            text: this.translate.instant('login.geo.fallbackText'),
           });
           this.cdr.detectChanges();
         }

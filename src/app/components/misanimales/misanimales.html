@@ -2,10 +2,14 @@
   <div class="mx-auto w-full max-w-[1360px]">
     <div class="mb-5 flex flex-col gap-4 md:flex-row md:items-start md:justify-between">
       <div class="max-w-2xl">
-        <p class="text-xs font-extrabold tracking-[0.18em] text-emerald-700">MANAGEMENT PORTAL</p>
-        <h1 class="mt-1 text-4xl font-black tracking-tight text-slate-900">Mis Publicaciones</h1>
+        <p class="text-xs font-extrabold tracking-[0.18em] text-emerald-700">
+          {{ 'myAnimals.kicker' | translate }}
+        </p>
+        <h1 class="mt-1 text-4xl font-black tracking-tight text-slate-900">
+          {{ 'myAnimals.title' | translate }}
+        </h1>
         <p class="mt-2 text-base text-slate-600">
-          Administra los perfiles de tus animales y manten su informacion actualizada para aumentar las posibilidades de adopcion.
+          {{ 'myAnimals.description' | translate }}
         </p>
       </div>
 
@@ -14,23 +18,29 @@
         class="inline-flex items-center gap-2 rounded-xl bg-orange-500 px-5 py-3 text-sm font-extrabold text-white shadow-sm transition hover:bg-orange-600"
       >
         <span class="text-lg leading-none">+</span>
-        Publicar Nuevo
+        {{ 'myAnimals.publishNew' | translate }}
       </a>
     </div>
 
     <div class="mb-6 grid grid-cols-1 gap-3 sm:grid-cols-3">
       <article class="rounded-xl bg-white px-5 py-4 shadow-[0_3px_10px_rgba(15,23,42,0.08)] ring-1 ring-slate-200 border-b-[3px] border-b-emerald-500">
-        <p class="text-xs font-bold uppercase tracking-wide text-slate-500">Total Activos</p>
+        <p class="text-xs font-bold uppercase tracking-wide text-slate-500">
+          {{ 'myAnimals.totalActive' | translate }}
+        </p>
         <p class="mt-1 text-4xl font-black text-slate-900">{{ totalActivos() }}</p>
       </article>
 
       <article class="rounded-xl bg-white px-5 py-4 shadow-[0_3px_10px_rgba(15,23,42,0.08)] ring-1 ring-slate-200 border-b-[3px] border-b-orange-500">
-        <p class="text-xs font-bold uppercase tracking-wide text-slate-500">En Proceso</p>
+        <p class="text-xs font-bold uppercase tracking-wide text-slate-500">
+          {{ 'myAnimals.inProcess' | translate }}
+        </p>
         <p class="mt-1 text-4xl font-black text-slate-900">{{ totalEnProceso() }}</p>
       </article>
 
       <article class="rounded-xl bg-white px-5 py-4 shadow-[0_3px_10px_rgba(15,23,42,0.08)] ring-1 ring-slate-200 border-b-[3px] border-b-emerald-700">
-        <p class="text-xs font-bold uppercase tracking-wide text-slate-500">Adoptados</p>
+        <p class="text-xs font-bold uppercase tracking-wide text-slate-500">
+          {{ 'myAnimals.adopted' | translate }}
+        </p>
         <p class="mt-1 text-4xl font-black text-slate-900">{{ totalAdoptados() }}</p>
       </article>
     </div>
@@ -39,7 +49,11 @@
       @for (item of animales(); track item._id ?? $index) {
         <article class="overflow-hidden rounded-2xl bg-white shadow-[0_6px_18px_rgba(15,23,42,0.1)] ring-1 ring-slate-200">
           <div class="relative h-52 bg-slate-200">
-            <img [src]="item.fotos[0] || 'https://placehold.co/800x500?text=Sin+foto'" [alt]="item.nombre" class="h-full w-full object-cover" />
+            <img
+              [src]="item.fotos[0] || 'https://placehold.co/800x500?text=Sin+foto'"
+              [alt]="item.nombre"
+              class="h-full w-full object-cover"
+            />
 
             <span
               class="absolute right-3 top-3 rounded-full px-3 py-1 text-[11px] font-black tracking-wide"
@@ -49,35 +63,49 @@
                 'bg-white/90 text-slate-700': item.estado === 'adoptado'
               }"
             >
-              {{ item.estado === 'disponible' ? 'ACTIVO' : item.estado === 'en proceso' ? 'PENDIENTE' : 'ADOPTADO' }}
+              {{
+                item.estado === 'disponible'
+                  ? ('myAnimals.active' | translate)
+                  : item.estado === 'en proceso'
+                    ? ('myAnimals.pending' | translate)
+                    : ('myAnimals.adoptedBadge' | translate)
+              }}
             </span>
           </div>
 
           <div class="p-4">
             <h2 class="text-3xl font-black leading-none text-slate-900">{{ item.nombre }}</h2>
-            <p class="mt-1 text-sm font-semibold text-slate-600">{{ item.tipo }} • {{ item.raza }} • {{ item.edad }} años</p>
+            <p class="mt-1 text-sm font-semibold text-slate-600">
+              {{ item.tipo }} · {{ item.raza }} · {{ item.edad }} {{ 'common.years' | translate }}
+            </p>
 
             <div class="mt-3 flex flex-wrap gap-2">
               @if (item.vacunado) {
-                <span class="rounded-full bg-emerald-100 px-3 py-1 text-[11px] font-extrabold uppercase tracking-wide text-emerald-800">Vacunado</span>
+                <span class="rounded-full bg-emerald-100 px-3 py-1 text-[11px] font-extrabold uppercase tracking-wide text-emerald-800">
+                  {{ 'myAnimals.vaccinated' | translate }}
+                </span>
               }
               @if (item.esterilizado) {
-                <span class="rounded-full bg-teal-100 px-3 py-1 text-[11px] font-extrabold uppercase tracking-wide text-teal-800">Esterilizado</span>
+                <span class="rounded-full bg-teal-100 px-3 py-1 text-[11px] font-extrabold uppercase tracking-wide text-teal-800">
+                  {{ 'myAnimals.sterilized' | translate }}
+                </span>
               }
               @if (!item.vacunado && !item.esterilizado) {
-                <span class="rounded-full bg-slate-100 px-3 py-1 text-[11px] font-extrabold uppercase tracking-wide text-slate-600">Sin etiqueta</span>
+                <span class="rounded-full bg-slate-100 px-3 py-1 text-[11px] font-extrabold uppercase tracking-wide text-slate-600">
+                  {{ 'myAnimals.noTag' | translate }}
+                </span>
               }
             </div>
 
             <div class="mt-4 flex items-center justify-between border-t border-slate-200 pt-3 text-sm font-bold text-slate-700">
               <a [routerLink]="['/detallesanimales/', item._id]" class="inline-flex items-center gap-1 rounded-lg px-2 py-1 transition hover:bg-slate-100">
                 <span aria-hidden="true"></span>
-                Ver
+                {{ 'common.view' | translate }}
               </a>
 
               <a [routerLink]="['/detallesanimales/', item._id]" class="inline-flex items-center gap-1 rounded-lg px-2 py-1 transition hover:bg-slate-100">
                 <span aria-hidden="true"></span>
-                Editar
+                {{ 'common.edit' | translate }}
               </a>
 
               <button
@@ -86,7 +114,7 @@
                 class="inline-flex items-center gap-1 rounded-lg px-2 py-1 text-red-600 transition hover:bg-red-50"
               >
                 <span aria-hidden="true"></span>
-                Eliminar
+                {{ 'common.delete' | translate }}
               </button>
             </div>
           </div>

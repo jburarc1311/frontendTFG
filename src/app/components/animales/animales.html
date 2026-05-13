@@ -1,18 +1,18 @@
 <div class="mt-4 w-full flex justify-center">
   <div class="w-full max-w-[2000px] px-4 md:px-8">
     <div class="mb-4 flex flex-wrap items-center justify-between gap-2">
-      <h1 class="text-2xl font-bold">Animales en adopción</h1>
-      <p class="text-gray-600">Mostrando {{ animales.length }} animales</p>
+      <h1 class="text-2xl font-bold">{{ 'animals.title' | translate }}</h1>
+      <p class="text-gray-600">{{ 'animals.showing' | translate: { count: animales.length } }}</p>
     </div>
 
     <div class="flex flex-row gap-5 flex-wrap justify-center mx-auto">
       @for (item of animales; track $index) {
-        <div class=" border-0 w-72 h-84 rounded-2xl animal flex flex-col shadow-lg">
+        <div class="border-0 w-72 h-84 rounded-2xl animal flex flex-col shadow-lg">
           <div class="w-full h-52 rounded-t-2xl">
             <img src="{{ item.fotos[0] }}" alt="" class="w-full h-full rounded-2xl" />
           </div>
 
-          <div class=" mt-2 flex-1 flex flex-col justify-start w-full  p-4">
+          <div class="mt-2 flex-1 flex flex-col justify-start w-full p-4">
             <div class="flex flex-row gap-3 w-full items-center justify-between mb-2">
               <h5 class="truncate">{{ item.nombre }}</h5>
               @if (item.estado == 'disponible') {
@@ -20,21 +20,21 @@
                   [ngStyle]="{ 'background-color': 'lightgreen' }"
                   class="rounded-2xl px-3 py-1 text-center text-sm whitespace-nowrap"
                 >
-                  Disponible
+                  {{ 'animals.available' | translate }}
                 </p>
               } @else if (item.estado == 'adoptado') {
                 <p
                   [ngStyle]="{ 'background-color': 'lightcoral' }"
                   class="rounded-2xl px-3 py-1 text-center text-sm whitespace-nowrap"
                 >
-                  Adoptado
+                  {{ 'animals.adopted' | translate }}
                 </p>
               } @else {
                 <p
                   [ngStyle]="{ 'background-color': 'lightgray' }"
                   class="rounded-2xl px-3 py-1 text-center text-sm whitespace-nowrap"
                 >
-                  No disponible
+                  {{ 'animals.unavailable' | translate }}
                 </p>
               }
             </div>
@@ -47,7 +47,7 @@
               <a
                 [routerLink]="['/detallesanimales/', item._id]"
                 class="inline-block rounded-2xl w-full text-center bg-gray-300 text-[#10B981] p-2"
-                >Ver más</a
+                >{{ 'animals.viewMore' | translate }}</a
               >
             </div>
           </div>

@@ -4,10 +4,11 @@ import { Solicitudes } from '../../services/solicitudes';
 import { Solicitud } from '../../interfaces/solicitud';
 import { RouterLink } from '@angular/router';
 import Swal from 'sweetalert2';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-missolicitudes',
-  imports: [CommonModule, RouterLink],
+  imports: [CommonModule, RouterLink, TranslateModule],
   templateUrl: './missolicitudes.html',
   styleUrl: './missolicitudes.css',
 })
@@ -19,6 +20,7 @@ export class Missolicitudes implements OnInit {
 
   private solicitudesService = inject(Solicitudes);
   private cdr = inject(ChangeDetectorRef);
+  private translate = inject(TranslateService);
 
   ngOnInit() {
     this.cargarSolicitudes();
@@ -33,7 +35,7 @@ export class Missolicitudes implements OnInit {
         this.cdr.detectChanges();
       },
       error: (error) => {
-        this.error = 'Error al cargar las solicitudes enviadas';
+        this.error = this.translate.instant('myRequests.errors.sentLoad');
         console.error('Error:', error);
       },
     });
@@ -44,7 +46,7 @@ export class Missolicitudes implements OnInit {
         this.cdr.detectChanges();
       },
       error: (error) => {
-        this.error = 'Error al cargar las solicitudes recibidas';
+        this.error = this.translate.instant('myRequests.errors.receivedLoad');
         console.error('Error:', error);
       },
     });
@@ -60,12 +62,12 @@ export class Missolicitudes implements OnInit {
     }
 
     Swal.fire({
-      title: '¿Estás seguro?',
-      text: '¿Quieres rechazar esta solicitud de adopción?',
+      title: this.translate.instant('common.confirmTitle'),
+      text: this.translate.instant('myRequests.alerts.rejectText'),
       icon: 'warning',
       showCancelButton: true,
-      confirmButtonText: 'Sí, rechazar',
-      cancelButtonText: 'No, cancelar',
+      confirmButtonText: this.translate.instant('myRequests.alerts.rejectConfirm'),
+      cancelButtonText: this.translate.instant('myRequests.alerts.cancelConfirm'),
     }).then((result) => {
       if (result.isConfirmed) {
         this.solicitudesService.rechazarSolicitud(solicitudId).subscribe({
@@ -73,7 +75,7 @@ export class Missolicitudes implements OnInit {
             this.cargarSolicitudes();
           },
           error: (error) => {
-            this.error = 'Error al rechazar la solicitud';
+            this.error = this.translate.instant('myRequests.errors.reject');
             console.error('Error:', error);
           },
         });
@@ -87,12 +89,12 @@ export class Missolicitudes implements OnInit {
     }
 
     Swal.fire({
-      title: '¿Estás seguro?',
-      text: '¿Quieres eliminar esta solicitud de adopción?',
+      title: this.translate.instant('common.confirmTitle'),
+      text: this.translate.instant('myRequests.alerts.deleteText'),
       icon: 'warning',
       showCancelButton: true,
-      confirmButtonText: 'Sí, eliminar',
-      cancelButtonText: 'No, cancelar',
+      confirmButtonText: this.translate.instant('myRequests.alerts.deleteConfirm'),
+      cancelButtonText: this.translate.instant('myRequests.alerts.cancelConfirm'),
     }).then((result) => {
       if (result.isConfirmed) {
         this.solicitudesService.delsolicitud(solicitudId).subscribe({
@@ -100,7 +102,7 @@ export class Missolicitudes implements OnInit {
             this.cargarSolicitudes();
           },
           error: (error) => {
-            this.error = 'Error al eliminar la solicitud';
+            this.error = this.translate.instant('myRequests.errors.delete');
             console.error('Error:', error);
           },
         });
@@ -110,12 +112,12 @@ export class Missolicitudes implements OnInit {
 
   aceptarSolicitud(solicitudId: string | undefined) {
     Swal.fire({
-      title: '¿Estás seguro?',
-      text: '¿Quieres aceptar esta solicitud de adopción? No podrás revertir esta acción. No te olvides de contactar al adoptante para coordinar la adopción del perro.',
+      title: this.translate.instant('common.confirmTitle'),
+      text: this.translate.instant('myRequests.alerts.acceptText'),
       icon: 'warning',
       showCancelButton: true,
-      confirmButtonText: 'Sí, aceptar',
-      cancelButtonText: 'No, cancelar',
+      confirmButtonText: this.translate.instant('myRequests.alerts.acceptConfirm'),
+      cancelButtonText: this.translate.instant('myRequests.alerts.cancelConfirm'),
     }).then((result) => {
       if (!solicitudId) {
         return;
@@ -127,7 +129,7 @@ export class Missolicitudes implements OnInit {
             this.cargarSolicitudes();
           },
           error: (error) => {
-            this.error = 'Error al aceptar la solicitud';
+            this.error = this.translate.instant('myRequests.errors.accept');
             console.error('Error:', error);
           },
         });

@@ -5,10 +5,11 @@ import { UsuarioService } from '../../services/usuario';
 import { Solicitud } from '../../interfaces/solicitud';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-detallessolicitudes',
-  imports: [CommonModule, RouterLink, FormsModule],
+  imports: [CommonModule, RouterLink, FormsModule, TranslateModule],
   templateUrl: './detallessolicitudes.html',
   styleUrl: './detallessolicitudes.css',
 })
@@ -22,6 +23,7 @@ export class Detallessolicitudes implements OnInit {
   private solicitudesService = inject(Solicitudes);
   private usuarioService = inject(UsuarioService);
   private cdr = inject(ChangeDetectorRef);
+  private translate = inject(TranslateService);
 
   ngOnInit(): void {
     this.route.params.subscribe((params) => {
@@ -41,7 +43,7 @@ export class Detallessolicitudes implements OnInit {
         this.cdr.detectChanges();
       },
       error: (err) => {
-        this.error = 'Error al cargar la solicitud';
+        this.error = this.translate.instant('requestDetails.errors.load');
         console.error(err);
         this.cdr.detectChanges();
       },

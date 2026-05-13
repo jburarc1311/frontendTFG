@@ -2,10 +2,11 @@ import { ChangeDetectorRef, Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-chatbot',
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, TranslateModule],
   templateUrl: './chatbot.html',
   styleUrl: './chatbot.css',
 })
@@ -23,6 +24,7 @@ export class Chatbot {
   constructor(
     private http: HttpClient,
     private cdr: ChangeDetectorRef,
+    private translate: TranslateService,
   ) {}
 
   toggleModal() {
@@ -70,7 +72,7 @@ export class Chatbot {
       error: () => {
 
         this.mensajes.push({
-          texto: 'Error obteniendo respuesta',
+          texto: this.translate.instant('chatbot.errorResponse'),
           usuario: false
         });
 
