@@ -1,6 +1,6 @@
 import { ApplicationConfig, provideBrowserGlobalErrorListeners } from '@angular/core';
 import { provideRouter } from '@angular/router';
-import { HttpClient, provideHttpClient, withInterceptors } from '@angular/common/http';
+import { provideHttpClient, withInterceptors } from '@angular/common/http';
 import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import { importProvidersFrom } from '@angular/core';
 
@@ -13,15 +13,15 @@ export const appConfig: ApplicationConfig = {
     provideBrowserGlobalErrorListeners(),
     provideRouter(routes),
     provideHttpClient(withInterceptors([authInterceptor])),
-    
+
     importProvidersFrom(
       TranslateModule.forRoot({
-        defaultLanguage: 'es',
+        fallbackLang: 'es',
         loader: {
           provide: TranslateLoader,
           useClass: CustomTranslateLoader,
         },
-      })
+      }),
     ),
   ],
 };
