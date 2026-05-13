@@ -2,15 +2,11 @@ import { ApplicationConfig, provideBrowserGlobalErrorListeners } from '@angular/
 import { provideRouter } from '@angular/router';
 import { HttpClient, provideHttpClient, withInterceptors } from '@angular/common/http';
 import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
-import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { importProvidersFrom } from '@angular/core';
 
 import { routes } from './app.routes';
 import { authInterceptor } from './interceptors/auth.interceptor';
-
-export function httpLoaderFactory(http: HttpClient) {
-  return new TranslateHttpLoader(http, './assets/i18n/', '.json');
-}
+import { CustomTranslateLoader } from './services/custom-translate.loader';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -23,8 +19,7 @@ export const appConfig: ApplicationConfig = {
         defaultLanguage: 'es',
         loader: {
           provide: TranslateLoader,
-          useFactory: httpLoaderFactory,
-          deps: [HttpClient],
+          useClass: CustomTranslateLoader,
         },
       })
     ),
