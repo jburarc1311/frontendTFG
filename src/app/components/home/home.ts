@@ -2,7 +2,6 @@ import { Component, inject, signal, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterLink } from '@angular/router';
 import { FormsModule } from '@angular/forms';
-import { TranslateModule } from '@ngx-translate/core';
 import { Animalesss } from '../animales/animales';
 import { Animales } from '../../services/animales';
 import { Animal } from '../../interfaces/animal';
@@ -11,7 +10,7 @@ import { Chatbot } from '../chatbot/chatbot';
 
 @Component({
   selector: 'app-home',
-  imports: [CommonModule, Animalesss, Footer, FormsModule, Chatbot, TranslateModule],
+  imports: [CommonModule, Animalesss, Footer, FormsModule, Chatbot],
   templateUrl: './home.html',
   styleUrl: './home.css',
 })
