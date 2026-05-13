@@ -13,5 +13,15 @@
     "adminPanel": "Admin Panel",
     "logout": "Sign Out",
     "login": "Sign In"
+  },
+  "home": {
+    "badge": "Your digital sanctuary",
+    "headline": "Find a home, change a life",
+    "description": "Discover pets ready for adoption, explore their stories and connect with families who have already taken the step. ADOPT-ME is designed to make adoption clear, warm and reliable.",
+    "explore": "Explore pets",
+    "learnMore": "Learn more",
+    "activePets": "Active pets",
+    "support": "24/7 Support",
+    "stories": "Success stories"
   }
 }
