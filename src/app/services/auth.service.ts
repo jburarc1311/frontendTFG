@@ -213,7 +213,7 @@ export class AuthService {
   // Login con Google
   googleLogin(googleToken: string): Observable<any> {
     return this.http
-      .post<any>(`${this.authUrl}/google`, { token: googleToken }, { withCredentials: true })
+      .post<any>(`${this.authUrl}/api/google`, { token: googleToken }, { withCredentials: true })
       .pipe(
         tap((res) => {
           const accessToken = res?.token;
