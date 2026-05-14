@@ -40,12 +40,17 @@ export class AuthService {
         // tap() ejecuta código "de lado" sin modificar la respuesta
         // Aquí aprovechamos para guardar el token cuando el login es exitoso
         tap((res) => {
-          if (res?.data?.accessToken) {
-            // Guardamos el accessToken en sessionStorage para usarlo en futuras peticiones
-            sessionStorage.setItem('accessToken', res.data.accessToken);
+          const accessToken = res?.data?.accessToken ?? res?.accessToken;
+          const user = res?.data?.user ?? res?.user;
 
-            // Guardamos los datos del usuario (nombre, foto, etc.) para mostrarlos en el navbar
-            sessionStorage.setItem('user', JSON.stringify(res.data.user));
+          if (accessToken) {
+            // Guardamos el accessToken en sessionStorage para usarlo en futuras peticiones
+            sessionStorage.setItem('accessToken', accessToken);
+
+            if (user) {
+              // Guardamos los datos del usuario (nombre, foto, etc.) para mostrarlos en el navbar
+              sessionStorage.setItem('user', JSON.stringify(user));
+            }
 
             // Notificamos a todos los componentes suscritos que hay sesión activa
             // Esto hace que el navbar cambie el botón login por el avatar automáticamente
@@ -70,14 +75,29 @@ export class AuthService {
 
   // Comprueba si el usuario está logueado (si existe el token en sessionStorage)
   isLoggedIn(): boolean {
-    return !!sessionStorage.getItem('accessToken'); //convierte el valor a true/false
+    const accessToken = sessionStorage.getItem('accessToken');
+
+    if (accessToken) {
+      return true;
+    }
+
+    return false; //convierte el valor a true/false
   }
 
   // Devuelve los datos del usuario guardados en sessionStorage
   // Se usa en el navbar para obtener el nombre y la foto
   getUser(): any {
     const user = sessionStorage.getItem('user');
-    return user ? JSON.parse(user) : null; // Si no hay usuario, devuelve null
+
+    if (!user) {
+      return null; // Si no hay usuario, devuelve null
+    }
+
+    try {
+      return JSON.parse(user);
+    } catch {
+      return null;
+    }
   }
 
   // Sube una foto de perfil a Cloudinary a través del backend
@@ -187,5 +207,37 @@ export class AuthService {
     ubicacion: string;
   }): Observable<any> {
     return this.http.post<any>(`${this.apiUrl}/register`, userData, { withCredentials: true });
+  }
+
+  // Login con Google
+  googleLogin(googleToken: string): Observable<any> {
+    return this.http
+      .post<any>(
+        'https://backendtfg-production-936a.up.railway.app/auth/google',
+        { token: googleToken },
+        { withCredentials: true }
+      )
+      .pipe(
+        tap((res) => {
+          const accessToken = res?.token;
+          const user = res?.user;
+
+          if (accessToken) {
+            // Guardamos el accessToken en sessionStorage
+            sessionStorage.setItem('accessToken', accessToken);
+
+            if (user) {
+              // Guardamos los datos del usuario
+              sessionStorage.setItem('user', JSON.stringify(user));
+            }
+
+            // Notificamos que hay sesión activa
+            this.loggedIn.next(true);
+
+            // Iniciar auto-refresh del token
+            this.iniciarAutoRefresh();
+          }
+        }),
+      );
   }
 }

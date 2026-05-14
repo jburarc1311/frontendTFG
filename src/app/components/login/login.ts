@@ -1,10 +1,12 @@
 import { CommonModule } from '@angular/common';
-import { Component, ChangeDetectorRef, inject } from '@angular/core';
+import { Component, ChangeDetectorRef, inject, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import Swal from 'sweetalert2';
+
+declare const google: any;
 
 @Component({
   selector: 'app-login',
@@ -12,7 +14,7 @@ import Swal from 'sweetalert2';
   templateUrl: './login.html',
   styleUrls: ['./login.css'],
 })
-export class Login {
+export class Login implements OnInit {
   activeTab: 'login' | 'register' = 'login';
   showPassword = false;
   showRegisterPassword = false;
@@ -37,6 +39,27 @@ export class Login {
   private router = inject(Router);
   private cdr = inject(ChangeDetectorRef);
   private translate = inject(TranslateService);
+
+  ngOnInit(): void {
+    this.initializeGoogleSignIn();
+  }
+
+  private initializeGoogleSignIn(): void {
+    if (google && google.accounts) {
+      google.accounts.id.initialize({
+        client_id: '1034393548611-a0m40fmjdql25s43u2eibi3scitjb3hg.apps.googleusercontent.com',
+        callback: (response: any) => this.handleGoogleLoginResponse(response),
+      });
+
+      const buttonDiv = document.getElementById('google-signin-button');
+      if (buttonDiv) {
+        google.accounts.id.renderButton(buttonDiv, {
+          theme: 'outline',
+          size: 'large',
+        });
+      }
+    }
+  }
 
   setActiveTab(tab: 'login' | 'register') {
     this.activeTab = tab;
@@ -72,13 +95,11 @@ export class Login {
 
     this.authService.login(email, this.password).subscribe({
       next: (res) => {
-        localStorage.setItem('token', res?.data?.accessToken);
-        localStorage.setItem('user', JSON.stringify(res?.data?.user));
-
         this.router.navigate(['/home']);
       },
       error: (err) => {
-        this.errorMessage = err.error?.message || this.translate.instant('login.errors.loginFailed');
+        this.errorMessage =
+          err.error?.message || this.translate.instant('login.errors.loginFailed');
       },
     });
   }
@@ -138,9 +159,33 @@ export class Login {
           this.cdr.detectChanges();
         },
         error: (err) => {
-          this.registerError = err.error?.message || this.translate.instant('login.errors.registerFailed');
+          this.registerError =
+            err.error?.message || this.translate.instant('login.errors.registerFailed');
         },
       });
+  }
+
+  private handleGoogleLoginResponse(response: any): void {
+    if (response.credential) {
+      console.log('Google token obtenido');
+
+      // Enviar el token de Google al backend
+      this.authService.googleLogin(response.credential).subscribe({
+        next: (res) => {
+          console.log('Respuesta del backend:', res);
+          this.router.navigate(['/home']);
+        },
+        error: (err) => {
+          console.error('Error en login de Google:', err);
+          Swal.fire({
+            icon: 'error',
+            title:
+              this.translate.instant('login.errors.googleLoginFailed') || 'Error en Google Login',
+            text: err.error?.message || 'No se pudo completar el login con Google',
+          });
+        },
+      });
+    }
   }
 
   async obtenerCoordenadas() {
@@ -184,7 +229,9 @@ export class Login {
           Swal.fire({
             icon: 'success',
             title: this.translate.instant('login.geo.successTitle'),
-            text: this.translate.instant('login.geo.successText', { location: this.registerUbicacion }),
+            text: this.translate.instant('login.geo.successText', {
+              location: this.registerUbicacion,
+            }),
           });
           this.cdr.detectChanges();
         } catch (error) {
@@ -200,9 +247,8 @@ export class Login {
         }
       },
       (error) => {
-
         console.error(`Error de geolocalización (código ${error.code}):`, error.message);
-      }
+      },
     );
   }
 }
