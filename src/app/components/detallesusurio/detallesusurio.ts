@@ -11,10 +11,11 @@ import { UsuarioService } from '../../services/usuario';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { NgClass } from '@angular/common';
 import { Animal } from '../../interfaces/animal';
+import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-detallesusurio',
-  imports: [CommonModule, NgClass, RouterLink],
+  imports: [CommonModule, NgClass, RouterLink, TranslateModule],
   templateUrl: './detallesusurio.html',
   styleUrl: './detallesusurio.css',
 })

@@ -8,10 +8,11 @@ import { ConversacionesService } from '../../services/conversaciones';
 import { Conversation } from '../../interfaces/conversation';
 import { ChatMessage } from '../../interfaces/message';
 import { Usuario } from '../../interfaces/usuario';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-mensajes',
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, TranslateModule],
   templateUrl: './mensajes.html',
   styleUrl: './mensajes.css',
 })
@@ -21,6 +22,7 @@ export class Mensajes implements OnInit, OnDestroy {
   private route = inject(ActivatedRoute);
   private router = inject(Router);
   private cdr = inject(ChangeDetectorRef);
+  private translate = inject(TranslateService);
 
   conversations: Conversation[] = [];
   filteredConversations: Conversation[] = [];
@@ -131,7 +133,7 @@ export class Mensajes implements OnInit, OnDestroy {
         },
         error: (err) => {
           console.error('Error cargando conversaciones:', err);
-          this.error = 'No se pudieron cargar las conversaciones.';
+          this.error = this.translate.instant('messages.errors.loadConversations');
           this.cdr.detectChanges();
         },
       });
@@ -180,7 +182,7 @@ export class Mensajes implements OnInit, OnDestroy {
         },
         error: (err) => {
           console.error('Error cargando conversación:', err);
-          this.error = 'No se pudo cargar la conversación seleccionada.';
+          this.error = this.translate.instant('messages.errors.loadConversation');
           this.cdr.detectChanges();
         },
       });
@@ -205,7 +207,7 @@ export class Mensajes implements OnInit, OnDestroy {
         },
         error: (err) => {
           console.error('Error enviando mensaje:', err);
-          this.error = 'No se pudo enviar el mensaje.';
+          this.error = this.translate.instant('messages.errors.send');
           alert(this.error);
           this.cdr.detectChanges();
         },
@@ -234,7 +236,7 @@ export class Mensajes implements OnInit, OnDestroy {
 
   getConversationTitle(conversation: Conversation): string {
     const partner = this.getConversationPartner(conversation);
-    return partner ? partner.name : 'Conversación';
+    return partner ? partner.name : this.translate.instant('messages.conversation');
   }
 
   getConversationPhoto(conversation: Conversation): string {
@@ -244,7 +246,7 @@ export class Mensajes implements OnInit, OnDestroy {
 
   getInitials(conversation: Conversation): string {
     const partner = this.getConversationPartner(conversation);
-    const name = partner?.name || 'Chat';
+    const name = partner?.name || this.translate.instant('messages.chat');
     return name
       .split(' ')
       .filter(Boolean)
@@ -270,7 +272,7 @@ export class Mensajes implements OnInit, OnDestroy {
       return lastFromList.body || '';
     }
 
-    return 'Sin mensajes todavía';
+    return this.translate.instant('messages.noMessages');
   }
 
   getConversationTime(conversation: Conversation): string {
@@ -303,8 +305,8 @@ export class Mensajes implements OnInit, OnDestroy {
   }
 
   getEntityName(entity: string | Usuario | undefined | null): string {
-    if (!entity) return 'Usuario';
-    return typeof entity === 'string' ? 'Usuario' : entity.name;
+    if (!entity) return this.translate.instant('messages.user');
+    return typeof entity === 'string' ? this.translate.instant('messages.user') : entity.name;
   }
 
   getEntityPhoto(entity: string | Usuario | undefined | null): string {
@@ -330,7 +332,7 @@ export class Mensajes implements OnInit, OnDestroy {
     const partner = this.getConversationPartner(this.selectedConversation);
 
     if (!partner?._id) {
-      alert('No se pudo abrir el perfil del usuario.');
+      alert(this.translate.instant('messages.errors.openProfile'));
       return;
     }
 

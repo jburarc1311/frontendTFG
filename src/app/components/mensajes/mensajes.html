@@ -3,10 +3,10 @@
     <aside class="inbox-panel">
       <div class="panel-header">
         <div>
-          <p class="eyebrow">Mensajes</p>
-          <h2>Conversaciones</h2>
+          <p class="eyebrow">{{ 'messages.eyebrow' | translate }}</p>
+          <h2>{{ 'messages.title' | translate }}</h2>
         </div>
-        <span class="counter">{{ conversations.length }} chats</span>
+        <span class="counter">{{ 'messages.chatCount' | translate: { count: conversations.length } }}</span>
       </div>
 
       <div class="thread-list">
@@ -38,8 +38,8 @@
         </article>
 
         <div class="empty-state" *ngIf="filteredConversations.length === 0">
-          <h3>No hay conversaciones</h3>
-          <p>Cuando alguien te escriba, aparecerá aquí.</p>
+          <h3>{{ 'messages.emptyTitle' | translate }}</h3>
+          <p>{{ 'messages.emptyText' | translate }}</p>
         </div>
       </div>
     </aside>
@@ -61,14 +61,14 @@
             </div>
             <div>
               <h3>{{ getConversationTitle(selectedConversation) }}</h3>
-              <p>Último mensaje {{ getConversationTime(selectedConversation) }}</p>
+              <p>{{ 'messages.lastMessage' | translate: { time: getConversationTime(selectedConversation) } }}</p>
             </div>
           </div>
-          <button type="button" class="ghost-btn" (click)="verPerfil()">Ver perfil</button>
+          <button type="button" class="ghost-btn" (click)="verPerfil()">{{ 'messages.viewProfile' | translate }}</button>
         </header>
 
         <div class="chat-stream">
-          <div class="date-separator">Conversación actual</div>
+          <div class="date-separator">{{ 'messages.currentConversation' | translate }}</div>
 
           <article
             class="message"
@@ -84,20 +84,20 @@
           </article>
 
           <div class="empty-state chat-empty" *ngIf="messages.length === 0">
-            <h3>Empieza la conversación</h3>
-            <p>Escribe el primer mensaje para romper el hielo.</p>
+            <h3>{{ 'messages.startTitle' | translate }}</h3>
+            <p>{{ 'messages.startText' | translate }}</p>
           </div>
         </div>
 
         <form class="composer" (ngSubmit)="sendMessage()">
           <textarea
             rows="1"
-            placeholder="Escribe tu mensaje..."
+            [placeholder]="'messages.placeholder' | translate"
             name="newMessage"
             [(ngModel)]="newMessage"
           ></textarea>
           <button type="submit" [disabled]="!newMessage.trim()">
-            Enviar
+            {{ 'common.send' | translate }}
           </button>
         </form>
       </ng-container>
@@ -105,8 +105,8 @@
       <ng-template #emptyChat>
         <div class="empty-chat-panel">
           <div class="empty-chat-icon">✦</div>
-          <h3>Selecciona una conversación</h3>
-          <p>Elige un chat de la izquierda para ver y responder mensajes.</p>
+          <h3>{{ 'messages.selectTitle' | translate }}</h3>
+          <p>{{ 'messages.selectText' | translate }}</p>
         </div>
       </ng-template>
     </main>

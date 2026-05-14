@@ -7,10 +7,10 @@
     <div class="avatar-wrapper" (click)="abrirSelectorFoto()" [class.avatar-loading]="cargandoFoto">
       <img
         [src]="usuario?.photo ? usuario.photo : '/image.png'"
-        alt="Foto de perfil"
+        [alt]="'profile.photoAlt' | translate"
         class="img-user"
       />
-      <button type="button" class="avatar-edit-btn" aria-label="Cambiar foto">
+      <button type="button" class="avatar-edit-btn" [attr.aria-label]="'profile.changePhoto' | translate">
         <i *ngIf="!cargandoFoto" class="fa-solid fa-pen"></i>
         <i *ngIf="cargandoFoto" class="fa-solid fa-spinner animate-spin"></i>
       </button>
@@ -19,7 +19,7 @@
     <div class="perfil-user-meta">
       <div class="perfil-user-top">
         <h2>{{ usuario?.name }}</h2>
-        <span class="perfil-badge">Adoptante activa</span>
+        <span class="perfil-badge">{{ 'profile.activeAdopter' | translate }}</span>
       </div>
       <p>{{ usuario?.role }}</p>
     </div>
@@ -31,19 +31,19 @@
 
   <div class="perfil-card">
     <div class="perfil-card-title">
-      <h3>Informacion Personal</h3>
-      <p>Actualiza tus datos para mejorar tu experiencia en la comunidad.</p>
+      <h3>{{ 'profile.personalInfo' | translate }}</h3>
+      <p>{{ 'profile.intro' | translate }}</p>
     </div>
 
     <form class="perfil-form">
       <div class="perfil-grid">
         <div class="field">
-          <label for="nombre">Nombre Completo</label>
+          <label for="nombre">{{ 'profile.fullName' | translate }}</label>
           <div class="input-with-icon">
             <input
               id="nombre"
               type="text"
-              placeholder="Nombre completo"
+              [placeholder]="'profile.namePlaceholder' | translate"
               [(ngModel)]="nombre"
               name="nombre"
             />
@@ -52,7 +52,7 @@
         </div>
 
         <div class="field">
-          <label for="correo">Correo Electronico</label>
+          <label for="correo">{{ 'profile.email' | translate }}</label>
           <div class="input-with-icon">
             <input id="correo" type="text" [value]="usuario?.email" disabled />
             <i class="fa-solid fa-pen"></i>
@@ -61,7 +61,7 @@
 
         <div class="field field-full">
           <label class="mb-2 block text-xs font-black uppercase tracking-[0.28em] text-slate-600"
-            >Ubicación</label
+            >{{ 'profile.location' | translate }}</label
           >
           <div class="flex flex-row flex-wrap gap-4">
             <div class="flex-1"> 
@@ -70,14 +70,14 @@
                 (click)="obtenerCoordenadas()"
                 class="location-btn rounded-2xl border border-slate-200 bg-white px-4 py-4 text-slate-900 outline-none transition hover:border-teal-500 focus:ring-4 focus:ring-teal-500/10"
               >
-                Obtener
+                {{ 'profile.getLocation' | translate }}
               </button>
             </div>
             <div class="input-with-icon location-input-wrapper flex-1">
               <input
                 id="ubicacion"
                 type="text"
-                placeholder="Ubicacion"
+                [placeholder]="'profile.locationPlaceholder' | translate"
                 [(ngModel)]="ubicacion"
                 name="ubicacion"
                 disabled=""
@@ -88,12 +88,12 @@
         </div>
 
         <div class="field field-full">
-          <label for="descripcion">Sobre mi</label>
+          <label for="descripcion">{{ 'profile.aboutMe' | translate }}</label>
           <div class="input-with-icon textarea-wrap">
             <textarea
               id="descripcion"
               rows="4"
-              placeholder="Cuentanos un poco de ti"
+              [placeholder]="'profile.aboutPlaceholder' | translate"
               [(ngModel)]="descripcion"
               name="descripcion"
             ></textarea>
@@ -104,7 +104,7 @@
 
       <div class="perfil-actions">
         <button type="button" class="btn btn-secondary" (click)="cancelarCambios()">
-          Cancelar
+          {{ 'common.cancel' | translate }}
         </button>
         <button
           type="button"
@@ -112,7 +112,7 @@
           (click)="guardarCambios()"
           [disabled]="guardandoCambios"
         >
-          <span>Guardar Cambios</span>
+          <span>{{ 'profile.save' | translate }}</span>
         </button>
       </div>
     </form>

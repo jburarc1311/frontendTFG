@@ -7,10 +7,11 @@ import { UsuarioService } from '../../services/usuario';
 import { Animales } from '../../services/animales';
 import { forkJoin } from 'rxjs';
 import Swal from 'sweetalert2';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-perfil',
-  imports: [FormsModule, CommonModule],
+  imports: [FormsModule, CommonModule, TranslateModule],
   templateUrl: './perfil.html',
   styleUrl: './perfil.css',
 })
@@ -22,6 +23,7 @@ export class Perfil {
   private cdr = inject(ChangeDetectorRef);
   public usuario: any;
   public animalesService = inject(Animales);
+  private translate = inject(TranslateService);
 
   public nombre: string = '';
   public descripcion: string = '';
@@ -54,12 +56,12 @@ export class Perfil {
     const userId = this.getUserId();
 
     if (!userId) {
-      this.mensajeError = 'No se pudo obtener tu ID de usuario';
+      this.mensajeError = this.translate.instant('profile.errors.userId');
       Swal.fire({
         icon: 'error',
-        title: 'No se pudo guardar el perfil',
-        text: 'No se pudo obtener tu ID de usuario.',
-        confirmButtonText: 'Aceptar',
+        title: this.translate.instant('profile.errors.saveTitle'),
+        text: this.translate.instant('profile.errors.userId'),
+        confirmButtonText: this.translate.instant('common.accept'),
         confirmButtonColor: '#16a34a',
         allowOutsideClick: false,
       });
@@ -104,9 +106,9 @@ export class Perfil {
 
           Swal.fire({
             icon: 'success',
-            title: 'Perfil actualizado',
-            text: 'Los cambios se guardaron correctamente.',
-            confirmButtonText: 'Aceptar',
+            title: this.translate.instant('profile.success.updatedTitle'),
+            text: this.translate.instant('profile.success.updatedText'),
+            confirmButtonText: this.translate.instant('common.accept'),
             confirmButtonColor: '#16a34a',
             allowOutsideClick: false,
           });
@@ -117,9 +119,9 @@ export class Perfil {
           console.error('Error al actualizar usuario:', error);
           Swal.fire({
             icon: 'error',
-            title: 'No se pudo actualizar el perfil',
-            text: error.error?.message || 'Error al guardar los cambios. Intenta de nuevo.',
-            confirmButtonText: 'Aceptar',
+            title: this.translate.instant('profile.errors.updateTitle'),
+            text: error.error?.message || this.translate.instant('profile.errors.saveChanges'),
+            confirmButtonText: this.translate.instant('common.accept'),
             confirmButtonColor: '#16a34a',
             allowOutsideClick: false,
           });
@@ -155,7 +157,7 @@ export class Perfil {
 
     // Validar que sea una imagen
     if (!archivo.type.startsWith('image/')) {
-      this.mensajeError = 'Por favor selecciona una imagen válida';
+      this.mensajeError = this.translate.instant('profile.errors.validImage');
       setTimeout(() => {
         this.mensajeError = '';
       }, 3000);
@@ -165,7 +167,7 @@ export class Perfil {
     // Validar tamaño (máximo 5MB)
     const MAX_SIZE = 5 * 1024 * 1024; // 5MB
     if (archivo.size > MAX_SIZE) {
-      this.mensajeError = 'La imagen no puede superar 5MB';
+      this.mensajeError = this.translate.instant('profile.errors.maxImage');
       setTimeout(() => {
         this.mensajeError = '';
       }, 3000);
@@ -179,7 +181,7 @@ export class Perfil {
   // Sube la foto a Cloudinary a través del backend
   subirFoto(archivo: File) {
     if (!this.usuario?.id && !this.usuario?._id) {
-      this.mensajeError = 'No se pudo obtener tu ID de usuario';
+      this.mensajeError = this.translate.instant('profile.errors.userId');
       return;
     }
 
@@ -210,8 +212,8 @@ export class Perfil {
         console.error('Error al subir foto:', error);
         Swal.fire({
           icon: 'error',
-          title: 'Error',
-          text: error.error?.message || 'Error al subir la foto. Intenta de nuevo.',
+          title: this.translate.instant('common.error'),
+          text: error.error?.message || this.translate.instant('profile.errors.uploadPhoto'),
         });
         this.cargandoFoto = false;
         this.cdr.detectChanges();
@@ -226,8 +228,8 @@ export class Perfil {
     if (!navigator.geolocation) {
       Swal.fire({
         icon: 'error',
-        title: 'Error',
-        text: 'La geolocalización no es compatible con tu navegador.',
+        title: this.translate.instant('common.error'),
+        text: this.translate.instant('profile.errors.geoUnsupported'),
       });
       return;
     }
@@ -262,8 +264,8 @@ export class Perfil {
 
           Swal.fire({
             icon: 'success',
-            title: 'Ubicación obtenida',
-            text: `Se ha obtenido tu ubicación: ${this.ubicacion}`,
+            title: this.translate.instant('profile.success.locationTitle'),
+            text: this.translate.instant('profile.success.locationText', { location: this.ubicacion }),
           });
           this.cdr.detectChanges();
         } catch (error) {
@@ -272,8 +274,8 @@ export class Perfil {
           this.ubicacion = `Lat: ${latitude.toFixed(4)}, Lon: ${longitude.toFixed(4)}`;
           Swal.fire({
             icon: 'error',
-            title: 'Error',
-            text: 'No se pudo obtener el nombre exacto de la ubicación. Se guardaron las coordenadas.',
+            title: this.translate.instant('common.error'),
+            text: this.translate.instant('profile.errors.geoFallback'),
           });
           this.cdr.detectChanges();
         }

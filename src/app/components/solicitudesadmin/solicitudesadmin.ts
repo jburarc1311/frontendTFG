@@ -3,11 +3,12 @@ import { CommonModule } from '@angular/common';
 import { Solicitudes } from '../../services/solicitudes';
 import { RouterLink } from '@angular/router';
 import Swal from 'sweetalert2';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-solicitudesadmin',
   standalone: true,
-  imports: [CommonModule, RouterLink],
+  imports: [CommonModule, RouterLink, TranslateModule],
   templateUrl: './solicitudesadmin.html',
   styleUrl: './solicitudesadmin.css',
 })
@@ -30,6 +31,7 @@ export class Solicitudesadmin implements OnInit {
 
   private solicitudesService = inject(Solicitudes);
   private cdr = inject(ChangeDetectorRef);
+  private translate = inject(TranslateService);
 
   toggleSidebar() {
     this.sidebarOpen = !this.sidebarOpen;
@@ -77,24 +79,32 @@ export class Solicitudesadmin implements OnInit {
 
   eliminarSolicitud(id: string) {
     Swal.fire({
-      title: '¿Estás seguro?',
-      text: 'Esta solicitud será eliminada permanentemente',
+      title: this.translate.instant('common.confirmTitle'),
+      text: this.translate.instant('admin.alerts.deleteRequestText'),
       icon: 'warning',
       showCancelButton: true,
       confirmButtonColor: '#ef4444',
       cancelButtonColor: '#6b7280',
-      confirmButtonText: 'Sí, eliminar',
-      cancelButtonText: 'Cancelar',
+      confirmButtonText: this.translate.instant('admin.alerts.deleteConfirm'),
+      cancelButtonText: this.translate.instant('common.cancel'),
     }).then((result) => {
       if (result.isConfirmed) {
         this.solicitudesService.delsolicitud(id).subscribe({
           next: () => {
-            Swal.fire('¡Eliminada!', 'La solicitud ha sido eliminada.', 'success');
+            Swal.fire(
+              this.translate.instant('admin.alerts.requestDeletedTitle'),
+              this.translate.instant('admin.alerts.requestDeletedText'),
+              'success',
+            );
             this.cargarDatos();
           },
           error: (err) => {
             console.error('Error al eliminar solicitud:', err);
-            Swal.fire('Error', 'Hubo un error al eliminar la solicitud', 'error');
+            Swal.fire(
+              this.translate.instant('common.error'),
+              this.translate.instant('admin.alerts.requestDeleteError'),
+              'error',
+            );
           },
         });
       }

@@ -478,6 +478,7 @@
     "totalAnimals": "Total Animales",
     "totalUsers": "Total Usuarios",
     "animalsTable": "Animales en adopción",
+    "animalsAdminPlaceholder": "Administración de animales",
     "noAnimals": "No hay animales registrados.",
     "name": "Nombre",
     "breed": "Raza",

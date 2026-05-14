@@ -16,7 +16,7 @@
 
     <div class="p-6 border-b">
       <h2 class="text-2xl font-bold text-green-600">ADOPT-ME</h2>
-      <p class="text-sm text-gray-500">Admin Panel</p>
+      <p class="text-sm text-gray-500">{{ 'admin.panel' | translate }}</p>
     </div>
 
     <nav class="mt-6 space-y-1 px-4">
@@ -25,21 +25,21 @@
         routerLinkActive="bg-green-50 text-green-700 font-medium"
         class="flex items-center space-x-3 px-4 py-3 rounded-lg text-gray-700 hover:bg-gray-100 transition"
       >
-        <span>Información</span>
+        <span>{{ 'admin.info' | translate }}</span>
       </a>
       <a
         href="/usuariosadmin"
         routerLinkActive="bg-green-50 text-green-700 font-medium"
         class="flex items-center space-x-3 px-4 py-3 rounded-lg text-gray-700 hover:bg-gray-100 transition"
       >
-        <span>Usuarios</span>
+        <span>{{ 'admin.users' | translate }}</span>
       </a>
       <a
         href="/solicitudesadmin"
         routerLinkActive="bg-green-50 text-green-700 font-medium"
         class="flex items-center space-x-3 px-4 py-3 rounded-lg text-gray-700 hover:bg-gray-100 transition"
       >
-        <span>Solicitudes</span>
+        <span>{{ 'admin.requests' | translate }}</span>
       </a>
     </nav>
   </div>
@@ -53,8 +53,8 @@
           ☰
         </button>
         <div>
-          <h1 class="text-2xl font-bold text-gray-800">Solicitudes</h1>
-          <p class="text-sm text-gray-500">Gestión de solicitudes de adopción</p>
+          <h1 class="text-2xl font-bold text-gray-800">{{ 'admin.requestsTitle' | translate }}</h1>
+          <p class="text-sm text-gray-500">{{ 'admin.requestsSubtitle' | translate }}</p>
         </div>
       </div>
       <span class="hidden sm:block text-sm text-gray-400">{{ today }}</span>
@@ -72,7 +72,7 @@
                 <i class="fas fa-list"></i>
               </div>
             </div>
-            <h3 class="text-gray-600 text-sm font-medium mb-1">Total Solicitudes</h3>
+            <h3 class="text-gray-600 text-sm font-medium mb-1">{{ 'admin.totalRequests' | translate }}</h3>
             <p class="text-2xl font-bold text-gray-900">{{ stats[0].value }}</p>
           </div>
 
@@ -83,7 +83,7 @@
                 <i class="fas fa-hourglass-end"></i>
               </div>
             </div>
-            <h3 class="text-gray-600 text-sm font-medium mb-1">Pendientes</h3>
+            <h3 class="text-gray-600 text-sm font-medium mb-1">{{ 'admin.pending' | translate }}</h3>
             <p class="text-2xl font-bold text-gray-900">{{ stats[1].value }}</p>
           </div>
 
@@ -94,7 +94,7 @@
                 <i class="fas fa-check-circle"></i>
               </div>
             </div>
-            <h3 class="text-gray-600 text-sm font-medium mb-1">Aceptadas</h3>
+            <h3 class="text-gray-600 text-sm font-medium mb-1">{{ 'admin.accepted' | translate }}</h3>
             <p class="text-2xl font-bold text-gray-900">{{ stats[2].value }}</p>
           </div>
 
@@ -105,7 +105,7 @@
                 <i class="fas fa-times-circle"></i>
               </div>
             </div>
-            <h3 class="text-gray-600 text-sm font-medium mb-1">Rechazadas</h3>
+            <h3 class="text-gray-600 text-sm font-medium mb-1">{{ 'admin.rejected' | translate }}</h3>
             <p class="text-2xl font-bold text-gray-900">{{ stats[3].value }}</p>
           </div>
         </div>
@@ -113,7 +113,7 @@
         <!-- Table Card -->
         <div class="bg-white rounded-lg shadow">
           <div class="p-6 border-b">
-            <h2 class="text-lg font-bold text-gray-800">Solicitudes registradas</h2>
+            <h2 class="text-lg font-bold text-gray-800">{{ 'admin.registeredRequests' | translate }}</h2>
           </div>
 
           <!-- Empty state -->
@@ -121,7 +121,7 @@
             *ngIf="!cargando && solicitudes.length === 0"
             class="p-8 text-center text-gray-400 text-sm"
           >
-            No hay solicitudes registradas.
+            {{ 'admin.noRequests' | translate }}
           </div>
 
           <!-- Table -->
@@ -129,11 +129,11 @@
             <table class="w-full text-sm">
               <thead class="border-b bg-gray-50">
                 <tr>
-                  <th class="px-4 py-3 text-left font-medium text-gray-700">ID Solicitud</th>
-                  <th class="px-4 py-3 text-left font-medium text-gray-700">Adoptante</th>
-                  <th class="px-4 py-3 text-left font-medium text-gray-700">Propietario</th>
-                  <th class="px-4 py-3 text-left font-medium text-gray-700">Estado</th>
-                  <th class="px-4 py-3 text-left font-medium text-gray-700">Acciones</th>
+                  <th class="px-4 py-3 text-left font-medium text-gray-700">{{ 'admin.requestId' | translate }}</th>
+                  <th class="px-4 py-3 text-left font-medium text-gray-700">{{ 'admin.adopter' | translate }}</th>
+                  <th class="px-4 py-3 text-left font-medium text-gray-700">{{ 'admin.owner' | translate }}</th>
+                  <th class="px-4 py-3 text-left font-medium text-gray-700">{{ 'admin.status' | translate }}</th>
+                  <th class="px-4 py-3 text-left font-medium text-gray-700">{{ 'admin.actions' | translate }}</th>
                 </tr>
               </thead>
               <tbody>
@@ -166,13 +166,13 @@
                       routerLink="/detallessolicitudes/{{solicitud._id}}"
                       class="px-3 py-1 rounded text-xs font-medium bg-blue-100 text-blue-700 hover:bg-blue-200 transition"
                     >
-                      Ver
+                      {{ 'common.view' | translate }}
                     </button>
                     <button
                       (click)="eliminarSolicitud(solicitud._id)"
                       class="px-3 py-1 rounded text-xs font-medium bg-red-100 text-red-700 hover:bg-red-200 transition"
                     >
-                      Eliminar
+                      {{ 'common.delete' | translate }}
                     </button>
                   </td>
                 </tr>

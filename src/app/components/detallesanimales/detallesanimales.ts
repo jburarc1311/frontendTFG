@@ -10,10 +10,11 @@ import { Footer } from '../footer/footer';
 import { ConversacionesService } from '../../services/conversaciones';
 import { Router } from '@angular/router';
 import Swal from 'sweetalert2';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-detallesanimales',
-  imports: [CommonModule, FormsModule, Footer],
+  imports: [CommonModule, FormsModule, Footer, TranslateModule],
   templateUrl: './detallesanimales.html',
   styleUrl: './detallesanimales.css',
 })
@@ -33,6 +34,7 @@ export class Detallesanimales {
   public solicitudesService = inject(Solicitudes);
   public conversacionesService = inject(ConversacionesService);
   public router = inject(Router);
+  private translate = inject(TranslateService);
 
   // Signal para el modal
   public modalAbierto = signal<boolean>(false);
@@ -77,7 +79,7 @@ export class Detallesanimales {
 
     const user = this.authService.getUser();
     if (!user) {
-      alert('Debes estar autenticado para dar me gusta');
+      alert(this.translate.instant('animalDetails.alerts.authLike'));
       return;
     }
 
@@ -132,8 +134,8 @@ export class Detallesanimales {
     if (this.esMiAnimal()) {
       Swal.fire({
         icon: 'error',
-        title: 'Error',
-        text: 'No puedes enviar una solicitud sobre uno de tus propios animales.',
+        title: this.translate.instant('common.error'),
+        text: this.translate.instant('animalDetails.alerts.ownRequest'),
       });
       return;
     }
@@ -151,20 +153,20 @@ export class Detallesanimales {
     const user = this.authService.getUser();
 
     if (!animal || !animal.propietario_id) {
-      alert('No se encontró el propietario de este animal.');
+      alert(this.translate.instant('animalDetails.alerts.ownerMissing'));
       return;
     }
 
     if (!user?.id) {
-      alert('Debes estar autenticado para contactar.');
+      alert(this.translate.instant('animalDetails.alerts.authContact'));
       return;
     }
 
     if (user.id === animal.propietario_id) {
       Swal.fire({
         icon: 'error',
-        title: 'Error',
-        text: 'No puedes iniciar una conversación sobre uno de tus propios animales.',
+        title: this.translate.instant('common.error'),
+        text: this.translate.instant('animalDetails.alerts.ownConversation'),
       });
       return;
     }
@@ -181,7 +183,7 @@ export class Detallesanimales {
       error: (error) => {
         console.error('Error creando conversación:', error);
         this.abriendoConversacion.set(false);
-        alert(error.error?.message || 'No se pudo abrir la conversación.');
+        alert(error.error?.message || this.translate.instant('animalDetails.alerts.openConversation'));
       },
     });
   }
@@ -193,8 +195,8 @@ export class Detallesanimales {
     if (!user) {
       Swal.fire({
         icon: 'error',
-        title: 'Error',
-        text: 'Debes estar autenticado para enviar una solicitud de adopción.',
+        title: this.translate.instant('common.error'),
+        text: this.translate.instant('animalDetails.alerts.authRequest'),
       });
       return;
     }
@@ -202,8 +204,8 @@ export class Detallesanimales {
     if (user.id === animal.propietario_id) {
       Swal.fire({
         icon: 'error',
-        title: 'Error',
-        text: 'No puedes enviar una solicitud de adopción para uno de tus propios animales.',
+        title: this.translate.instant('common.error'),
+        text: this.translate.instant('animalDetails.alerts.ownAdoption'),
       });
       return;
     }
@@ -222,14 +224,14 @@ export class Detallesanimales {
       next: (response: any) => {
         Swal.fire({
           icon: 'success',
-          title: 'Éxito',
-          text: 'Solicitud de adopción enviada con éxito',
+          title: this.translate.instant('animalDetails.alerts.requestSentTitle'),
+          text: this.translate.instant('animalDetails.alerts.requestSentText'),
         });
         this.cerrarModal();
       },
       error: (error: any) => {
         console.error('Error:', error);
-        alert('Error al enviar la solicitud de adopción');
+        alert(this.translate.instant('animalDetails.alerts.requestError'));
       },
     });
   }

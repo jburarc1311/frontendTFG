@@ -3,11 +3,12 @@ import { CommonModule } from '@angular/common';
 import { UsuarioService } from '../../services/usuario';
 import { RouterLink } from '@angular/router';
 import Swal from 'sweetalert2';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-usuariosadmin',
   standalone: true,
-  imports: [CommonModule, RouterLink],
+  imports: [CommonModule, RouterLink, TranslateModule],
   templateUrl: './usuariosadmin.html',
   styleUrl: './usuariosadmin.css',
 })
@@ -21,10 +22,11 @@ export class Usuariosadmin {
   usuarios: any[] = [];
   cargando = true;
 
-  stats = [{ label: 'Total Usuarios', value: '—', icon: '👥', color: 'bg-pink-100' }];
+  stats = [{ label: 'admin.totalUsers', value: '—', icon: '👥', color: 'bg-pink-100' }];
 
   private usuarioService = inject(UsuarioService);
   private cdr = inject(ChangeDetectorRef);
+  private translate = inject(TranslateService);
 
   toggleSidebar() {
     this.sidebarOpen = !this.sidebarOpen;
@@ -56,14 +58,14 @@ export class Usuariosadmin {
 
   eliminarUsuario(id: string) {
     Swal.fire({
-      title: '¿Estás seguro?',
-      text: '¡Esta acción no se puede deshacer!',
+      title: this.translate.instant('common.confirmTitle'),
+      text: this.translate.instant('common.irreversible'),
       icon: 'warning',
       showCancelButton: true,
       confirmButtonColor: '#d33',
       cancelButtonColor: '#3085d6',
-      confirmButtonText: 'Sí, eliminar',
-      cancelButtonText: 'Cancelar',
+      confirmButtonText: this.translate.instant('admin.alerts.deleteConfirm'),
+      cancelButtonText: this.translate.instant('common.cancel'),
     }).then((result) => {
       if (result.isConfirmed) {
         this.usuarioService.delusuario(id).subscribe({
@@ -82,14 +84,14 @@ export class Usuariosadmin {
 
   desactivarUsuario(id: string) {
     Swal.fire({
-      title: '¿Estás seguro?',
-      text: '¡Esta acción desactivará al usuario!',
+      title: this.translate.instant('common.confirmTitle'),
+      text: this.translate.instant('admin.alerts.deactivateText'),
       icon: 'warning',
       showCancelButton: true,
       confirmButtonColor: '#f59e0b',
       cancelButtonColor: '#3085d6',
-      confirmButtonText: 'Sí, desactivar',
-      cancelButtonText: 'Cancelar',
+      confirmButtonText: this.translate.instant('admin.alerts.deactivateConfirm'),
+      cancelButtonText: this.translate.instant('common.cancel'),
     }).then((result) => {
       if (result.isConfirmed) {
         this.usuarioService.desactivarUsuario(id).subscribe({
@@ -104,7 +106,11 @@ export class Usuariosadmin {
             console.error('Error al desactivar usuario:', err);
           },
         });
-        Swal.fire('Desactivado', 'El usuario ha sido desactivado.', 'success');
+        Swal.fire(
+          this.translate.instant('admin.alerts.deactivatedTitle'),
+          this.translate.instant('admin.alerts.deactivatedText'),
+          'success',
+        );
         this.cargarDatos();
       }
     });   
@@ -112,14 +118,14 @@ export class Usuariosadmin {
 
   activarUsuario(id: string) {
     Swal.fire({
-      title: '¿Estás seguro?',
-      text: '¡Esta acción activará al usuario!',
+      title: this.translate.instant('common.confirmTitle'),
+      text: this.translate.instant('admin.alerts.activateText'),
       icon: 'warning',
       showCancelButton: true,
       confirmButtonColor: '#16a34a',
       cancelButtonColor: '#3085d6',
-      confirmButtonText: 'Sí, activar',
-      cancelButtonText: 'Cancelar',
+      confirmButtonText: this.translate.instant('admin.alerts.activateConfirm'),
+      cancelButtonText: this.translate.instant('common.cancel'),
     }).then((result) => {
       if (result.isConfirmed) {
         this.usuarioService.activarUsuario(id).subscribe({
@@ -134,7 +140,11 @@ export class Usuariosadmin {
             console.error('Error al activar usuario:', err);
           },
         });
-        Swal.fire('Activado', 'El usuario ha sido activado.', 'success');
+        Swal.fire(
+          this.translate.instant('admin.alerts.activatedTitle'),
+          this.translate.instant('admin.alerts.activatedText'),
+          'success',
+        );
         this.cargarDatos();
       }
     });   
