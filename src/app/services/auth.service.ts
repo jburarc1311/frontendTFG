@@ -213,7 +213,7 @@ export class AuthService {
   googleLogin(googleToken: string): Observable<any> {
     return this.http
       .post<any>(
-        'https://backendtfg-production-936a.up.railway.app/auth/google',
+        `${this.apiUrl}/auth/google`,
         { token: googleToken },
         { withCredentials: true }
       )
