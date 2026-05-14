@@ -175,6 +175,20 @@ export class Login implements OnInit {
         },
         error: (err) => {
           console.error('Error en login de Google:', err);
+
+          const backendMessage = err.error?.message ?? '';
+          if (backendMessage.toLowerCase().includes('usuario no registrado')) {
+            Swal.fire({
+              icon: 'warning',
+              title: 'Primero debes registrarte',
+              text: 'No encontramos tu cuenta. Regístrate primero para poder iniciar sesión con Google.',
+              confirmButtonText: 'Ir a registro',
+            }).then(() => {
+              this.setActiveTab('register');
+            });
+            return;
+          }
+
           Swal.fire({
             icon: 'error',
             title:
