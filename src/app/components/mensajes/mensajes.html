@@ -18,14 +18,10 @@
         >
           <div class="avatar-wrap">
             <img
-              *ngIf="getConversationPhoto(conversation)"
               [src]="getConversationPhoto(conversation)"
               [alt]="getConversationTitle(conversation)"
               class="avatar-image"
             />
-            <div *ngIf="!getConversationPhoto(conversation)" class="avatar">
-              {{ getInitials(conversation) }}
-            </div>
           </div>
 
           <div class="thread-info">
@@ -50,14 +46,10 @@
           <div class="chat-user">
             <div class="chat-avatar-wrap">
               <img
-                *ngIf="getConversationPhoto(selectedConversation)"
                 [src]="getConversationPhoto(selectedConversation)"
                 [alt]="getConversationTitle(selectedConversation)"
                 class="chat-avatar-image"
               />
-              <div *ngIf="!getConversationPhoto(selectedConversation)" class="chat-avatar">
-                {{ getInitials(selectedConversation) }}
-              </div>
             </div>
             <div>
               <h3>{{ getConversationTitle(selectedConversation) }}</h3>

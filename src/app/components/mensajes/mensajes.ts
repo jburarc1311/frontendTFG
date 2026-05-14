@@ -241,20 +241,10 @@ export class Mensajes implements OnInit, OnDestroy {
 
   getConversationPhoto(conversation: Conversation): string {
     const partner = this.getConversationPartner(conversation);
-    return partner?.photo || '';
+    return partner?.photo || 'image.png';
   }
 
-  getInitials(conversation: Conversation): string {
-    const partner = this.getConversationPartner(conversation);
-    const name = partner?.name || this.translate.instant('messages.chat');
-    return name
-      .split(' ')
-      .filter(Boolean)
-      .slice(0, 2)
-      .map((word) => word[0])
-      .join('')
-      .toUpperCase();
-  }
+  // Método getInitials eliminado - se usa image.png como fallback en lugar de iniciales
 
   getLastMessageText(conversation: Conversation): string {
     const lastMessage = conversation.lastMessage;
