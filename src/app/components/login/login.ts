@@ -96,8 +96,28 @@ export class Login implements OnInit {
         this.router.navigate(['/home']);
       },
       error: (err) => {
-        this.errorMessage =
-          err.error?.message || this.translate.instant('login.errors.loginFailed');
+        const backendMessage = err.error?.message ?? '';
+        this.errorMessage = backendMessage || this.translate.instant('login.errors.loginFailed');
+
+        // Mostrar SweetAlert para errores de login (usuario no encontrado, credenciales, etc.)
+        const lowerMsg = backendMessage.toLowerCase();
+        if (err.status === 404 || lowerMsg.includes('usuario') || lowerMsg.includes('no encontrado') || lowerMsg.includes('no registrado')) {
+          Swal.fire({
+            icon: 'warning',
+            title: this.translate.instant('login.errors.userNotFound') || 'Usuario no encontrado',
+            text: backendMessage || 'No encontramos tu cuenta. Por favor regístrate primero.',
+            confirmButtonText: this.translate.instant('login.actions.goToRegister') || 'Ir a registro',
+          }).then(() => {
+            this.setActiveTab('register');
+          });
+          return;
+        }
+
+        Swal.fire({
+          icon: 'error',
+          title: this.translate.instant('login.errors.loginFailed') || 'Error en el login',
+          text: backendMessage || this.translate.instant('login.errors.loginFailed'),
+        });
       },
     });
   }
