@@ -47,7 +47,7 @@ export class Login implements OnInit {
   private initializeGoogleSignIn(): void {
     if (google && google.accounts) {
       google.accounts.id.initialize({
-        client_id: '1034393548611-a0m40fmjdql25s43u2eibi3scitjb3hg.apps.googleusercontent.com',
+        client_id: '594432609844-722slkfim7c5bafft0rjv3mfvitvgnng.apps.googleusercontent.com',
         callback: (response: any) => this.handleGoogleLoginResponse(response),
       });
     }
