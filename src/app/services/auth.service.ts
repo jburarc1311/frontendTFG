@@ -9,6 +9,7 @@ import { BehaviorSubject, Observable, tap } from 'rxjs';
 export class AuthService {
   // URL base del backend. Todas las peticiones apuntarán aquí
   private apiUrl = 'https://backendtfg-production-936a.up.railway.app/api';
+  private authUrl = 'https://backendtfg-production-936a.up.railway.app/auth';
   private refreshTokenInterval: any;
 
   // BehaviorSubject: es como una variable reactiva que notifica a quien la escuche cuando cambia
@@ -212,11 +213,7 @@ export class AuthService {
   // Login con Google
   googleLogin(googleToken: string): Observable<any> {
     return this.http
-      .post<any>(
-        `${this.apiUrl}/auth/google`,
-        { token: googleToken },
-        { withCredentials: true }
-      )
+      .post<any>(`${this.authUrl}/google`, { token: googleToken }, { withCredentials: true })
       .pipe(
         tap((res) => {
           const accessToken = res?.token;
