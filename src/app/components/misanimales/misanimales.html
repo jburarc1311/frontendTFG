@@ -5,7 +5,7 @@
         <p class="text-xs font-extrabold tracking-[0.18em] text-emerald-700">
           {{ 'myAnimals.kicker' | translate }}
         </p>
-        <h1 class="mt-1 text-4xl font-black tracking-tight text-slate-900">
+        <h1 class="mt-1 text-3xl font-black tracking-tight text-slate-900 sm:text-4xl">
           {{ 'myAnimals.title' | translate }}
         </h1>
         <p class="mt-2 text-base text-slate-600">
@@ -15,7 +15,7 @@
 
       <a
         routerLink="/darenadopcion"
-        class="inline-flex items-center gap-2 rounded-xl bg-orange-500 px-5 py-3 text-sm font-extrabold text-white shadow-sm transition hover:bg-orange-600"
+        class="inline-flex w-full items-center justify-center gap-2 rounded-xl bg-orange-500 px-5 py-3 text-sm font-extrabold text-white shadow-sm transition hover:bg-orange-600 sm:w-auto"
       >
         <span class="text-lg leading-none">+</span>
         {{ 'myAnimals.publishNew' | translate }}
@@ -97,7 +97,7 @@
               }
             </div>
 
-            <div class="mt-4 flex items-center justify-between border-t border-slate-200 pt-3 text-sm font-bold text-slate-700">
+            <div class="mt-4 grid grid-cols-3 gap-1 border-t border-slate-200 pt-3 text-center text-sm font-bold text-slate-700 sm:flex sm:items-center sm:justify-between sm:text-left">
               <a [routerLink]="['/detallesanimales/', item._id]" class="inline-flex items-center gap-1 rounded-lg px-2 py-1 transition hover:bg-slate-100">
                 <span aria-hidden="true"></span>
                 {{ 'common.view' | translate }}

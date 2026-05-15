@@ -361,12 +361,42 @@ input[type='file']::file-selector-button:hover {
     padding: 30px 10px 48px;
   }
 
+  .adopcion-hero h1 {
+    font-size: 32px;
+    line-height: 1.05;
+  }
+
+  .subtitle {
+    font-size: 16px;
+  }
+
+  .adopcion-card {
+    border-radius: 20px;
+    padding: 12px;
+  }
+
+  .bloque {
+    border-radius: 16px;
+    padding: 16px;
+  }
+
   .bloque h2 {
-    font-size: 26px;
+    font-size: 24px;
+    line-height: 1.1;
   }
 
   .pill-row,
   .pill-row.three {
     grid-template-columns: 1fr;
+  }
+
+  input[type='file']::file-selector-button {
+    width: 100%;
+    margin: 0 0 10px;
+  }
+
+  .upload-panel-head {
+    align-items: flex-start;
+    flex-direction: column;
   }
 }

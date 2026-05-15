@@ -92,8 +92,12 @@
       "hide": "Hide",
       "login": "Enter my profile",
       "register": "Create account",
+      "googleLogin": "Continue with Google",
       "createNow": "Create one now",
       "backToLogin": "Back to login"
+    },
+    "actions": {
+      "goToRegister": "Go to register"
     },
     "help": {
       "noAccount": "Don't have an account yet?",
@@ -106,6 +110,8 @@
       "passwordLength": "Password must be at least 8 characters long.",
       "passwordMismatch": "Passwords do not match.",
       "loginFailed": "Login failed.",
+      "googleLoginFailed": "Google Login failed",
+      "userNotFound": "User not found",
       "registerFailed": "Registration failed."
     },
     "success": {

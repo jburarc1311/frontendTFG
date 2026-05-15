@@ -211,8 +211,11 @@ export class AuthService {
 
   // Login con Google
   googleLogin(googleToken: string): Observable<any> {
+    // Enviar el token en dos campos (compatibilidad): 'token' y 'credential'
+    // Algunos backends esperan 'credential' o 'id_token' en vez de 'token'
+    const body = { token: googleToken, credential: googleToken };
     return this.http
-      .post<any>(`${this.apiUrl}/google`, { token: googleToken }, { withCredentials: true })
+      .post<any>(`${this.apiUrl}/google`, body, { withCredentials: true })
       .pipe(
         tap((res) => {
           const accessToken = res?.token;

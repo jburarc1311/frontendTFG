@@ -282,6 +282,7 @@
   }
 
   .perfil-header {
+    align-items: center;
     gap: 14px;
     padding: 0 10px;
   }
@@ -295,6 +296,17 @@
     flex-wrap: wrap;
   }
 
+  .perfil-user-top h2 {
+    font-size: 24px;
+    line-height: 1.1;
+    overflow-wrap: anywhere;
+  }
+
+  .perfil-card-title h3 {
+    font-size: 24px;
+    line-height: 1.1;
+  }
+
   .perfil-grid {
     grid-template-columns: 1fr;
   }
@@ -304,6 +316,32 @@
   }
 
   .perfil-actions {
-    justify-content: space-between;
+    flex-direction: column-reverse;
+    justify-content: stretch;
+  }
+
+  .btn {
+    width: 100%;
+  }
+}
+
+@media (max-width: 520px) {
+  .perfil-header {
+    flex-direction: column;
+    align-items: flex-start;
+    margin-top: -46px;
+  }
+
+  .perfil-user-meta {
+    margin-bottom: 0;
+  }
+
+  .field-full .flex {
+    flex-direction: column;
+  }
+
+  .location-btn,
+  .location-input-wrapper {
+    width: 100%;
   }
 }

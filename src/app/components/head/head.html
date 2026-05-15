@@ -1,20 +1,20 @@
 <nav class="bg-neutral-primary w-full z-20 top-0 start-0 border-b border-default">
-  <div class="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
-    <a href="/home" class="flex items-center space-x-3 rtl:space-x-reverse">
-      <img src="/1a02ea61-271f-4f26-b81e-426a11b61c68.png" class="h-7" alt="Flowbite Logo" />
-      <span class="self-center text-xl text-heading font-semibold text-[#10B968]">ADOPT-ME</span>
+  <div class="max-w-screen-xl flex flex-wrap items-center justify-between gap-3 mx-auto p-3 sm:p-4">
+    <a href="/home" class="flex min-w-0 items-center space-x-2 sm:space-x-3 rtl:space-x-reverse">
+      <img src="/1a02ea61-271f-4f26-b81e-426a11b61c68.png" class="h-7 shrink-0" alt="Flowbite Logo" />
+      <span class="self-center truncate text-lg text-heading font-semibold text-[#10B968] sm:text-xl">ADOPT-ME</span>
     </a>
 
-    <div class="flex md:order-2 space-x-3 md:space-x-0 rtl:space-x-reverse items-center">
+    <div class="flex shrink-0 md:order-2 gap-2 sm:gap-3 rtl:space-x-reverse items-center">
       <!-- Botones de idioma ES/EN -->
       <div
-        class="mr-3 flex items-center gap-2 rounded-full border border-gray-300 bg-white px-2 py-1 shadow-sm"
+        class="flex items-center gap-1 rounded-full border border-gray-300 bg-white px-1.5 py-1 shadow-sm sm:gap-2 sm:px-2"
       >
         <button
           type="button"
           (click)="switchLanguage('es')"
           [ngClass]="currentLang === 'es' ? 'bg-[#10B968] text-white' : 'text-gray-600'"
-          class="rounded-full px-3 py-1 text-xs font-bold transition"
+          class="rounded-full px-2.5 py-1 text-xs font-bold transition sm:px-3"
         >
           ES
         </button>
@@ -22,7 +22,7 @@
           type="button"
           (click)="switchLanguage('en')"
           [ngClass]="currentLang === 'en' ? 'bg-[#10B968] text-white' : 'text-gray-600'"
-          class="rounded-full px-3 py-1 text-xs font-bold transition"
+          class="rounded-full px-2.5 py-1 text-xs font-bold transition sm:px-3"
         >
           EN
         </button>
@@ -125,7 +125,7 @@
       <ng-template #loginBtn>
         <a
           href="/login"
-          class="text-white bg-[#10B968] hover:text-[#10B968] hover:bg-[#f3f4f6] font-medium rounded-lg text-sm px-4 py-2 focus:outline-none transition-all"
+          class="text-white bg-[#10B968] hover:text-[#10B968] hover:bg-[#f3f4f6] font-medium rounded-lg text-sm px-3 py-2 focus:outline-none transition-all sm:px-4"
         >
           {{ 'navigation.login' | translate }}
         </a>
@@ -165,7 +165,7 @@
       id="navbar-sticky"
     >
       <ul
-        class="flex flex-col p-4 md:p-0 mt-4 font-medium border border-default rounded-base bg-neutral-secondary-soft md:space-x-8 rtl:space-x-reverse md:flex-row md:mt-0 md:border-0 md:bg-neutral-primary"
+        class="flex flex-col gap-1 p-3 md:p-0 mt-3 font-medium border border-default rounded-base bg-neutral-secondary-soft md:space-x-8 rtl:space-x-reverse md:flex-row md:mt-0 md:border-0 md:bg-neutral-primary"
       >
         <li>
           <a

@@ -21,7 +21,7 @@
     <!-- Solicitud Details -->
     @if (solicitud) {
       <div
-        class="bg-white rounded-lg shadow-md p-8 border-l-4"
+        class="bg-white rounded-lg shadow-md p-4 border-l-4 sm:p-8"
         [ngClass]="{
           'border-yellow-500': solicitud.estado?.toLowerCase() === 'pendiente',
           'border-green-500': solicitud.estado?.toLowerCase() === 'aceptada',
@@ -29,7 +29,7 @@
         }"
       >
         <!-- Header Section -->
-        <div class="flex items-center justify-between mb-8 pb-6 border-b">
+        <div class="flex flex-col gap-3 mb-8 pb-6 border-b sm:flex-row sm:items-center sm:justify-between">
           <div>
             <h2 class="text-2xl font-bold text-gray-800">
               {{ 'requestDetails.adoptionRequest' | translate }}
@@ -151,7 +151,7 @@
         </div>
 
         <!-- Actions -->
-        <div class="flex gap-3 pt-8 border-t mt-8">
+        <div class="grid gap-3 pt-8 border-t mt-8 sm:flex">
           <button
             routerLink="/missolicitudes"
             class="px-6 py-2 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition font-medium"
