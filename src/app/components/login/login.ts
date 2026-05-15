@@ -45,12 +45,93 @@ export class Login implements OnInit {
   }
 
   private initializeGoogleSignIn(): void {
-    if (google && google.accounts) {
-      google.accounts.id.initialize({
-        client_id: '594432609844-722slkfim7c5bafft0rjv3mfvitvgnng.apps.googleusercontent.com',
-        callback: (response: any) => this.handleGoogleLoginResponse(response),
+    const setupWithClientId = (clientId: string) => {
+      try {
+        if (google && google.accounts && google.accounts.id) {
+          google.accounts.id.initialize({
+            client_id: clientId,
+            callback: (response: any) => this.handleGoogleLoginResponse(response),
+          });
+        }
+      } catch (e) {
+        console.error('Error inicializando Google Identity:', e);
+      }
+    };
+
+    const obtainClientId = async (): Promise<string | null> => {
+      // Intentar obtener clientId desde backend en /api/config
+      const tryEndpoints = ['/api/config', '/config', '/.well-known/config'];
+      for (const ep of tryEndpoints) {
+        try {
+          const res = await fetch(ep);
+          if (!res.ok) continue;
+          const json = await res.json();
+
+          // buscar múltiples claves posibles que el backend pueda usar
+          const candidates = [
+            'GOOGLE_CLIENT_ID',
+          ];
+
+          for (const key of candidates) {
+            if (json[key]) {
+              console.log('Found Google client id in', ep, 'key:', key);
+              return json[key];
+            }
+          }
+
+          // si la respuesta es una cadena sola, devolverla
+          if (typeof json === 'string' && json.trim()) return json.trim();
+        } catch (e) {
+          console.warn('No se pudo obtener clientId del endpoint', ep, e);
+        }
+      }
+
+      // Fallback: buscar meta tag en index.html
+      try {
+        const meta = document.querySelector('meta[name="google-client-id"]');
+        if (meta) return (meta as HTMLMetaElement).content || null;
+      } catch (e) {
+        /* ignore */
+      }
+
+      return null;
+    };
+
+    const setupAfterLoad = async () => {
+      const clientId = await obtainClientId();
+      if (clientId) {
+        setupWithClientId(clientId);
+        return;
+      }
+
+      console.error('Google client id no disponible en backend ni en meta tag');
+      Swal.fire({
+        icon: 'error',
+        title: 'Google no configurado',
+        text: 'El client ID de Google no está disponible. Contacta con el administrador.',
       });
+    };
+
+    // Esperar a que el SDK esté cargado
+    if (typeof google !== 'undefined' && google && google.accounts && google.accounts.id) {
+      setupAfterLoad();
+      return;
     }
+
+    const existingScript = document.querySelector('script[src="https://accounts.google.com/gsi/client"]');
+    if (existingScript) {
+      existingScript.addEventListener('load', () => setupAfterLoad());
+      existingScript.addEventListener('error', () => console.error('Fallo cargando el script de Google Identity'));
+      return;
+    }
+
+    const script = document.createElement('script');
+    script.src = 'https://accounts.google.com/gsi/client';
+    script.async = true;
+    script.defer = true;
+    script.onload = () => setupAfterLoad();
+    script.onerror = () => console.error('Fallo cargando el script de Google Identity');
+    document.head.appendChild(script);
   }
 
   onGoogleLogin(): void {
