@@ -197,7 +197,7 @@ export class Login implements OnInit {
           console.error('Error en login de Google:', err);
 
           const backendMessage = err.error?.message ?? '';
-          if (backendMessage.toLowerCase().includes('usuario no registrado')) {
+          if (backendMessage.toLowerCase().includes('esa es toda la informacion que tenemos')) {
             Swal.fire({        
               icon: 'warning',
               title: 'Primero debes registrarte',
