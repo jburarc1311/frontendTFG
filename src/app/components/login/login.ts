@@ -184,6 +184,20 @@ export class Login implements OnInit {
   }
 
   private handleGoogleLoginResponse(response: any): void {
+    console.log('Google callback response:', response);
+
+    if (!response || !response.credential) {
+      console.error('Google Sign-In: no se recibió credential', response);
+      Swal.fire({
+        icon: 'error',
+        title: this.translate.instant('login.errors.googleNoCredential') || 'Error con Google',
+        text:
+          this.translate.instant('login.errors.googleNoCredentialText') ||
+          'No se recibió la credencial de Google. Revisa la consola y la configuración de OAuth.',
+      });
+      return;
+    }
+
     if (response.credential) {
       console.log('Google token obtenido');
 
