@@ -48,8 +48,10 @@ export class AuthService {
             sessionStorage.setItem('accessToken', accessToken);
 
             if (user) {
-              // Guardamos los datos del usuario (nombre, foto, etc.) para mostrarlos en el navbar
-              sessionStorage.setItem('user', JSON.stringify(user));
+              // Normalizar id y guardarlo en sessionStorage
+              const normalizedUser = { ...(user as any) };
+              if (!normalizedUser.id && normalizedUser._id) normalizedUser.id = normalizedUser._id;
+              sessionStorage.setItem('user', JSON.stringify(normalizedUser));
             }
 
             // Notificamos a todos los componentes suscritos que hay sesión activa
@@ -231,8 +233,10 @@ export class AuthService {
             sessionStorage.setItem('accessToken', accessToken);
 
             if (user) {
-              // Guardamos los datos del usuario
-              sessionStorage.setItem('user', JSON.stringify(user));
+              // Normalizar id y guardarlo en sessionStorage
+              const normalizedUser = { ...(user as any) };
+              if (!normalizedUser.id && normalizedUser._id) normalizedUser.id = normalizedUser._id;
+              sessionStorage.setItem('user', JSON.stringify(normalizedUser));
             }
 
             // Notificamos que hay sesión activa
