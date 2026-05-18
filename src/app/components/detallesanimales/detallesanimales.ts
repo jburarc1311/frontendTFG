@@ -173,7 +173,21 @@ export class Detallesanimales {
 
     this.abriendoConversacion.set(true);
 
-    this.conversacionesService.createOrGetConversation(user.id, animal.propietario_id).subscribe({
+    // Log para depuración: comprobar que enviamos IDs válidos
+    console.log('Crear/Obtener conversación - usuario:', user);
+    console.log('Crear/Obtener conversación - propietario_id:', animal.propietario_id);
+
+    const senderId = String(user.id || user._id || '');
+    const receiverId = String(animal.propietario_id || '');
+
+    if (!senderId || !receiverId) {
+      console.error('IDs inválidos al crear conversación:', { senderId, receiverId });
+      this.abriendoConversacion.set(false);
+      alert(this.translate.instant('animalDetails.alerts.ownerMissing'));
+      return;
+    }
+
+    this.conversacionesService.createOrGetConversation(senderId, receiverId).subscribe({
       next: (conversation) => {
         this.abriendoConversacion.set(false);
         this.router.navigate(['/mensajes'], {
