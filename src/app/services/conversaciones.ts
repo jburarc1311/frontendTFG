@@ -28,11 +28,9 @@ export class ConversacionesService {
   }
 
   createOrGetConversation(sender: string, receiver: string): Observable<Conversation> {
-    return this.http.post<Conversation>(
-      `${this.apiUrl}/conversations`,
-      { sender, receiver },
-      this.getHeaders(),
-    );
+    const payload: any = { sender, receiver, participant1: sender, participant2: receiver };
+    console.log('Enviar createOrGetConversation payload:', payload);
+    return this.http.post<Conversation>(`${this.apiUrl}/conversations`, payload, this.getHeaders());
   }
 
   sendMessage(conversationId: string, body: string): Observable<ChatMessage> {
