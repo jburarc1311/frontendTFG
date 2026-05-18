@@ -46,7 +46,7 @@ export class UsuarioService {
   }
 
   getUsuario(id: string) {
-    return this.http.get(`${this.apiUrl}/usuarios/usuario/${id}`);
+    return this.http.get(`${this.apiUrl}/usuarios/${id}`);
   }
 
   delusuario(id: string) {
