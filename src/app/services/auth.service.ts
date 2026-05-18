@@ -94,7 +94,12 @@ export class AuthService {
     }
 
     try {
-      return JSON.parse(user);
+      const parsed = JSON.parse(user);
+      // Normalizar campos de id: algunos proveedores usan `_id`, otros `id`
+      if (parsed && !parsed.id && parsed._id) {
+        parsed.id = parsed._id;
+      }
+      return parsed;
     } catch {
       return null;
     }

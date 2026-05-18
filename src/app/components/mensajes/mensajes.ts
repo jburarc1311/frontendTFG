@@ -224,14 +224,20 @@ export class Mensajes implements OnInit, OnDestroy {
 
   getConversationPartner(conversation: Conversation): Usuario | null {
     const currentId = this.getCurrentUserId();
-    const participant1 = this.getEntityId(conversation.participant1);
-    const participant2 = this.getEntityId(conversation.participant2);
+    const sender = conversation.sender;
+    const receiver = conversation.receiver;
+    const senderId = this.getEntityId(sender);
+    const receiverId = this.getEntityId(receiver);
 
-    if (currentId && participant1 === currentId) {
-      return this.isUsuario(conversation.participant2) ? conversation.participant2 : null;
+    if (currentId && senderId === currentId) {
+      return this.isUsuario(receiver) ? receiver : null;
     }
 
-    return this.isUsuario(conversation.participant1) ? conversation.participant1 : null;
+    if (currentId && receiverId === currentId) {
+      return this.isUsuario(sender) ? sender : null;
+    }
+
+    return this.isUsuario(receiver) ? receiver : this.isUsuario(sender) ? sender : null;
   }
 
   getConversationTitle(conversation: Conversation): string {

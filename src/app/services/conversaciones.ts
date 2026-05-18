@@ -27,10 +27,10 @@ export class ConversacionesService {
     return this.http.get<Conversation>(`${this.apiUrl}/conversations/${id}`, this.getHeaders());
   }
 
-  createOrGetConversation(participant1: string, participant2: string): Observable<Conversation> {
+  createOrGetConversation(sender: string, receiver: string): Observable<Conversation> {
     return this.http.post<Conversation>(
       `${this.apiUrl}/conversations`,
-      { participant1, participant2 },
+      { sender, receiver },
       this.getHeaders(),
     );
   }
