@@ -1,5 +1,5 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { Router } from '@angular/router';
 import { BehaviorSubject, Observable, tap } from 'rxjs';
 
@@ -7,7 +7,9 @@ import { BehaviorSubject, Observable, tap } from 'rxjs';
   providedIn: 'root',
 })
 export class AuthService {
-  // URL base del backend. Todas las peticiones apuntarán aquí
+  // URL del back
+  private http = inject(HttpClient);
+  private router = inject(Router);
   private apiUrl = 'https://backendtfg-production-936a.up.railway.app/api';
   private refreshTokenInterval: any;
 
@@ -15,24 +17,18 @@ export class AuthService {
   // Se inicializa comprobando si ya hay un token guardado (por si el usuario recargó la página)
   private loggedIn = new BehaviorSubject<boolean>(this.isLoggedIn());
 
-  // Versión pública del BehaviorSubject — los componentes se suscriben a esto
-  // pero no pueden modificarlo directamente (solo pueden leer)
+  // Versión pública del BehaviorSubject — los componentes (solo pueden leer)
   loggedInn = this.loggedIn.asObservable();
 
   // Angular inyecta automáticamente HttpClient (para hacer peticiones HTTP)
   // y Router (para navegar entre páginas)
-  constructor(
-    private http: HttpClient,
-    private router: Router,
-  ) {
+  constructor() {
     // Si hay token guardado, iniciar el auto-refresh
     if (this.isLoggedIn()) {
       this.iniciarAutoRefresh();
     }
   }
 
-  // Método que llama al endpoint POST /api/login con el email y password
-  // Devuelve un Observable — es como una "promesa" que puedes escuchar desde el componente
   login(email: string, password: string): Observable<any> {
     return this.http
       .post<any>(`${this.apiUrl}/login`, { email, password }, { withCredentials: true })
@@ -44,7 +40,7 @@ export class AuthService {
           const user = res?.data?.user ?? res?.user;
 
           if (accessToken) {
-            // Guardamos el accessToken en sessionStorage para usarlo en futuras peticiones
+            // Guardamos el accessToken en sessionStorage para usarlo en otras peticiones
             sessionStorage.setItem('accessToken', accessToken);
 
             if (user) {
@@ -96,12 +92,7 @@ export class AuthService {
     }
 
     try {
-      const parsed = JSON.parse(user);
-      // Normalizar campos de id: algunos proveedores usan `_id`, otros `id`
-      if (parsed && !parsed.id && parsed._id) {
-        parsed.id = parsed._id;
-      }
-      return parsed;
+      return JSON.parse(user);
     } catch {
       return null;
     }
@@ -116,7 +107,7 @@ export class AuthService {
     // Obtener el token del sessionStorage para enviarlo en el header
     const token = sessionStorage.getItem('accessToken');
 
-    console.log('Token obtenido del sessionStorage:', token ? '✓ Presente' : '✗ No presente');
+    console.log('Token obtenido del sessionStorage:', token ? 'Presente' : 'No presente');
 
     if (!token) {
       const error = 'No hay token de sesión. Por favor inicia sesión.';

@@ -1,5 +1,5 @@
 import { HttpClient } from '@angular/common/http';
-import { Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { Animal } from '../interfaces/animal';
 
@@ -7,14 +7,12 @@ import { Animal } from '../interfaces/animal';
   providedIn: 'root',
 })
 export class Animales {
-  private apiUrl = 'https://backendtfg-production-936a.up.railway.app/api';
+  private apiUrl = 'https://backendtfg-production-936a.up.railway.app/api'; //la url de mi back
+    
+  private http= inject(HttpClient)
+  private router= inject(Router)
 
-  constructor(
-    private http: HttpClient,
-    private router: Router,
-  ) {}
-
-  getAnimales() {
+  getAnimales() { // llamamos al endpoint del back
     return this.http.get<Animal[]>(`${this.apiUrl}/animales`);
   }
 
@@ -33,10 +31,10 @@ export class Animales {
   }
 
   crearAnimal(datos: any, fotos: File[]) {
-    // 📦 Crear FormData (para enviar archivos + datos juntos)
+    //Crear FormData (para enviar archivos + datos juntos)
     const formData = new FormData();
 
-    // ✏️  Agregar datos del formulario
+    //Agregar datos del formulario
     formData.append('nombre', datos.nombre);
     formData.append('tipo', datos.tipo);
     formData.append('raza', datos.raza);
@@ -50,13 +48,13 @@ export class Animales {
     formData.append('estado', 'disponible');
     formData.append('propietario_id', datos.propietario_id);
 
-    // 📸 Agregar fotos
+    //Agregar fotos
     fotos.forEach((foto) => {
       formData.append('fotos', foto);
     });
 
-    // 🌐 Enviar
-    console.log('📤 Enviando FormData al backend...');
+    //Enviar
+    console.log('Enviando FormData al backend...');
     return this.http.post(`${this.apiUrl}/animales`, formData);
   }
 
