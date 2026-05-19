@@ -102,12 +102,6 @@
                 <span aria-hidden="true"></span>
                 {{ 'common.view' | translate }}
               </a>
-
-              <a [routerLink]="['/detallesanimales/', item._id]" class="inline-flex items-center gap-1 rounded-lg px-2 py-1 transition hover:bg-slate-100">
-                <span aria-hidden="true"></span>
-                {{ 'common.edit' | translate }}
-              </a>
-
               <button
                 type="button"
                 (click)="eliminarAnimal(item._id)"
