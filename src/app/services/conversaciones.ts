@@ -1,6 +1,7 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
 import { Observable } from 'rxjs';
+import { catchError } from 'rxjs/operators';
 import { Conversation } from '../interfaces/conversation';
 import { ChatMessage } from '../interfaces/message';
 
@@ -29,7 +30,17 @@ export class ConversacionesService {
   createOrGetConversation(sender: string, receiver: string): Observable<Conversation> {
   const payload: any = { participant1: sender, participant2: receiver };
   console.log('Enviar createOrGetConversation payload:', payload);
-  return this.http.post<Conversation>(`${this.apiUrl}/conversations`, payload, this.getHeaders());
+  return this.http.post<Conversation>(`${this.apiUrl}/conversations`, payload, this.getHeaders()).pipe(
+    catchError((error) => {
+      console.error('Error en createOrGetConversation:', {
+        status: error.status,
+        statusText: error.statusText,
+        message: error.message,
+        error: error.error,
+      });
+      throw error;
+    })
+  );
 }
 
   sendMessage(conversationId: string, body: string): Observable<ChatMessage> {
