@@ -1,9 +1,13 @@
 import { Component, ChangeDetectorRef, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { UsuarioService } from '../../services/usuario';
+import { Animales } from '../../services/animales';
+import { Solicitudes } from '../../services/solicitudes';
+import { ConversacionesService } from '../../services/conversaciones';
 import { RouterLink } from '@angular/router';
 import Swal from 'sweetalert2';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
+import { firstValueFrom } from 'rxjs';
 
 @Component({
   selector: 'app-usuariosadmin',
@@ -25,6 +29,9 @@ export class Usuariosadmin {
   stats = [{ label: 'admin.totalUsers', value: '—', icon: '👥', color: 'bg-pink-100' }];
 
   private usuarioService = inject(UsuarioService);
+  private animalesService = inject(Animales);
+  private solicitudesService = inject(Solicitudes);
+  private conversacionesService = inject(ConversacionesService);
   private cdr = inject(ChangeDetectorRef);
   private translate = inject(TranslateService);
 
@@ -68,18 +75,217 @@ export class Usuariosadmin {
       cancelButtonText: this.translate.instant('common.cancel'),
     }).then((result) => {
       if (result.isConfirmed) {
-        this.usuarioService.delusuario(id).subscribe({
-          next: () => {
-            this.usuarios = this.usuarios.filter((usuario) => usuario._id !== id);
-            this.stats[0].value = this.usuarios.length.toString();
-            this.cdr.detectChanges();
-          },
-          error: (err) => {
-            console.error('Error al eliminar usuario:', err);
-          },
-        });
+        this.eliminarUsuarioYCascada(id);
       }
     });
+  }
+
+  private async eliminarUsuarioYCascada(id: string) {
+    try {
+      const respuestaUsuario: any = await firstValueFrom(this.usuarioService.getUsuario(id));
+      const usuario = respuestaUsuario?.data ?? respuestaUsuario ?? {};
+
+      await this.eliminarFavoritosRelacionados(usuario);
+      await this.eliminarAnimalesRelacionados(usuario, id);
+      await this.eliminarSolicitudesRelacionadas(id);
+      await this.eliminarConversacionesRelacionadas(id);
+
+      await firstValueFrom(this.usuarioService.delusuario(id));
+
+      this.usuarios = this.usuarios.filter((usuarioItem) => usuarioItem._id !== id);
+      this.stats[0].value = this.usuarios.length.toString();
+      this.cdr.detectChanges();
+
+      Swal.fire(
+        this.translate.instant('admin.alerts.deletedTitle'),
+        this.translate.instant('admin.alerts.deletedText'),
+        'success',
+      );
+    } catch (err) {
+      console.error('Error al eliminar usuario y relaciones:', err);
+      Swal.fire(
+        this.translate.instant('common.error'),
+        this.translate.instant('admin.alerts.deleteError'),
+        'error',
+      );
+    }
+  }
+
+  private normalizarLista(respuesta: any, keys: string[]): any[] {
+    if (Array.isArray(respuesta)) {
+      return respuesta;
+    }
+
+    for (const key of keys) {
+      if (Array.isArray(respuesta?.[key])) {
+        return respuesta[key];
+      }
+    }
+
+    if (Array.isArray(respuesta?.data)) {
+      return respuesta.data;
+    }
+
+    return [];
+  }
+
+  private getEntityId(entity: any): string {
+    if (!entity) {
+      return '';
+    }
+
+    if (typeof entity === 'string') {
+      return entity;
+    }
+
+    return entity._id || entity.id || '';
+  }
+
+  private async eliminarFavoritosRelacionados(usuario: any) {
+    const favoritos = this.normalizarLista(usuario, ['favoritos']);
+
+    for (const favorito of favoritos) {
+      const animalId = this.getEntityId(favorito);
+
+      if (!animalId) {
+        continue;
+      }
+
+      try {
+        await firstValueFrom(
+          this.animalesService.quitarMegusta(animalId, usuario._id || usuario.id),
+        );
+      } catch (error) {
+        console.warn('No se pudo eliminar un favorito del usuario:', error);
+      }
+    }
+  }
+
+  private async eliminarAnimalesRelacionados(usuario: any, usuarioId: string) {
+    const animales = this.normalizarLista(usuario, ['animales']);
+
+    for (const animal of animales) {
+      const animalId = this.getEntityId(animal);
+
+      if (!animalId) {
+        continue;
+      }
+
+      try {
+        await firstValueFrom(this.animalesService.delAnimal(animalId));
+      } catch (error) {
+        console.warn('No se pudo eliminar un animal del usuario:', error);
+      }
+    }
+
+    try {
+      const respuestaAnimales: any = await firstValueFrom(
+        this.usuarioService.misAnimales(usuarioId),
+      );
+      const animalesExtra = this.normalizarLista(respuestaAnimales, ['animales']);
+
+      for (const animal of animalesExtra) {
+        const animalId = this.getEntityId(animal);
+
+        if (!animalId) {
+          continue;
+        }
+
+        try {
+          await firstValueFrom(this.animalesService.delAnimal(animalId));
+        } catch (error) {
+          console.warn('No se pudo eliminar un animal adicional del usuario:', error);
+        }
+      }
+    } catch (error) {
+      console.warn('No se pudo consultar mis animales para limpieza adicional:', error);
+    }
+  }
+
+  private async eliminarSolicitudesRelacionadas(usuarioId: string) {
+    const respuestaSolicitudes: any = await firstValueFrom(
+      this.solicitudesService.getAllSolicitudes(),
+    );
+    const solicitudes = this.normalizarLista(respuestaSolicitudes, ['solicitudes']);
+
+    for (const solicitud of solicitudes) {
+      const propietarioId = this.getEntityId(solicitud?.propietario_id);
+      const adoptanteId = this.getEntityId(solicitud?.adoptante_id);
+
+      if (propietarioId !== usuarioId && adoptanteId !== usuarioId) {
+        continue;
+      }
+
+      if (!solicitud?._id) {
+        continue;
+      }
+
+      try {
+        await firstValueFrom(this.solicitudesService.delsolicitud(solicitud._id));
+      } catch (error) {
+        console.warn('No se pudo eliminar una solicitud relacionada:', error);
+      }
+    }
+  }
+
+  private async eliminarConversacionesRelacionadas(usuarioId: string) {
+    try {
+      const respuestaConversaciones: any = await firstValueFrom(
+        this.conversacionesService.getConversations(),
+      );
+      const conversaciones = this.normalizarLista(respuestaConversaciones, ['conversations']);
+
+      for (const conversation of conversaciones) {
+        const participants = Array.isArray(conversation?.participants)
+          ? conversation.participants
+          : [];
+        const participaUsuario = participants.some(
+          (participant: any) => this.getEntityId(participant) === usuarioId,
+        );
+
+        if (!participaUsuario || !conversation?._id) {
+          continue;
+        }
+
+        try {
+          await firstValueFrom(this.conversacionesService.deleteConversation(conversation._id));
+          continue;
+        } catch (conversationError) {
+          console.warn(
+            'No se pudo borrar la conversación completa, se intentan borrar los mensajes:',
+            conversationError,
+          );
+        }
+
+        try {
+          const detalleConversacion: any = await firstValueFrom(
+            this.conversacionesService.getConversation(conversation._id),
+          );
+          const mensajes = this.normalizarLista(detalleConversacion, ['messages']);
+
+          for (const message of mensajes) {
+            if (!message?._id) {
+              continue;
+            }
+
+            try {
+              await firstValueFrom(
+                this.conversacionesService.deleteMessage(conversation._id, message._id),
+              );
+            } catch (messageError) {
+              console.warn('No se pudo eliminar un mensaje de la conversación:', messageError);
+            }
+          }
+        } catch (detailError) {
+          console.warn(
+            'No se pudo cargar el detalle de la conversación para limpiar mensajes:',
+            detailError,
+          );
+        }
+      }
+    } catch (error) {
+      console.warn('No se pudieron cargar las conversaciones para limpieza:', error);
+    }
   }
 
   desactivarUsuario(id: string) {
@@ -113,7 +319,7 @@ export class Usuariosadmin {
         );
         this.cargarDatos();
       }
-    });   
+    });
   }
 
   activarUsuario(id: string) {
@@ -147,7 +353,6 @@ export class Usuariosadmin {
         );
         this.cargarDatos();
       }
-    });   
+    });
   }
-
 }

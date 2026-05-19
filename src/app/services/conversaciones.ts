@@ -46,4 +46,8 @@ export class ConversacionesService {
       this.getHeaders(),
     );
   }
+
+  deleteConversation(conversationId: string): Observable<any> {
+    return this.http.delete(`${this.apiUrl}/conversations/${conversationId}`, this.getHeaders());
+  }
 }
