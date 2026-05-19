@@ -1,5 +1,5 @@
 import { HttpClient } from '@angular/common/http';
-import { Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { Observable } from 'rxjs';
 import { Solicitud } from '../interfaces/solicitud';
@@ -10,10 +10,9 @@ import { Solicitud } from '../interfaces/solicitud';
 export class Solicitudes {
   private apiUrl = 'https://backendtfg-production-936a.up.railway.app/api';
 
-  constructor(
-    private http: HttpClient,
-    private router: Router,
-  ) {}
+    private http= inject(HttpClient)
+    private router= inject(Router)
+
 
   // Crear solicitud de adopción
   addSolicitud(solicitud: Solicitud): Observable<any> {

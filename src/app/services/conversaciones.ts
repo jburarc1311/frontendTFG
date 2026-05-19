@@ -1,5 +1,5 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Conversation } from '../interfaces/conversation';
 import { ChatMessage } from '../interfaces/message';
@@ -9,8 +9,7 @@ import { ChatMessage } from '../interfaces/message';
 })
 export class ConversacionesService {
   private apiUrl = 'https://backendtfg-production-936a.up.railway.app/api';
-
-  constructor(private http: HttpClient) {}
+  private http = inject(HttpClient);
 
   private getHeaders() {
     const token = sessionStorage.getItem('accessToken');

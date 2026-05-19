@@ -105,43 +105,59 @@ export class AuthService {
   // Sube una foto de perfil a Cloudinary a través del backend
   // Recibe el ID del usuario y el archivo a subir
   uploadAvatar(userId: string, file: File): Observable<any> {
+    // Crea un contenedor para enviar datos de formulario al backend.
     const formData = new FormData();
+    // Añade el archivo al campo "avatar", que es el nombre que espera el backend.
     formData.append('avatar', file); // El backend espera un campo llamado 'avatar'
 
     // Obtener el token del sessionStorage para enviarlo en el header
     const token = sessionStorage.getItem('accessToken');
 
-    console.log('Token obtenido del sessionStorage:', token ? 'Presente' : 'No presente');
+    // Muestra en consola si el token existe o no para depuración.
+    console.log('Token obtenido:', token ? 'Presente' : 'No presente');
 
+    // Si no hay token, no se puede hacer la petición autenticada.
     if (!token) {
+      // Se crea un mensaje de error claro para informar al usuario.
       const error = 'No hay token de sesión. Por favor inicia sesión.';
-      console.error(error);
+      // Se lanza una excepción para detener la ejecución.
       throw new Error(error);
     }
 
     // Crear headers HTTP correctamente con HttpHeaders
+    // Se construye la cabecera Authorization con el token.
     const headers = new HttpHeaders({
       Authorization: `Bearer ${token}`,
     });
 
+    // Indica en consola a qué URL se va a enviar la petición.
     console.log('Enviando petición PUT a:', `${this.apiUrl}/usuarios/${userId}/avatar`);
+    // Muestra una versión recortada del token para verificar que se está enviando.
     console.log(
       'Authorization con token:',
       token ? 'Bearer ' + token.substring(0, 20) + '...' : 'SIN TOKEN',
     );
 
+    // Envía la imagen al backend para que la suba a Cloudinary y actualice el usuario.
     return this.http
       .put<any>(`${this.apiUrl}/usuarios/${userId}/avatar`, formData, { headers })
       .pipe(
         // Después de subir, actualizamos los datos del usuario en sessionStorage
+        // tap permite ejecutar código extra sin cambiar la respuesta HTTP.
         tap((res) => {
+          // Muestra la respuesta completa del servidor para depuración.
           console.log('Respuesta del servidor:', res);
+          // Si el backend devuelve la nueva URL de la foto, la guardamos.
           if (res?.photo) {
-            console.log('URL de foto actualizada:', res.photo);
+            // Recupera el usuario actual guardado en sessionStorage.
             const user = this.getUser();
+            // Si existe un usuario guardado, actualizamos su foto.
             if (user) {
+              // Sustituye la foto anterior por la nueva URL de Cloudinary.
               user.photo = res.photo; // Actualizamos con la nueva URL de Cloudinary
+              // Guarda de nuevo el usuario actualizado en sessionStorage.
               sessionStorage.setItem('user', JSON.stringify(user));
+
               console.log('SessionStorage actualizado con foto');
             }
           }
@@ -163,7 +179,7 @@ export class AuthService {
         tap((res) => {
           if (res?.accessToken) {
             sessionStorage.setItem('accessToken', res.accessToken);
-            console.log('✅ Access token renovado automáticamente');
+            console.log('Access token renovado automáticamente');
           }
         }),
       );
@@ -180,7 +196,7 @@ export class AuthService {
         if (this.isLoggedIn()) {
           this.refreshAccessToken().subscribe({
             error: (err) => {
-              console.error('❌ Error al refrescar token automáticamente:', err);
+              console.error('Error al refrescar token automáticamente:', err);
               this.logout();
             },
           });
@@ -216,31 +232,29 @@ export class AuthService {
     // Enviar el token en dos campos (compatibilidad): 'token' y 'credential'
     // Algunos backends esperan 'credential' o 'id_token' en vez de 'token'
     const body = { token: googleToken, credential: googleToken };
-    return this.http
-      .post<any>(`${this.apiUrl}/google`, body, { withCredentials: true })
-      .pipe(
-        tap((res) => {
-          const accessToken = res?.token;
-          const user = res?.user;
+    return this.http.post<any>(`${this.apiUrl}/google`, body, { withCredentials: true }).pipe(
+      tap((res) => {
+        const accessToken = res?.token;
+        const user = res?.user;
 
-          if (accessToken) {
-            // Guardamos el accessToken en sessionStorage
-            sessionStorage.setItem('accessToken', accessToken);
+        if (accessToken) {
+          // Guardamos el accessToken en sessionStorage
+          sessionStorage.setItem('accessToken', accessToken);
 
-            if (user) {
-              // Normalizar id y guardarlo en sessionStorage
-              const normalizedUser = { ...(user as any) };
-              if (!normalizedUser.id && normalizedUser._id) normalizedUser.id = normalizedUser._id;
-              sessionStorage.setItem('user', JSON.stringify(normalizedUser));
-            }
-
-            // Notificamos que hay sesión activa
-            this.loggedIn.next(true);
-
-            // Iniciar auto-refresh del token
-            this.iniciarAutoRefresh();
+          if (user) {
+            // Normalizar id y guardarlo en sessionStorage
+            const normalizedUser = { ...(user as any) };
+            if (!normalizedUser.id && normalizedUser._id) normalizedUser.id = normalizedUser._id;
+            sessionStorage.setItem('user', JSON.stringify(normalizedUser));
           }
-        }),
-      );
+
+          // Notificamos que hay sesión activa
+          this.loggedIn.next(true);
+
+          // Iniciar auto-refresh del token
+          this.iniciarAutoRefresh();
+        }
+      }),
+    );
   }
 }
