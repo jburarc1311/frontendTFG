@@ -2,7 +2,7 @@
   <div class="w-full max-w-[2000px] px-0 sm:px-4 md:px-8">
     <div class="mb-4 flex flex-col gap-1 sm:flex-row sm:flex-wrap sm:items-center sm:justify-between sm:gap-2">
       <h1 class="text-xl font-bold sm:text-2xl">{{ 'animals.title' | translate }}</h1>
-      <p class="text-gray-600">{{ 'animals.showing' | translate: { count: animales.length } }}</p>
+      <p class="text-gray-600">{{ 'animals.showing' | translate: { count: filteredAnimales.length } }}</p>
     </div>
 
     <div class="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4">
