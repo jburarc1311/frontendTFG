@@ -5,6 +5,7 @@ import { Solicitud } from '../../interfaces/solicitud';
 import { RouterLink } from '@angular/router';
 import Swal from 'sweetalert2';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
+import { AuthService } from '../../services/auth.service';
 
 @Component({
   selector: 'app-missolicitudes',
@@ -19,6 +20,7 @@ export class Missolicitudes implements OnInit {
   pestanaActiva: 'enviadas' | 'recibidas' = 'enviadas';
 
   private solicitudesService = inject(Solicitudes);
+  private authService = inject(AuthService);
   private cdr = inject(ChangeDetectorRef);
   private translate = inject(TranslateService);
 
@@ -29,25 +31,60 @@ export class Missolicitudes implements OnInit {
   cargarSolicitudes() {
     this.error = null;
 
+    this.cargarSolicitudesEnviadas();
+    this.cargarSolicitudesRecibidas();
+  }
+
+  private manejarErrorDeAutenticacion(error: any): boolean {
+    const estado = error?.status;
+
+    if ((estado === 401 || estado === 403) && sessionStorage.getItem('accessToken')) {
+      this.authService.refreshAccessToken().subscribe({
+        next: () => this.cargarSolicitudes(),
+        error: (refreshError) => {
+          console.error('Error al renovar el token:', refreshError);
+          this.authService.logout();
+        },
+      });
+
+      return true;
+    }
+
+    return false;
+  }
+
+  private cargarSolicitudesEnviadas() {
     this.solicitudesService.getSolicitudesEnviadas().subscribe({
       next: (response) => {
         this.solicitudesEnviadas = response.data || [];
         this.cdr.detectChanges();
       },
       error: (error) => {
+        if (this.manejarErrorDeAutenticacion(error)) {
+          return;
+        }
+
         this.error = this.translate.instant('myRequests.errors.sentLoad');
         console.error('Error:', error);
+        this.cdr.detectChanges();
       },
     });
+  }
 
+  private cargarSolicitudesRecibidas() {
     this.solicitudesService.getSolicitudesRecibidas().subscribe({
       next: (response) => {
         this.solicitudesRecibidas = response.data || [];
         this.cdr.detectChanges();
       },
       error: (error) => {
+        if (this.manejarErrorDeAutenticacion(error)) {
+          return;
+        }
+
         this.error = this.translate.instant('myRequests.errors.receivedLoad');
         console.error('Error:', error);
+        this.cdr.detectChanges();
       },
     });
   }
