@@ -93,7 +93,7 @@ export const routes: Routes = [
         path: 'detallesusurio/:id',
         loadComponent: () =>
             import('./components/detallesusurio/detallesusurio').then((m) => m.Detallesusurio),
-        canActivate: [adminGuard, authGuard],
+        canActivate: [authGuard],
     },
     {
         path: 'detallessolicitudes/:id',
