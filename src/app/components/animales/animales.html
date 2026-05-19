@@ -6,7 +6,7 @@
     </div>
 
     <div class="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4">
-      @for (item of animales; track $index) {
+      @for (item of filteredAnimales; track $index) {
         <div class="border-0 w-full overflow-hidden rounded-2xl animal flex flex-col shadow-lg">
           <!-- Contenedor con ratio fijo para que todas las tarjetas tengan la misma proporción -->
           <div class="w-full rounded-t-2xl bg-gray-100 overflow-hidden" style="aspect-ratio: 4 / 3;">

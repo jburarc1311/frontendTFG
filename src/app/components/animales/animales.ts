@@ -13,6 +13,10 @@ import { TranslateModule } from '@ngx-translate/core';
 })
 export class Animalesss {
   @Input() animales: Animal[] = [];
+  // Devuelve solo animales que no estén adoptados
+  get filteredAnimales(): Animal[] {
+    return (this.animales || []).filter((a) => a.estado !== 'adoptado');
+  }
   private route = inject(ActivatedRoute);
 
   ngOnInit() {
