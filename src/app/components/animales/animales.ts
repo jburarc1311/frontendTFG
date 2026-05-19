@@ -1,5 +1,6 @@
 import { Component, Input, inject } from '@angular/core';
 import { Animal } from '../../interfaces/animal';
+import { AuthService } from '../../services/auth.service';
 import { SexoPipe } from '../../pipes/sexo-pipe';
 import { NgStyle } from '@angular/common';
 import { ActivatedRoute, RouterLink } from '@angular/router';
@@ -14,8 +15,12 @@ import { TranslateModule } from '@ngx-translate/core';
 export class Animalesss {
   @Input() animales: Animal[] = [];
   // Devuelve solo animales que no estén adoptados
+  private auth = inject(AuthService);
+
   get filteredAnimales(): Animal[] {
-    return (this.animales || []).filter((a) => a.estado !== 'adoptado');
+    const user = this.auth.getUser();
+    const myId = user?.id;
+    return (this.animales || []).filter((a) => a.estado !== 'adoptado' && a.propietario_id !== myId);
   }
   private route = inject(ActivatedRoute);
 
